@@ -9,4 +9,8 @@ class Application {
     function __construct() {
         $this->router = new Router();
     }
+
+    function run() {
+
+    }
 }
