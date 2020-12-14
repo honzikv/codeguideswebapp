@@ -1,0 +1,16 @@
+{
+  "name": "nvk/leaguetourneyapp",
+  "description": "League of Legends tournament web application",
+  "authors": [
+    {
+      "name": "honzikv",
+      "email": "honzikv@students.zcu.cz"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "app\\": "./"
+    }
+  }
+}
