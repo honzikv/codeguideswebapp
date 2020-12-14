@@ -17,10 +17,10 @@ class Router {
 
     /**
      * Nastavi pro GET metodu s path dany callback
-     * @param $path path pro spusteni callbacku
+     * @param string $path path pro spusteni callbacku
      * @param $callback callback funkce, ktera se spusti
      */
-    function setGetMethod($path, $callback) {
+    function setGetMethod(string $path, $callback) {
         $this->routes['get'][$path] = $callback;
     }
 
@@ -30,7 +30,7 @@ class Router {
      * @param $callback funkce, ktera se spusti
      */
     function setPostMethod($path, $callback) {
-        $this->routes['post'][$path];
+        $this->routes['post'][$path] = $callback;
     }
 
     function resolve() {
@@ -41,9 +41,25 @@ class Router {
         $callback = $this->routes[$method][$path] ?? false;
 
         if ($callback == false) {
-            print(404);
-            exit();
+            return "Not Found";
         }
 
+        if (is_string($callback)) {
+            return $this->renderView($callback);
+        }
+
+        return call_user_func($callback);
+    }
+
+    private function renderView(string $view) {
+        $layoutContent = $this->layoutContent();
+        $viewContent = $this->renderView($view);
+        include_once __DIR__."/../view/$view.php"; # render view
+    }
+
+    private function layoutContent() {
+        ob_start(); # aby se nic nevytisklo
+        include_once Application::$ROOT_PATH.'/views/layouts/main_layout.php';
+        return ob_get_clean(); # vratime template jako string
     }
 }
