@@ -28,13 +28,13 @@ class Request {
         $result = [];
 
         if ($this->getMethod() === 'get') {
-            $input = $_GET;
+            $input = $_GET; # odstraneni nevalidnich znaku pro get metodu
             foreach ($input as $key => $value) {
                 $result[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
         else if ($this->getMethod() === 'post') {
-            $input = $_GET;
+            $input = $_GET; # odstraneni nevalidnich znaku pro post metodu
             foreach ($input as $key => $value) {
                 $result[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }

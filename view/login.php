@@ -5,7 +5,7 @@
         </div>
 
         <div class="col">
-            <form>
+            <form method="post" role="form">
                 <div class="form-group">
                     <label for="inputUsername"></label>
                     <input type="text" class="form-control textInput" id="inputUsername" placeholder="Username">

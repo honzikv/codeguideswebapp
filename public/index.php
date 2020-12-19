@@ -2,17 +2,23 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use app\controllers\HomeController;
 use app\core\Application;
+use app\controller\HomeBaseController;
+use app\controller\LoginBaseController;
+use app\controller\RegisterBaseController;
+use app\controller\TournamentsController;
 
 $application = new Application(dirname(__DIR__));
-$application->router->setGetMethod('/', 'home');
-$application->router->setGetMethod('/login','login');
-$application->router->setGetMethod('/register','register');
-$application->router->setGetMethod('/tournaments', 'tournaments');
+$router = $application->router;
 
-# nastaveni callbacku pro
-$application->router->setPostMethod('/register', [HomeController::class, 'processRegistration']);
+$router->setGetMethod('/', [HomeBaseController::class, 'show']);
+$router->setGetMethod('/login', [LoginBaseController::class, 'show']);
+$router->setGetMethod('/register', [RegisterBaseController::class, 'show']);
+$router->setGetMethod('/tournaments', [TournamentsController::class, 'show']);
+
+# Register stranka
+$application->router->setPostMethod('/register', [LoginBaseController::class, 'processRegistration']);
+$application->router->setPostMethod('/login', [LoginBaseController::class, 'processLogin']);
 
 
 $application->run();

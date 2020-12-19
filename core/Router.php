@@ -45,7 +45,7 @@ class Router {
 
         if ($callback == false) {
             Application::getInstance()->response->setStatusCode(404);
-            return $this->renderNotFound();
+            return $this->notFoundPage();
         }
 
         if (is_string($callback)) {
@@ -83,7 +83,7 @@ class Router {
         return ob_get_clean(); # vratime template jako string
     }
 
-    private function renderNotFound() {
+    private function notFoundPage() {
         ob_start();
         include_once Application::$ROOT_PATH.'/view/error_view.php';
         return ob_get_clean();
