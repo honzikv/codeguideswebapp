@@ -57,7 +57,7 @@ class Router {
             $callback[0] = new $callback[0](); # zde je jako prvni parametr objekt controlleru
         }
 
-        return call_user_func($callback);
+        return call_user_func($callback, $this->request);
     }
 
     function render(string $view, $params = []) {

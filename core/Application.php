@@ -19,7 +19,7 @@ class Application {
         $this->router = new Router($this->request, $this->response);
     }
 
-    static function getInstance() {
+    static function getInstance(): Application {
         return self::$instance;
     }
 

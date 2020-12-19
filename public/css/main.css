@@ -11,8 +11,11 @@
 /* globalni override */
 body {
     font-family: 'BalooChettan2', serif;
-    background: rgb(0, 0, 0);
-    background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgb(3, 3, 28) 100%);
+    background: rgb(5, 5, 57);
+    background: -moz-radial-gradient(circle, rgba(5, 5, 57, 1) 0%, rgba(4, 4, 48, 1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(5, 5, 57, 1) 0%, rgba(4, 4, 48, 1) 100%);
+    background: radial-gradient(circle, rgba(5, 5, 57, 1) 0%, rgba(4, 4, 48, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#050539", endColorstr="#040430", GradientType=1);
 
     color: #e2e2e2;
 }
@@ -22,7 +25,6 @@ body {
     color: #b5b5b5;
     font-size: small;
 }
-
 
 .card {
     background: #867676;
