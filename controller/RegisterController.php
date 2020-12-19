@@ -6,7 +6,7 @@ namespace app\controller;
 
 use app\core\BaseController;
 use app\core\Request;
-use app\model\RegisterModel;
+use app\model\UserRegistrationModel;
 
 /**
  * Class RegisterBaseController controller pro register stranku
