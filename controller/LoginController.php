@@ -7,7 +7,7 @@ namespace app\controller;
 use app\core\BaseController;
 use app\core\Request;
 
-class LoginBaseController extends BaseController {
+class LoginController extends BaseController {
 
     private $view = 'login';
 

@@ -5,7 +5,7 @@ namespace app\core;
 class Router {
 
     private array $routes = []; # routes, kam se ukladaji callbacky pro danou path
-    public Request $request;
+    private Request $request;
     private Response $response;
 
     /**
@@ -29,8 +29,8 @@ class Router {
 
     /**
      * Nastavi pro POST metodu s path dany callback
-     * @param string $path: pro spusteni callbacku
-     * @param $callback: funkce, ktera se spusti
+     * @param string $path : pro spusteni callbacku
+     * @param $callback : funkce, ktera se spusti
      */
     function setPostMethod(string $path, $callback) {
         $this->routes['post'][$path] = $callback;
@@ -54,14 +54,16 @@ class Router {
 
         # Pokud se jedna o array, tak vytvorime controller. Tento array by mel mit vzdy 2 prvky
         if (is_array($callback)) {
-            $callback[0] = new $callback[0](); # zde je jako prvni parametr objekt controlleru
+            Application::getInstance()->setController(new $callback[0]());
+            $callback[0] = Application::getInstance()->getController();
         }
 
         return call_user_func($callback, $this->request);
     }
 
     function render(string $view, $params = []) {
-        $layoutContent = $this->getLayoutContent();
+        $layoutName = Application::getInstance()->getController()->getLayout();
+        $layoutContent = $this->getLayoutContent($layoutName);
         $viewContent = $this->renderView($view, $params);
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
@@ -73,19 +75,19 @@ class Router {
         }
 
         ob_start(); # aby se nic nevytisklo
-        include_once Application::$ROOT_PATH."/view/$view.php";
+        include_once Application::$ROOT_PATH . "/view/$view.php";
         return ob_get_clean(); # vratime view jako string
     }
 
-    private function getLayoutContent() {
+    private function getLayoutContent($layout) {
         ob_start(); # aby se nic nevytisklo
-        include_once Application::$ROOT_PATH.'/view/layout/main_layout.php';
+        include_once Application::$ROOT_PATH . "/view/layout/$layout";
         return ob_get_clean(); # vratime template jako string
     }
 
     private function notFoundPage() {
         ob_start();
-        include_once Application::$ROOT_PATH.'/view/error_view.php';
+        include_once Application::$ROOT_PATH . '/view/error_view.php';
         return ob_get_clean();
     }
 }

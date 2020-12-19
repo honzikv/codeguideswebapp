@@ -5,7 +5,7 @@ namespace app\controller;
 use app\core\BaseController;
 use app\core\Request;
 
-class HomeBaseController extends BaseController {
+class HomeController extends BaseController {
 
     private static string $VIEW = 'home';
 

@@ -10,6 +10,7 @@ class Application {
     public static string $ROOT_PATH;
 
     private static Application $instance;
+    private BaseController $controller;
 
     function __construct(string $rootPath) {
         self::$ROOT_PATH = $rootPath;
@@ -25,5 +26,19 @@ class Application {
 
     function run() {
         echo $this->router->resolve();
+    }
+
+    /**
+     * @return BaseController
+     */
+    public function getController(): BaseController {
+        return $this->controller;
+    }
+
+    /**
+     * @param BaseController $controller
+     */
+    public function setController(BaseController $controller): void {
+        $this->controller = $controller;
     }
 }
