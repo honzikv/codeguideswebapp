@@ -1,0 +1,41 @@
+@font-face {
+    font-family: 'MarkaziText';
+    src: url('../fonts/MarkaziText-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'BalooChettan2';
+    src: url("../fonts/BalooChettan2-Regular.ttf");
+}
+
+
+/* globalni override */
+body {
+    font-family: 'BalooChettan2', serif;
+    background: rgb(0, 0, 0);
+    background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(1, 1, 11, 1) 100%);
+
+    color: #e2e2e2;
+}
+
+.card {
+    background: #867676;
+    border-radius: 16px;
+}
+
+.buttonDefault {
+    background: #0c63e4;
+    border-color: #0a58ca;
+}
+
+.buttonDefault:hover  {
+    background: #4a99ff;
+    border-color: #4a99ff;
+}
+
+.mainTitle {
+    font-size: 36px;
+    font-family: 'MarkaziText', serif;
+
+!important;
+}
