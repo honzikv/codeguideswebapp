@@ -6,13 +6,16 @@ class Router {
 
     private array $routes = []; # routes, kam se ukladaji callbacky pro danou path
     public Request $request;
+    private Response $response;
 
     /**
      * Konstruktor pro vytvoreni v Application
      * @param Request $request
+     * @param Response $response
      */
-    public function __construct(Request $request) {
+    function __construct(Request $request, Response $response) {
         $this->request = $request;
+        $this->response = $response;
     }
 
     /**
@@ -26,10 +29,10 @@ class Router {
 
     /**
      * Nastavi pro POST metodu s path dany callback
-     * @param $path path pro spusteni callbacku
-     * @param $callback funkce, ktera se spusti
+     * @param string $path: pro spusteni callbacku
+     * @param $callback: funkce, ktera se spusti
      */
-    function setPostMethod($path, $callback) {
+    function setPostMethod(string $path, $callback) {
         $this->routes['post'][$path] = $callback;
     }
 
@@ -41,25 +44,48 @@ class Router {
         $callback = $this->routes[$method][$path] ?? false;
 
         if ($callback == false) {
-            return "Not Found";
+            Application::getInstance()->response->setStatusCode(404);
+            return $this->renderNotFound();
         }
 
         if (is_string($callback)) {
-            return $this->renderView($callback);
+            return $this->render($callback);
+        }
+
+        # Pokud se jedna o array, tak vytvorime controller. Tento array by mel mit vzdy 2 prvky
+        if (is_array($callback)) {
+            $callback[0] = new $callback[0](); # zde je jako prvni parametr objekt controlleru
         }
 
         return call_user_func($callback);
     }
 
-    private function renderView(string $view) {
-        $layoutContent = $this->layoutContent();
-        $viewContent = $this->renderView($view);
-        include_once __DIR__."/../view/$view.php"; # render view
+    function render(string $view, $params = []) {
+        $layoutContent = $this->getLayoutContent();
+        $viewContent = $this->renderView($view, $params);
+        return str_replace('{{content}}', $viewContent, $layoutContent);
     }
 
-    private function layoutContent() {
+    private function renderView($view, $params) {
+
+        foreach ($params as $key => $value) {
+            $$key = $value; # predani parametru do stranky v include_once
+        }
+
         ob_start(); # aby se nic nevytisklo
-        include_once Application::$ROOT_PATH.'/views/layouts/main_layout.php';
+        include_once Application::$ROOT_PATH."/view/$view.php";
+        return ob_get_clean(); # vratime view jako string
+    }
+
+    private function getLayoutContent() {
+        ob_start(); # aby se nic nevytisklo
+        include_once Application::$ROOT_PATH.'/view/layout/main_layout.php';
         return ob_get_clean(); # vratime template jako string
+    }
+
+    private function renderNotFound() {
+        ob_start();
+        include_once Application::$ROOT_PATH.'/view/error_view.php';
+        return ob_get_clean();
     }
 }

@@ -12,7 +12,9 @@ class Request {
     function getPath() {
         $path = $_SERVER['REQUEST_URI'] ?? '/'; # path ziskame z REQUEST URI, pokud neexistuje pak je path root
         $position = strpos($path, '?'); # zjisteni pozice otazniku pro query
-        return $position === false ? $path : substr($path, 0, $position); # pokud neni vratime path, jinak substring
+
+        # pokud neni vratime path, jinak substring
+        return $position === false ? $path : substr($path, 0, $position);
     }
 
     /**
@@ -21,5 +23,26 @@ class Request {
     function getMethod(): string {
         return strtolower($_SERVER['REQUEST_METHOD']);
     }
+
+    function getBody() {
+        $result = [];
+
+        if ($this->getMethod() === 'get') {
+            $input = $_GET;
+            foreach ($input as $key => $value) {
+                $result[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            }
+        }
+        else if ($this->getMethod() === 'post') {
+            $input = $_GET;
+            foreach ($input as $key => $value) {
+                $result[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            }
+        }
+
+        return $result;
+    }
+
+
 
 }
