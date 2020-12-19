@@ -7,7 +7,8 @@ use app\core\Application;
 
 $application = new Application(dirname(__DIR__));
 $application->router->setGetMethod('/', 'home');
-$application->router->setGetMethod('/','login');
+$application->router->setGetMethod('/login','login');
+$application->router->setGetMethod('/register','register');
 $application->router->setGetMethod('/tournaments', 'tournaments');
 
 # nastaveni callbacku pro

@@ -7,16 +7,9 @@
     <link rel="stylesheet" href="css/main.css"/>
     <title>League Tournament WebApp</title>
 </head>
-
 <body>
-    <div class="card-header"
+<div class="container mt-4">
+    {{content}}
+</div>
 
-    <div class="container">
-        <h1 class="display-1 mainTitle">League of Legends Web App</h1>
-    </div>
-
-
-    <div class="container">
-        {{content}}
-    </div>
 </body>

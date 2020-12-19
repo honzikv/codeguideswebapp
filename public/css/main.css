@@ -8,34 +8,46 @@
     src: url("../fonts/BalooChettan2-Regular.ttf");
 }
 
-
 /* globalni override */
 body {
     font-family: 'BalooChettan2', serif;
     background: rgb(0, 0, 0);
-    background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(1, 1, 11, 1) 100%);
+    background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgb(3, 3, 28) 100%);
 
     color: #e2e2e2;
 }
+
+.hintText {
+    margin-left: 8px;
+    color: #b5b5b5;
+    font-size: small;
+}
+
 
 .card {
     background: #867676;
     border-radius: 16px;
 }
 
-.buttonDefault {
+.buttonDefault .buttonDefault:checked .buttonDefault:focus {
+    color: #e2e2e2;
     background: #0c63e4;
     border-color: #0a58ca;
 }
 
-.buttonDefault:hover  {
+.buttonDefault:hover {
+    color: #e2e2e2;
     background: #4a99ff;
     border-color: #4a99ff;
+}
+
+h1 {
+    color: #faf9f9;
+
 }
 
 .mainTitle {
     font-size: 36px;
     font-family: 'MarkaziText', serif;
 
-!important;
 }
