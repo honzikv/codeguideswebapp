@@ -3,12 +3,12 @@
 
 namespace app\controller;
 
-
+use app\core\Application;
 use app\core\BaseController;
 
-class TournamentsController extends BaseController {
+class ErrorController extends BaseController {
 
-    private const VIEW = 'tournaments.twig';
+    private const VIEW = "error_view.html";
 
     function render() {
         $this->__render(self::VIEW);

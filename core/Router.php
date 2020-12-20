@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\controller\ErrorController;
+
 class Router {
 
     private array $routes = []; # routes, kam se ukladaji callbacky pro danou path
@@ -27,6 +29,7 @@ class Router {
         $this->routes['get'][$path] = $callback;
     }
 
+
     /**
      * Nastavi pro POST metodu s path dany callback
      * @param string $path : pro spusteni callbacku
@@ -45,7 +48,10 @@ class Router {
 
         if ($callback == false) {
             Application::getInstance()->response->setStatusCode(404);
-            return $this->notFoundPage();
+            $errorController = new ErrorController();
+            Application::getInstance()->setController($errorController);
+            $errorController->render();
+            return;
         }
 
         if (is_string($callback)) {
@@ -81,13 +87,12 @@ class Router {
 
     private function getLayoutContent($layout) {
         ob_start(); # aby se nic nevytisklo
-        include_once Application::$ROOT_PATH . "/view/layout/$layout";
+        include_once Application::$ROOT_PATH . "/view/layout/$layout.php";
         return ob_get_clean(); # vratime template jako string
     }
 
-    private function notFoundPage() {
-        ob_start();
-        include_once Application::$ROOT_PATH . '/view/error_view.php';
-        return ob_get_clean();
+
+    function setInvalid($callback) {
+
     }
 }

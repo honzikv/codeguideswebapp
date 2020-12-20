@@ -6,9 +6,9 @@ namespace app\controller;
 
 use app\core\BaseController;
 
-class TournamentsController extends BaseController {
+class MainPageController extends BaseController {
 
-    private const VIEW = 'tournaments.twig';
+    private const VIEW = 'index.twig';
 
     function render() {
         $this->__render(self::VIEW);

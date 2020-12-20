@@ -9,10 +9,10 @@ use app\core\Request;
 
 class LoginController extends BaseController {
 
-    private $view = 'login';
+    private const VIEW = 'login.twig';
 
-    function show() {
-         $this->render('login');
+    function render() {
+         $this->__render(self::VIEW);
     }
 
     function processLogin(Request $request) {

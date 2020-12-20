@@ -14,12 +14,14 @@ use app\model\UserRegistrationModel;
  */
 class RegisterController extends BaseController {
 
-    private static string $VIEW = 'register';
+    private const VIEW = 'register.twig';
 
-    function show() {
-        $this->render(self::$VIEW);
+    function render() {
+        $this->__render(self::VIEW);
     }
 
     function processRegistration(Request $request) {
+        $userRegistrationModel = new UserRegistrationModel();
+        $userRegistrationModel->loadData($request->getBody());
     }
 }

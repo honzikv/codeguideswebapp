@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use app\controller\MainPageController;
 use app\core\Application;
-use app\controller\HomeController;
 use app\controller\LoginController;
 use app\controller\RegisterController;
 use app\controller\TournamentsController;
@@ -11,10 +11,10 @@ use app\controller\TournamentsController;
 $application = new Application(dirname(__DIR__));
 $router = $application->router;
 
-$router->setGetMethod('/', [HomeController::class, 'show']);
-$router->setGetMethod('/login', [LoginController::class, 'show']);
-$router->setGetMethod('/register', [RegisterController::class, 'show']);
-$router->setGetMethod('/tournaments', [TournamentsController::class, 'show']);
+$router->setGetMethod('/', [MainPageController::class, 'render']);
+$router->setGetMethod('/login', [LoginController::class, 'render']);
+$router->setGetMethod('/register', [RegisterController::class, 'render']);
+$router->setGetMethod('/tournaments', [TournamentsController::class, 'render']);
 
 $application->router->setPostMethod('/register', [RegisterController::class, 'processRegistration']);
 $application->router->setPostMethod('/login', [LoginController::class, 'processLogin']);
