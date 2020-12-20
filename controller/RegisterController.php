@@ -29,20 +29,25 @@ class RegisterController extends BaseController {
     }
 
     function processRegistration(Request $request) {
+
         $userRegistrationModel = new RegistrationModel();
         $userRegistrationModel->loadData($request->getBody());
 
         try {
             $userRegistrationModel->validate();
-        }
-        catch (Exception $exception) {
-            $this->__render(self::VIEW, [$exception->getMessage()]);
+        } catch (Exception $ex) {
+            $this->__render(self::VIEW, ['error' => $ex->getMessage(), 'formData' => $userRegistrationModel->getFormData()]);
+            return;
         }
 
         if ($userRegistrationModel->register()) {
             $session = Application::getInstance()->getSession();
             $session->setUser($userRegistrationModel);
             $this->renderSuccessfulRegistration();
+        } else {
+            $this->__render(self::VIEW,
+                ['error' => 'Error while connecting to database',
+                    'formData' => $userRegistrationModel->getFormData()]);
         }
 
     }

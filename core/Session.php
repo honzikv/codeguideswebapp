@@ -19,7 +19,6 @@ class Session {
     function setUser(RegistrationModel $userRegistrationData) {
         $_SESSION['username'] = $userRegistrationData->username;
         $_SESSION['role'] = $userRegistrationData->role;
-        $_SESSION['password'] = $userRegistrationData->password;
     }
 
     public function getUserInfo(): array {

@@ -4,6 +4,7 @@ namespace app\model;
 
 use app\core\BaseModel;
 use Exception;
+use PDOException;
 
 class RegistrationModel extends BaseModel {
 
@@ -25,57 +26,73 @@ class RegistrationModel extends BaseModel {
         return $input == self::AUTHOR || $input == self::REVIEWER || $input == self::PUBLISHER;
     }
 
+    function getFormData(): array {
+        return [
+            'username' => $this->username ?? '',
+            'email' => $this->email ?? '',
+            'role' => $this->role ?? ''
+        ];
+    }
+
     function validate() {
         if (empty($this->username)) {
-            throw new Exception("Username is empty");
+            throw new Exception('Username is empty');
         }
 
         if (strlen($this->username) > self::USERNAME_LIMIT) {
-            throw new Exception("User name is too long (max " . self::USERNAME_LIMIT . " characters).");
+            throw new Exception('User name is too long (max ' . self::USERNAME_LIMIT . " characters).");
         }
 
         if (!preg_match(self::CHARACTERS_NUMBERS_REGEX, $this->username)) {
-            throw new Exception("Error, invalid symbol in username");
+            throw new Exception('Error, invalid symbol in username');
         }
 
         if (empty($this->email)) {
-            throw new Exception("Email is empty.");
+            throw new Exception('Email is empty.');
         }
 
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception("Invalid email");
+            throw new Exception('Invalid email');
         }
 
         if (strlen($this->email) > self::EMAIL_LIMIT) {
-            throw new Exception("Email is too long (max " . self::EMAIL_LIMIT . " characters).");
+            throw new Exception('Email is too long (max ' . self::EMAIL_LIMIT . " characters).");
         }
 
         if (empty($this->role)) {
-            throw new Exception("Error, role is not selected.");
+            throw new Exception('Error, role is not selected.');
         }
 
         if (!$this->roleMatches($this->role)) {
-            throw new Exception("Error, invalid role.");
+            throw new Exception('Error, invalid role.');
         }
 
         if (empty($this->password)) {
-            throw new Exception("Error, password is empty.");
+            throw new Exception('Error, password is empty.');
         }
 
         if (strlen($this->password) > 255) {
-            throw new Exception("Error, password is too long (max " . self::PASSWORD_LIMIT . " characters).");
+            throw new Exception('Error, password is too long (max ' . self::PASSWORD_LIMIT . " characters).");
         }
 
+        if ($this->existsInDatabase('USER','username', $this->username)) {
+            throw new Exception('Error username is taken');
+        }
+
+        if ($this->existsInDatabase('USER', 'email', $this->email)) {
+            throw new Exception('Error, email is taken');
+        }
     }
 
-    function getAllUsers(): array {
+
+    private function getAllUsers(): array {
         $statement = 'SELECT * FROM user';
         $query = $this->prepare($statement);
         $query->execute();
         return $query->fetchAll();
     }
 
-    function getRoleId($roleString) {
+    private function getRoleId($roleString) {
         $statement = 'SELECT * FROM role_lov';
         $query = $this->prepare($statement);
         $query->execute();
@@ -90,12 +107,16 @@ class RegistrationModel extends BaseModel {
         throw new Exception("Error, no such role in the db"); # nemelo by se stat
     }
 
-    function register() {
+    public function register() {
         $roleId = $this->getRoleId($this->role);
         $statement = 'INSERT INTO USER (username, password, email, role_id) VALUES (?, ?, ?, ?)';
-        $query = $this->prepare($statement);
-        $query->execute([$this->username, password_hash($this->password, PASSWORD_DEFAULT),
-            $this->email, $roleId]);
+        try {
+            $query = $this->prepare($statement);
+            $query->execute([$this->username, password_hash($this->password, PASSWORD_DEFAULT),
+                $this->email, $roleId]);
+        } catch (PDOException $exception) {
+            return false;
+        }
         return true;
     }
 }

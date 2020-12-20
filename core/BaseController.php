@@ -18,7 +18,7 @@ class BaseController {
             $params['pagename'] = $view;
         }
 
-        echo Application::getInstance()->getTwig()->render($view, $params);
+        print(Application::getInstance()->getTwig()->render($view, $params));
     }
 
 }

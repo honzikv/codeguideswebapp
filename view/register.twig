@@ -10,14 +10,14 @@
             </div>
 
             <div class="col">
-                <form method="post">
+                <form method="post" action="/register">
                     <div class="form-group">
 
                         <div>
                             <label>Enter your username:</label>
                             <label for="username"></label>
                             <input type="text" class="form-control textInput" id="username" name="username"
-                                   aria-describedby="usernameInfo"
+                                   aria-describedby="usernameInfo" value="{{ formData.username }}"
                                    placeholder="Username" required>
                             <small id="usernameInfo" class="hintText">This username will be visible to other
                                 users</small>
@@ -30,30 +30,47 @@
 
                         <label>Enter email:</label>
                         <label for="email"></label>
-                        <input type="email" class="form-control textInput" id="email" name="email"
+                        <input type="email" class="form-control textInput" value="{{ formData.email }}"
+                               id="email" name="email"
                                placeholder="email@gmail.com" required>
                     </div>
 
+                    {% if error %}
+                    <h5 class="text-center" role="alert">{{ error }}</h5>
+                    {% endif %}
                     <div class="mt-4">
+
                         <h3>Select your role:</h3>
                         <div class="form-check mt-2">
                             <input class="form-check-input" type="radio" name="role" id="author"
-                                   value="author" checked>
+                                   value="author"
+
+                                    {% if formData.role is not defined %} checked {% endif %}
+                                    {% if formData.role == 'author' %} checked {% endif %}
+
+                            >
                             <label class="form-check-label" for="author">
                                 Author
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="role" id="Reviewer"
-                                   value="reviewer">
+                            <input class="form-check-input" type="radio" name="role" id="reviewer"
+                                   value="reviewer"
+
+                                    {% if formData.role == 'reviewer' %} checked {% endif %}
+                            >
                             <label class="form-check-label" for="reviewer">
                                 Reviewer
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="role" id="Spectator"
-                                   value="publisher">
-                            <label class="form-check-label" for="Spectator">
+                            <input class="form-check-input" type="radio" name="role" id="publisher"
+                                   value="publisher"
+
+                                    {% if formData.role == 'publisher' %} checked {% endif %}
+                            >
+                            <label class="form-check-label" for="publisher"
+                            >
                                 Publisher <span class="hintText">(extra confirmation will be required)</span>
                             </label>
                         </div>
