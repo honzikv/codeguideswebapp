@@ -23,12 +23,11 @@ class Router {
     /**
      * Nastavi pro GET metodu s path dany callback
      * @param string $path path pro spusteni callbacku
-     * @param $callback callback funkce, ktera se spusti
+     * @param $callback: callback funkce, ktera se spusti
      */
     function setGetMethod(string $path, $callback) {
         $this->routes['get'][$path] = $callback;
     }
-
 
     /**
      * Nastavi pro POST metodu s path dany callback
@@ -91,8 +90,4 @@ class Router {
         return ob_get_clean(); # vratime template jako string
     }
 
-
-    function setInvalid($callback) {
-
-    }
 }

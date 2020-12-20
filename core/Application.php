@@ -10,23 +10,27 @@ class Application {
     public Router $router; # router pro routing v aplikaci
     public Request $request; # request pri spusteni aplikace
     public Response $response; # response pro zobrazeni 404 apod.
-    public static string $ROOT_PATH;
+    public static string $ROOT_PATH; # root path
 
-    private static Application $instance;
-    private FilesystemLoader $loader;
-    private Environment $twig;
-    private BaseController $controller;
+    private static Application $instance; # instance aplikace, pro globalni referenci
+    private FilesystemLoader $loader; # loader instance
+    private Environment $twig; # twig instance pro rendering
+    private BaseController $controller; # aktualne pouzivany controller
+    private Database $database; # instance databaze
 
     function __construct(string $rootPath) {
         self::$ROOT_PATH = $rootPath;
         self::$instance = $this;
-        $this->request = new Request();
-        $this->response = new Response();
-        $this->router = new Router($this->request, $this->response);
+
+        $this->request = new Request(); # vytvoreni request objektu
+        $this->response = new Response(); # vytvoreni response objektu
+        $this->router = new Router($this->request, $this->response); # vytvoreni routeru
+
+        # Inicializace Twigu
         $this->loader = new FilesystemLoader("$rootPath/view/");
-        $this->twig = new Environment($this->loader, [
-            'cache' => '../cache'
-        ]);
+        $this->twig = new Environment($this->loader, []);
+
+        $this->database = new Database(); # inicializace databaze
     }
 
     static function getInstance(): Application {
@@ -58,6 +62,12 @@ class Application {
         return $this->twig;
     }
 
+    /**
+     * @return Database
+     */
+    public function getDatabase(): Database {
+        return $this->database;
+    }
 
     /**
      * @param BaseController $controller

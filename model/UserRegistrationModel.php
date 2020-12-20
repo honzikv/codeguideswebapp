@@ -11,13 +11,18 @@ class UserRegistrationModel extends BaseModel {
     private const EMAIL_LIMIT = 60;
     private const PASSWORD_LIMIT = 255;
 
+    # role
+    private const PLAYER = 'player';
+    private const TOURNAMENT_ORGANIZER = 'tournamentOrganizer';
+    private const SPECTATOR = 'spectator';
+
     var string $username;
     var string $email;
     var string $password;
     var string $role;
 
     function roleMatches($input) {
-
+        return $input == self::PLAYER || $input == self::TOURNAMENT_ORGANIZER || $input == self::SPECTATOR;
     }
 
     function validate() {
@@ -41,7 +46,7 @@ class UserRegistrationModel extends BaseModel {
             throw new Exception("Error, role is not selected.");
         }
 
-        if (!roleMatches($this->role)) {
+        if (!$this->roleMatches($this->role)) {
             throw new Exception("Error, invalid role.");
         }
 
@@ -52,5 +57,6 @@ class UserRegistrationModel extends BaseModel {
         if (strlen($this->password) > 255) {
             throw new Exception("Error, password is too long (max " . self::PASSWORD_LIMIT . " characters).");
         }
+
     }
 }

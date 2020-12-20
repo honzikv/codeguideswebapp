@@ -1,34 +1,67 @@
 {% extends 'layout/main_layout.twig' %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col d-flex justify-content-center align-items-center">
-            <h1 class="">Register your account</h1>
-        </div>
-
-        <div class="col">
-            <form method="post">
-                <div class="form-group">
-                    <label for="username"></label>
-                    <input type="text" class="form-control textInput" id="username"
-                           aria-describedby="usernameInfo"
-                           placeholder="Username" required>
-                    <small id="usernameInfo" class="hintText">This username will be visible to other users</small>
-
-                    <label for="password"></label>
-                    <input type="password" class="form-control textInput" id="password" placeholder="Password"
-                           required>
-
-                    <label for="email"></label>
-                    <input type="email" class="form-control textInput" id="email" name="inputEmail"
-                           placeholder="email@gmail.com" required>
+    <div class="container">
+        <div class="row m-lg-auto">
+            <div class="col d-flex justify-content-center ">
+                <div class="container mt-4">
+                    <h1 class="">Register your account</h1>
+                    <a href="/login" class="">Already have account? Log-in</a>
                 </div>
+            </div>
 
-                <a href="/login">Already have account? Log-in</a>
-                <button type="submit" class="btn btn-primary mt-2 float-end">Register</button>
-            </form>
+            <div class="col">
+                <form method="post">
+                    <div class="form-group">
+
+                        <div>
+                            <label>Enter your username:</label>
+                            <label for="username"></label>
+                            <input type="text" class="form-control textInput" id="username" name="username"
+                                   aria-describedby="usernameInfo"
+                                   placeholder="Username" required>
+                            <small id="usernameInfo" class="hintText">This username will be visible to other
+                                users</small>
+                        </div>
+
+                        <label>Enter password:</label>
+                        <label for="password"></label>
+                        <input type="password" class="form-control textInput" id="password" placeholder="Password"
+                               name="password" required>
+
+                        <label>Enter email:</label>
+                        <label for="email"></label>
+                        <input type="email" class="form-control textInput" id="email" name="email"
+                               placeholder="email@gmail.com" required>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3>Select your role:</h3>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="radio" name="role" id="player"
+                                   value="player" checked>
+                            <label class="form-check-label" for="player">
+                                Player
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="role" id="tournamentOrganizer"
+                                   value="tournamentOrganizer">
+                            <label class="form-check-label" for="tournamentOrganizer">
+                                Tournament Organizer
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="role" id="Spectator"
+                                   value="spectator">
+                            <label class="form-check-label" for="Spectator">
+                                Spectator
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-2 float-end">Register</button>
+                </form>
+            </div>
+
         </div>
-
-    </div>
-</div>
 {% endblock %}
