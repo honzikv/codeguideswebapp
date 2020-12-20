@@ -17,6 +17,7 @@ class Application {
     private Environment $twig; # twig instance pro rendering
     private BaseController $controller; # aktualne pouzivany controller
     private Database $database; # instance databaze
+    private Session $session; # session objekt pro snazsi manipulaci
 
     function __construct(string $rootPath) {
         self::$ROOT_PATH = $rootPath;
@@ -31,6 +32,7 @@ class Application {
         $this->twig = new Environment($this->loader, []);
 
         $this->database = new Database(); # inicializace databaze
+        $this->session = new Session();
     }
 
     static function getInstance(): Application {
@@ -75,4 +77,13 @@ class Application {
     public function setController(BaseController $controller): void {
         $this->controller = $controller;
     }
+
+    /**
+     * @return Session
+     */
+    public function getSession(): Session {
+        return $this->session;
+    }
+
+
 }

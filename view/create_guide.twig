@@ -1,0 +1,31 @@
+{% extends 'layout/main_layout.twig' %}
+
+{% block content %}
+
+    <div class="jumbotron mx-auto contentDefault">
+        <h1 class="display-4">Create a new guide</h1>
+        <form>
+            <div class="form-group">
+                <label for="name">Guide name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter name of your guide">
+            </div>
+
+            <div class="form-group">
+                <label for="abstractTextArea">Brief description (abstract)</label>
+                <textarea placeholder="How to get challenger while not playing soloq" class="form-control"
+                          id="abstractTextArea" rows="3"
+                          maxlength="3000"></textarea>
+            </div>
+
+            <label class="mt-4" for="pdfInput">Your PDF File:</label>
+            <div class="form-group">
+                <input type="file" class="form-control-file" accept="application/pdf"
+                       id="pdfInput">
+            </div>
+
+            <hr>
+
+        </form>
+        <button type="submit" class="btn btn-primary float-end">Submit</button>
+    </div>
+{% endblock %}

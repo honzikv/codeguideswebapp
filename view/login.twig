@@ -1,22 +1,25 @@
 {% extends 'layout/main_layout.twig' %}
 {% block content %}
     <div class="container">
-        <div class="row">
-            <div class="col d-flex justify-content-center align-items-center">
-                <h1 class="">Log-in</h1>
+        <div class="row m-lg-auto">
+            <div class="col d-flex justify-content-center ">
+                <div class="container mt-4">
+                    <h1 class="">Log-in</h1>
+                    <a href="/register">Not a user yet? Register</a>
+                </div>
             </div>
 
             <div class="col">
                 <form method="post" role="form">
                     <div class="form-group">
-                        <label for="inputUsername"></label>
+                        <label for="inputUsername">Username</label>
                         <input type="text" class="form-control textInput" id="inputUsername" placeholder="Username">
 
-                        <label for="inputPassword"></label>
+                        <label for="inputPassword">Password</label>
                         <input type="password" class="form-control textInput" id="inputPassword" placeholder="Password">
                     </div>
 
-                    <a href="/register">Not a user yet? Register</a>
+
                     <button type="submit" class="btn btn-primary mt-2 float-end">Login</button>
                 </form>
             </div>

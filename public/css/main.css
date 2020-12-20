@@ -10,14 +10,26 @@
 
 /* globalni override */
 body {
-    font-family: 'BalooChettan2', serif;
-    background: rgb(5, 5, 57);
-    background: -moz-radial-gradient(circle, rgba(5, 5, 57, 1) 0%, rgba(4, 4, 48, 1) 100%);
-    background: -webkit-radial-gradient(circle, rgba(5, 5, 57, 1) 0%, rgba(4, 4, 48, 1) 100%);
-    background: radial-gradient(circle, rgba(5, 5, 57, 1) 0%, rgba(4, 4, 48, 1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#050539", endColorstr="#040430", GradientType=1);
+    background: linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)),
+    url("../asset/background.jpg") no-repeat center center fixed;
 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     color: #e2e2e2;
+}
+
+div::after {
+
+}
+
+.contentDefault {
+    width: 60%;
+}
+
+.guideDescription {
+
 }
 
 .hintText {
@@ -27,8 +39,16 @@ body {
 }
 
 .card {
-    background: #867676;
+    border-color: rgba(0, 0, 0, 0);
+    background: rgba(99, 144, 226, 0.26);
+    backdrop-filter: blur(10px);
     border-radius: 16px;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+}
+
+.card:hover{
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
 
 .buttonDefault .buttonDefault:checked .buttonDefault:focus {
@@ -51,5 +71,12 @@ h1 {
 .mainTitle {
     font-size: 36px;
     font-family: 'MarkaziText', serif;
+}
 
+.smallParagraph {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+    -webkit-box-orient: vertical;
 }

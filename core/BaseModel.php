@@ -6,10 +6,9 @@ namespace app\core;
 
 abstract class BaseModel {
 
-    function loadData($data) {
+    const CHARACTERS_NUMBERS_REGEX = 'w+';
 
-        var_dump($data);
-        # Data muzeme nacist tak, ze iterujeme pres dany objekt a ukladame hodnoty
+    function loadData($data) {
         foreach ($data as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
@@ -22,4 +21,5 @@ abstract class BaseModel {
     function prepare($statement) {
         return Application::getInstance()->getDatabase()->prepare($statement);
     }
+
 }
