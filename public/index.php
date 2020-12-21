@@ -22,11 +22,12 @@ $router->setGetMethod('/register', [RegistrationController::class, 'render']);
 $router->setGetMethod('/createguide', [CreateGuideController::class, 'render']);
 $router->setGetMethod('/guidelist', [GuideListController::class, 'render']);
 $router->setGetMethod('/profile', [ProfileController::class, 'render']);
-$router->setGetMethod('/manageusers',[ManageUsersController::class, 'render']);
+$router->setGetMethod('/manageusers', [ManageUsersController::class, 'render']);
 
 $application->router->setPostMethod('/register', [RegistrationController::class, 'processRegistration']);
 $application->router->setPostMethod('/login', [AuthenticationController::class, 'processLogin']);
 $application->router->setPostMethod('/logout', [AuthenticationController::class, 'processLogout']);
+$application->router->setPostMethod('/createguide', [CreateGuideController::class, 'processGuideUpload']);
 
 
 $application->run();

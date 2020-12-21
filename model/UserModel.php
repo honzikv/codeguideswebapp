@@ -49,4 +49,11 @@ class UserModel extends BaseModel {
          $query->execute();
          return $query->fetchAll();
     }
+
+     function getUserId($username) {
+        $statement = 'SELECT * FROM USER where username = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$username]);
+        return $query->fetch()['id'];
+    }
 }

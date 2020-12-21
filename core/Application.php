@@ -11,6 +11,7 @@ class Application {
     public Request $request; # request pri spusteni aplikace
     public Response $response; # response pro zobrazeni 404 apod.
     public static string $ROOT_PATH; # root path
+    public static string $FILES_PATH;
 
     private static Application $instance; # instance aplikace, pro globalni referenci
     private FilesystemLoader $loader; # loader instance
@@ -21,6 +22,7 @@ class Application {
 
     function __construct(string $rootPath) {
         self::$ROOT_PATH = $rootPath;
+        self::$FILES_PATH = "$rootPath/userdata/";
         self::$instance = $this;
 
         $this->request = new Request(); # vytvoreni request objektu

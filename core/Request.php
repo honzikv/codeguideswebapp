@@ -43,6 +43,10 @@ class Request {
         return $result;
     }
 
+    function getMultipart($name) {
+        return $_FILES[$name];
+    }
+
 
 
 }

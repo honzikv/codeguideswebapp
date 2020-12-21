@@ -17,12 +17,14 @@
 
                 <p class="lead">
                     <a class="btn btn-primary btn-lg" href="#" role="button">Browse</a>
-                    {% if user.role == 'editor' %}
+                    {% if user.role == 'author' %}
                     <a class="btn btn-primary btn-lg" href="#" role="button">My Guides</a>
+                    <a class="btn btn-primary btn-lg" href="/createguide" role="button">Create a Guide</a>
                     {% elseif user.role == 'reviewer' %}
                     <a class="btn btn-primary btn-lg" href="#" role="button">My Reviews</a>
                     {% elseif user.role == 'publisher' %}
-                    <a class="btn btn-primary btn-lg" href="#" role="button"></a>
+                    <a class="btn btn-primary btn-lg" href="/manageusers" role="button">Manage Users</a>
+                    <a class="btn btn-primary btn-lg" href="/managecontent" role="button">Manage Content</a>
                     {% endif %}
                 </p>
             </div>
@@ -76,6 +78,5 @@
             </div>
         </div>
     </div>
-
 
 {% endblock %}

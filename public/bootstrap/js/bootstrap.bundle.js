@@ -82,7 +82,7 @@
   };
 
   var getSelector = function getSelector(element) {
-    var selector = element.getAttribute('data-bs-target');
+    var selector = element.getAttribute('userdata-bs-target');
 
     if (!selector || selector === '#') {
       var hrefAttr = element.getAttribute('href');
@@ -217,7 +217,7 @@
     var _window = window,
         jQuery = _window.jQuery;
 
-    if (jQuery && !document.body.hasAttribute('data-bs-no-jquery')) {
+    if (jQuery && !document.body.hasAttribute('userdata-bs-no-jquery')) {
       return jQuery;
     }
 
@@ -236,7 +236,7 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.0.0-beta1): dom/data.js
+   * Bootstrap (v5.0.0-beta1): dom/userdata.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -626,8 +626,8 @@
   var NAME = 'alert';
   var DATA_KEY = 'bs.alert';
   var EVENT_KEY = "." + DATA_KEY;
-  var DATA_API_KEY = '.data-api';
-  var SELECTOR_DISMISS = '[data-bs-dismiss="alert"]';
+  var DATA_API_KEY = '.userdata-api';
+  var SELECTOR_DISMISS = '[userdata-bs-dismiss="alert"]';
   var EVENT_CLOSE = "close" + EVENT_KEY;
   var EVENT_CLOSED = "closed" + EVENT_KEY;
   var EVENT_CLICK_DATA_API = "click" + EVENT_KEY + DATA_API_KEY;
@@ -772,9 +772,9 @@
   var NAME$1 = 'button';
   var DATA_KEY$1 = 'bs.button';
   var EVENT_KEY$1 = "." + DATA_KEY$1;
-  var DATA_API_KEY$1 = '.data-api';
+  var DATA_API_KEY$1 = '.userdata-api';
   var CLASS_NAME_ACTIVE = 'active';
-  var SELECTOR_DATA_TOGGLE = '[data-bs-toggle="button"]';
+  var SELECTOR_DATA_TOGGLE = '[userdata-bs-toggle="button"]';
   var EVENT_CLICK_DATA_API$1 = "click" + EVENT_KEY$1 + DATA_API_KEY$1;
   /**
    * ------------------------------------------------------------------------
@@ -897,10 +897,10 @@
 
   var Manipulator = {
     setDataAttribute: function setDataAttribute(element, key, value) {
-      element.setAttribute("data-bs-" + normalizeDataKey(key), value);
+      element.setAttribute("userdata-bs-" + normalizeDataKey(key), value);
     },
     removeDataAttribute: function removeDataAttribute(element, key) {
-      element.removeAttribute("data-bs-" + normalizeDataKey(key));
+      element.removeAttribute("userdata-bs-" + normalizeDataKey(key));
     },
     getDataAttributes: function getDataAttributes(element) {
       if (!element) {
@@ -918,7 +918,7 @@
       return attributes;
     },
     getDataAttribute: function getDataAttribute(element, key) {
-      return normalizeData(element.getAttribute("data-bs-" + normalizeDataKey(key)));
+      return normalizeData(element.getAttribute("userdata-bs-" + normalizeDataKey(key)));
     },
     offset: function offset(element) {
       var rect = element.getBoundingClientRect();
@@ -1028,7 +1028,7 @@
   var NAME$2 = 'carousel';
   var DATA_KEY$2 = 'bs.carousel';
   var EVENT_KEY$2 = "." + DATA_KEY$2;
-  var DATA_API_KEY$2 = '.data-api';
+  var DATA_API_KEY$2 = '.userdata-api';
   var ARROW_LEFT_KEY = 'ArrowLeft';
   var ARROW_RIGHT_KEY = 'ArrowRight';
   var TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
@@ -1081,8 +1081,8 @@
   var SELECTOR_ITEM_IMG = '.carousel-item img';
   var SELECTOR_NEXT_PREV = '.carousel-item-next, .carousel-item-prev';
   var SELECTOR_INDICATORS = '.carousel-indicators';
-  var SELECTOR_DATA_SLIDE = '[data-bs-slide], [data-bs-slide-to]';
-  var SELECTOR_DATA_RIDE = '[data-bs-ride="carousel"]';
+  var SELECTOR_DATA_SLIDE = '[userdata-bs-slide], [userdata-bs-slide-to]';
+  var SELECTOR_DATA_RIDE = '[userdata-bs-ride="carousel"]';
   var PointerType = {
     TOUCH: 'touch',
     PEN: 'pen'
@@ -1417,7 +1417,7 @@
         return;
       }
 
-      var elementInterval = Number.parseInt(element.getAttribute('data-bs-interval'), 10);
+      var elementInterval = Number.parseInt(element.getAttribute('userdata-bs-interval'), 10);
 
       if (elementInterval) {
         this._config.defaultInterval = this._config.defaultInterval || this._config.interval;
@@ -1562,7 +1562,7 @@
 
       var config = _extends({}, Manipulator.getDataAttributes(target), Manipulator.getDataAttributes(this));
 
-      var slideIndex = this.getAttribute('data-bs-slide-to');
+      var slideIndex = this.getAttribute('userdata-bs-slide-to');
 
       if (slideIndex) {
         config.interval = false;
@@ -1638,7 +1638,7 @@
   var NAME$3 = 'collapse';
   var DATA_KEY$3 = 'bs.collapse';
   var EVENT_KEY$3 = "." + DATA_KEY$3;
-  var DATA_API_KEY$3 = '.data-api';
+  var DATA_API_KEY$3 = '.userdata-api';
   var Default$1 = {
     toggle: true,
     parent: ''
@@ -1659,7 +1659,7 @@
   var WIDTH = 'width';
   var HEIGHT = 'height';
   var SELECTOR_ACTIVES = '.show, .collapsing';
-  var SELECTOR_DATA_TOGGLE$1 = '[data-bs-toggle="collapse"]';
+  var SELECTOR_DATA_TOGGLE$1 = '[userdata-bs-toggle="collapse"]';
   /**
    * ------------------------------------------------------------------------
    * Class Definition
@@ -1675,7 +1675,7 @@
       _this = _BaseComponent.call(this, element) || this;
       _this._isTransitioning = false;
       _this._config = _this._getConfig(config);
-      _this._triggerArray = SelectorEngine.find(SELECTOR_DATA_TOGGLE$1 + "[href=\"#" + element.id + "\"]," + (SELECTOR_DATA_TOGGLE$1 + "[data-bs-target=\"#" + element.id + "\"]"));
+      _this._triggerArray = SelectorEngine.find(SELECTOR_DATA_TOGGLE$1 + "[href=\"#" + element.id + "\"]," + (SELECTOR_DATA_TOGGLE$1 + "[userdata-bs-target=\"#" + element.id + "\"]"));
       var toggleList = SelectorEngine.find(SELECTOR_DATA_TOGGLE$1);
 
       for (var i = 0, len = toggleList.length; i < len; i++) {
@@ -1730,7 +1730,7 @@
       if (this._parent) {
         actives = SelectorEngine.find(SELECTOR_ACTIVES, this._parent).filter(function (elem) {
           if (typeof _this2._config.parent === 'string') {
-            return elem.getAttribute('data-bs-parent') === _this2._config.parent;
+            return elem.getAttribute('userdata-bs-parent') === _this2._config.parent;
           }
 
           return elem.classList.contains(CLASS_NAME_COLLAPSE);
@@ -1903,7 +1903,7 @@
         parent = SelectorEngine.findOne(parent);
       }
 
-      var selector = SELECTOR_DATA_TOGGLE$1 + "[data-bs-parent=\"" + parent + "\"]";
+      var selector = SELECTOR_DATA_TOGGLE$1 + "[userdata-bs-parent=\"" + parent + "\"]";
       SelectorEngine.find(selector, parent).forEach(function (element) {
         var selected = getElementFromSelector(element);
 
@@ -2378,7 +2378,7 @@
         options = _ref2.options,
         name = _ref2.name;
     var _options$element = options.element,
-        arrowElement = _options$element === void 0 ? '[data-popper-arrow]' : _options$element,
+        arrowElement = _options$element === void 0 ? '[userdata-popper-arrow]' : _options$element,
         _options$padding = options.padding,
         padding = _options$padding === void 0 ? 0 : _options$padding;
 
@@ -3598,9 +3598,9 @@
 
           state.reset = false;
           state.placement = state.options.placement; // On each update cycle, the `modifiersData` property for each modifier
-          // is filled with the initial data specified by the modifier. This means
+          // is filled with the initial userdata specified by the modifier. This means
           // it doesn't persist and is fresh on each update.
-          // To ensure persistent data, use `${name}#persistent`
+          // To ensure persistent userdata, use `${name}#persistent`
 
           state.orderedModifiers.forEach(function (modifier) {
             return state.modifiersData[modifier.name] = Object.assign({}, modifier.data);
@@ -3655,7 +3655,7 @@
         }
       }); // Modifiers have the ability to execute arbitrary code before the first
       // update cycle runs. They will be executed in the same order as the update
-      // cycle. This is useful when a modifier adds some persistent data that
+      // cycle. This is useful when a modifier adds some persistent userdata that
       // other modifiers need to use, but the modifier is run after the dependent
       // one.
 
@@ -3754,7 +3754,7 @@
   var NAME$4 = 'dropdown';
   var DATA_KEY$4 = 'bs.dropdown';
   var EVENT_KEY$4 = "." + DATA_KEY$4;
-  var DATA_API_KEY$4 = '.data-api';
+  var DATA_API_KEY$4 = '.userdata-api';
   var ESCAPE_KEY = 'Escape';
   var SPACE_KEY = 'Space';
   var TAB_KEY = 'Tab';
@@ -3777,7 +3777,7 @@
   var CLASS_NAME_DROPEND = 'dropend';
   var CLASS_NAME_DROPSTART = 'dropstart';
   var CLASS_NAME_NAVBAR = 'navbar';
-  var SELECTOR_DATA_TOGGLE$2 = '[data-bs-toggle="dropdown"]';
+  var SELECTOR_DATA_TOGGLE$2 = '[userdata-bs-toggle="dropdown"]';
   var SELECTOR_FORM_CHILD = '.dropdown form';
   var SELECTOR_MENU = '.dropdown-menu';
   var SELECTOR_NAVBAR_NAV = '.navbar-nav';
@@ -4237,7 +4237,7 @@
   var NAME$5 = 'modal';
   var DATA_KEY$5 = 'bs.modal';
   var EVENT_KEY$5 = "." + DATA_KEY$5;
-  var DATA_API_KEY$5 = '.data-api';
+  var DATA_API_KEY$5 = '.userdata-api';
   var ESCAPE_KEY$1 = 'Escape';
   var Default$3 = {
     backdrop: true,
@@ -4269,8 +4269,8 @@
   var CLASS_NAME_STATIC = 'modal-static';
   var SELECTOR_DIALOG = '.modal-dialog';
   var SELECTOR_MODAL_BODY = '.modal-body';
-  var SELECTOR_DATA_TOGGLE$3 = '[data-bs-toggle="modal"]';
-  var SELECTOR_DATA_DISMISS = '[data-bs-dismiss="modal"]';
+  var SELECTOR_DATA_TOGGLE$3 = '[userdata-bs-toggle="modal"]';
+  var SELECTOR_DATA_DISMISS = '[userdata-bs-dismiss="modal"]';
   var SELECTOR_FIXED_CONTENT = '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top';
   var SELECTOR_STICKY_CONTENT = '.sticky-top';
   /**
@@ -4871,7 +4871,7 @@
 
   var SAFE_URL_PATTERN = /^(?:(?:https?|mailto|ftp|tel|file):|[^#&/:?]*(?:[#/?]|$))/gi;
   /**
-   * A pattern that matches safe data URLs. Only matches image, video and audio types.
+   * A pattern that matches safe userdata URLs. Only matches image, video and audio types.
    *
    * Shoutout to Angular 7 https://github.com/angular/angular/blob/7.2.4/packages/core/src/sanitization/url_sanitizer.ts
    */
@@ -5371,7 +5371,7 @@
     };
 
     _proto.getTitle = function getTitle() {
-      var title = this._element.getAttribute('data-bs-original-title');
+      var title = this._element.getAttribute('userdata-bs-original-title');
 
       if (!title) {
         title = typeof this.config.title === 'function' ? this.config.title.call(this._element) : this.config.title;
@@ -5498,10 +5498,10 @@
     _proto._fixTitle = function _fixTitle() {
       var title = this._element.getAttribute('title');
 
-      var originalTitleType = typeof this._element.getAttribute('data-bs-original-title');
+      var originalTitleType = typeof this._element.getAttribute('userdata-bs-original-title');
 
       if (title || originalTitleType !== 'string') {
-        this._element.setAttribute('data-bs-original-title', title || '');
+        this._element.setAttribute('userdata-bs-original-title', title || '');
 
         if (title && !this._element.getAttribute('aria-label') && !this._element.textContent) {
           this._element.setAttribute('aria-label', title);
@@ -5828,7 +5828,7 @@
     };
 
     _proto._getContent = function _getContent() {
-      return this._element.getAttribute('data-bs-content') || this.config.content;
+      return this._element.getAttribute('userdata-bs-content') || this.config.content;
     };
 
     _proto._cleanTipClass = function _cleanTipClass() {
@@ -5938,7 +5938,7 @@
   var NAME$8 = 'scrollspy';
   var DATA_KEY$8 = 'bs.scrollspy';
   var EVENT_KEY$8 = "." + DATA_KEY$8;
-  var DATA_API_KEY$6 = '.data-api';
+  var DATA_API_KEY$6 = '.userdata-api';
   var Default$6 = {
     offset: 10,
     method: 'auto',
@@ -5954,7 +5954,7 @@
   var EVENT_LOAD_DATA_API$1 = "load" + EVENT_KEY$8 + DATA_API_KEY$6;
   var CLASS_NAME_DROPDOWN_ITEM = 'dropdown-item';
   var CLASS_NAME_ACTIVE$2 = 'active';
-  var SELECTOR_DATA_SPY = '[data-bs-spy="scroll"]';
+  var SELECTOR_DATA_SPY = '[userdata-bs-spy="scroll"]';
   var SELECTOR_NAV_LIST_GROUP = '.nav, .list-group';
   var SELECTOR_NAV_LINKS = '.nav-link';
   var SELECTOR_NAV_ITEMS = '.nav-item';
@@ -6120,7 +6120,7 @@
       this._clear();
 
       var queries = this._selector.split(',').map(function (selector) {
-        return selector + "[data-bs-target=\"" + target + "\"]," + selector + "[href=\"" + target + "\"]";
+        return selector + "[userdata-bs-target=\"" + target + "\"]," + selector + "[href=\"" + target + "\"]";
       });
 
       var link = SelectorEngine.findOne(queries.join(','));
@@ -6238,7 +6238,7 @@
   var NAME$9 = 'tab';
   var DATA_KEY$9 = 'bs.tab';
   var EVENT_KEY$9 = "." + DATA_KEY$9;
-  var DATA_API_KEY$7 = '.data-api';
+  var DATA_API_KEY$7 = '.userdata-api';
   var EVENT_HIDE$3 = "hide" + EVENT_KEY$9;
   var EVENT_HIDDEN$3 = "hidden" + EVENT_KEY$9;
   var EVENT_SHOW$3 = "show" + EVENT_KEY$9;
@@ -6253,7 +6253,7 @@
   var SELECTOR_NAV_LIST_GROUP$1 = '.nav, .list-group';
   var SELECTOR_ACTIVE$1 = '.active';
   var SELECTOR_ACTIVE_UL = ':scope > li > .active';
-  var SELECTOR_DATA_TOGGLE$4 = '[data-bs-toggle="tab"], [data-bs-toggle="pill"], [data-bs-toggle="list"]';
+  var SELECTOR_DATA_TOGGLE$4 = '[userdata-bs-toggle="tab"], [userdata-bs-toggle="pill"], [userdata-bs-toggle="list"]';
   var SELECTOR_DROPDOWN_TOGGLE$1 = '.dropdown-toggle';
   var SELECTOR_DROPDOWN_ACTIVE_CHILD = ':scope > .dropdown-menu .active';
   /**
@@ -6477,7 +6477,7 @@
     autohide: true,
     delay: 5000
   };
-  var SELECTOR_DATA_DISMISS$1 = '[data-bs-dismiss="toast"]';
+  var SELECTOR_DATA_DISMISS$1 = '[userdata-bs-dismiss="toast"]';
   /**
    * ------------------------------------------------------------------------
    * Class Definition

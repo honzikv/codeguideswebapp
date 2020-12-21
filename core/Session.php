@@ -13,8 +13,7 @@ class Session {
     function isUserLoggedIn(): bool {
         if (isset($_SESSION['username'])) {
             return true;
-        }
-        else {
+        } else {
             $_SESSION['role'] = 'viewer';
             return false;
         }
@@ -35,5 +34,9 @@ class Session {
     function removeUser() {
         unset($_SESSION['username']);
         $_SESSION['role'] = 'viewer';
+    }
+
+    function getUsername() {
+        return $_SESSION['username'];
     }
 }

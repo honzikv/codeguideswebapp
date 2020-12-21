@@ -19,12 +19,10 @@ class RegistrationController extends BaseController {
     private const VIEW = 'register.twig';
     private const SUCCESSFUL_REGISTRATION = 'successful_registration.html';
 
-
     function render() {
         if ($this->session->isUserLoggedIn()) {
             $this->redirectToIndex();
-        }
-        else {
+        } else {
             $this->__render(self::VIEW);
         }
     }
@@ -53,8 +51,10 @@ class RegistrationController extends BaseController {
             $this->renderSuccessfulRegistration();
         } else {
             $this->__render(self::VIEW,
-                ['error' => 'Error while connecting to database',
-                    'formData' => $userRegistrationModel->getFormData()]);
+                [
+                    'error' => 'Error while connecting to database',
+                    'formData' => $userRegistrationModel->getFormData()
+                ]);
         }
 
     }
