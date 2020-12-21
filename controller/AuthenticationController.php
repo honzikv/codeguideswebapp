@@ -23,10 +23,19 @@ class AuthenticationController extends BaseController {
     }
 
     function renderLoginPage() {
-        $this->__render(self::VIEW);
+        if ($this->session->isUserLoggedIn()) {
+            $this->redirectToIndex();
+        }
+        else {
+            $this->__render(self::VIEW);
+        }
     }
 
     function processLogin(Request $request) {
+        if ($this->session->isUserLoggedIn()) {
+            return;
+        }
+
         $loginModel = new LoginModel();
         $loginModel->loadData($request->getBody());
 
@@ -48,7 +57,6 @@ class AuthenticationController extends BaseController {
 
     function processLogout() {
         $this->session->removeUser();
-        header('Location: /'); # presmerovani na hlavni stranku
-        die();
+        $this->redirectToIndex();
     }
 }

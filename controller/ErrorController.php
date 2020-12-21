@@ -3,7 +3,6 @@
 
 namespace app\controller;
 
-use app\core\Application;
 use app\core\BaseController;
 
 class ErrorController extends BaseController {

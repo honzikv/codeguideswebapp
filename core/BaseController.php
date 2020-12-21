@@ -21,4 +21,8 @@ class BaseController {
         print(Application::getInstance()->getTwig()->render($view, $params));
     }
 
+    protected function redirectToIndex() {
+        header('Location: /'); # presmerovani na hlavni stranku
+        die();
+    }
 }

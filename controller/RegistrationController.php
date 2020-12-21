@@ -21,7 +21,12 @@ class RegistrationController extends BaseController {
 
 
     function render() {
-        $this->__render(self::VIEW);
+        if ($this->session->isUserLoggedIn()) {
+            $this->redirectToIndex();
+        }
+        else {
+            $this->__render(self::VIEW);
+        }
     }
 
     private function renderSuccessfulRegistration() {
@@ -29,6 +34,9 @@ class RegistrationController extends BaseController {
     }
 
     function processRegistration(Request $request) {
+        if ($this->session->isUserLoggedIn()) {
+            return; # asi by nedavalo smysl odpovidat na POST pro registraci kdyz je uzivatel uz prihlaseny
+        }
 
         $userRegistrationModel = new RegistrationModel();
         $userRegistrationModel->loadData($request->getBody());
