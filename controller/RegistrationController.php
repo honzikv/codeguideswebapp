@@ -14,7 +14,7 @@ use Exception;
  * Class RegisterBaseController controller pro register stranku
  * @package app\controller
  */
-class RegisterController extends BaseController {
+class RegistrationController extends BaseController {
 
     private const VIEW = 'register.twig';
     private const SUCCESSFUL_REGISTRATION = 'successful_registration.html';
@@ -36,13 +36,12 @@ class RegisterController extends BaseController {
         try {
             $userRegistrationModel->validate();
         } catch (Exception $ex) {
-            $this->__render(self::VIEW, ['error' => $ex->getMessage(), 'formData' => $userRegistrationModel->getFormData()]);
+            $this->__render(self::VIEW, ['error' => $ex->getMessage(),
+                'formData' => $userRegistrationModel->getFormData()]);
             return;
         }
 
         if ($userRegistrationModel->register()) {
-            $session = Application::getInstance()->getSession();
-            $session->setUser($userRegistrationModel);
             $this->renderSuccessfulRegistration();
         } else {
             $this->__render(self::VIEW,

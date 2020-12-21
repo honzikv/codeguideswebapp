@@ -21,4 +21,18 @@ class UserModel extends BaseModel {
     function validate() {
         throw new Exception("Invalid validate call");
     }
+
+    function getUser($username) {
+        $statement = 'SELECT * FROM USER WHERE username = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$username]);
+        return $query->fetch();
+    }
+
+    function getRole($roleId) {
+        $statement = 'SELECT role from ROLE_LOV where id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$roleId]);
+        return $query->fetch();
+    }
 }

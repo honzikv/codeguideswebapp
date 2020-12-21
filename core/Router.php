@@ -52,10 +52,10 @@ class Router {
             $errorController->render();
             return;
         }
-
-        if (is_string($callback)) {
-            return $this->render($callback);
-        }
+//
+//        if (is_string($callback)) {
+//            return $this->render($callback);
+//        }
 
         # Pokud se jedna o array, tak vytvorime controller. Tento array by mel mit vzdy 2 prvky
         if (is_array($callback)) {
@@ -66,28 +66,28 @@ class Router {
         return call_user_func($callback, $this->request);
     }
 
-    function render(string $view, $params = []) {
-        $layoutName = Application::getInstance()->getController()->getLayout();
-        $layoutContent = $this->getLayoutContent($layoutName);
-        $viewContent = $this->renderView($view, $params);
-        return str_replace('{{content}}', $viewContent, $layoutContent);
-    }
-
-    private function renderView($view, $params) {
-
-        foreach ($params as $key => $value) {
-            $$key = $value; # predani parametru do stranky v include_once
-        }
-
-        ob_start(); # aby se nic nevytisklo
-        include_once Application::$ROOT_PATH . "/view/$view.php";
-        return ob_get_clean(); # vratime view jako string
-    }
-
-    private function getLayoutContent($layout) {
-        ob_start(); # aby se nic nevytisklo
-        include_once Application::$ROOT_PATH . "/view/layout/$layout.php";
-        return ob_get_clean(); # vratime template jako string
-    }
+//    function render(string $view, $params = []) {
+//        $layoutName = Application::getInstance()->getController()->getLayout();
+//        $layoutContent = $this->getLayoutContent($layoutName);
+//        $viewContent = $this->renderView($view, $params);
+//        return str_replace('{{content}}', $viewContent, $layoutContent);
+//    }
+//
+//    private function renderView($view, $params) {
+//
+//        foreach ($params as $key => $value) {
+//            $$key = $value; # predani parametru do stranky v include_once
+//        }
+//
+//        ob_start(); # aby se nic nevytisklo
+//        include_once Application::$ROOT_PATH . "/view/$view.php";
+//        return ob_get_clean(); # vratime view jako string
+//    }
+//
+//    private function getLayoutContent($layout) {
+//        ob_start(); # aby se nic nevytisklo
+//        include_once Application::$ROOT_PATH . "/view/layout/$layout.php";
+//        return ob_get_clean(); # vratime template jako string
+//    }
 
 }

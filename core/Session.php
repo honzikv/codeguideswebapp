@@ -4,21 +4,20 @@
 namespace app\core;
 
 
-use app\model\RegistrationModel;
-
 class Session {
 
     function __construct() {
         session_start();
+        $_SESSION['role'] = 'viewer';
     }
 
     function isUserLoggedIn(): bool {
         return isset($_SESSION['username']);
     }
 
-    function setUser(RegistrationModel $userRegistrationData) {
-        $_SESSION['username'] = $userRegistrationData->username;
-        $_SESSION['role'] = $userRegistrationData->role;
+    function setUserInfo($username, $role) {
+        $_SESSION['username'] = $username;
+        $_SESSION['role'] = $role;
     }
 
     public function getUserInfo(): array {
@@ -27,5 +26,10 @@ class Session {
             'role' => $_SESSION['role'],
             'password' => $_SESSION['password']
         ];
+    }
+
+    function removeUser() {
+        unset($_SESSION['username']);
+        $_SESSION['role'] = 'viewer';
     }
 }

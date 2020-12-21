@@ -108,7 +108,13 @@ class RegistrationModel extends BaseModel {
     }
 
     public function register() {
-        $roleId = $this->getRoleId($this->role);
+        try {
+            $roleId = $this->getRoleId($this->role);
+        }
+        catch (Exception $exception) {
+            return false;
+        }
+
         $statement = 'INSERT INTO USER (username, password, email, role_id) VALUES (?, ?, ?, ?)';
         try {
             $query = $this->prepare($statement);
@@ -117,6 +123,7 @@ class RegistrationModel extends BaseModel {
         } catch (PDOException $exception) {
             return false;
         }
+
         return true;
     }
 }

@@ -12,17 +12,22 @@
             <div class="col">
                 <form method="post">
                     <div class="form-group">
-                        <label for="inputUsername">Username</label>
-                        <input type="text" class="form-control textInput" id="inputUsername" placeholder="Username">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control textInput" name='username' id="username"
+                               placeholder="Username" required>
 
-                        <label for="inputPassword">Password</label>
-                        <input type="password" class="form-control textInput" id="inputPassword" placeholder="Password">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control textInput" name='password' id="password"
+                               placeholder="Password" required>
                     </div>
-
 
                     <button type="submit" class="btn btn-primary mt-2 float-end">Login</button>
                 </form>
+                {% if error %}
+                <h5 class="mt-2 text-center">{{ error }}</h5>
+                {% endif %}
             </div>
+
         </div>
     </div>
 {% endblock %}
