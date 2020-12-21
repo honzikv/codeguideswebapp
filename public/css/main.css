@@ -61,6 +61,16 @@ div::after {
     box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
 
+
+.tableAcrylic {
+    color: #f8f6f6;
+    border-color: rgba(0, 0, 0, 0);
+    background: rgba(252, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+}
+
 .buttonDefault .buttonDefault:checked .buttonDefault:focus {
     color: #e2e2e2;
     background: #0c63e4;

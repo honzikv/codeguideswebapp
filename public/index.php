@@ -3,7 +3,10 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use app\controller\CreateGuideController;
+use app\controller\GuideListController;
 use app\controller\MainPageController;
+use app\controller\ManageUsersController;
+use app\controller\ProfileController;
 use app\core\Application;
 use app\controller\AuthenticationController;
 use app\controller\RegistrationController;
@@ -17,6 +20,9 @@ $router->setGetMethod('/', [MainPageController::class, 'render']);
 $router->setGetMethod('/login', [AuthenticationController::class, 'renderLoginPage']);
 $router->setGetMethod('/register', [RegistrationController::class, 'render']);
 $router->setGetMethod('/createguide', [CreateGuideController::class, 'render']);
+$router->setGetMethod('/guidelist', [GuideListController::class, 'render']);
+$router->setGetMethod('/profile', [ProfileController::class, 'render']);
+$router->setGetMethod('/manageusers',[ManageUsersController::class, 'render']);
 
 $application->router->setPostMethod('/register', [RegistrationController::class, 'processRegistration']);
 $application->router->setPostMethod('/login', [AuthenticationController::class, 'processLogin']);

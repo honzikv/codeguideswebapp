@@ -1,0 +1,37 @@
+{% extends 'layout/main_layout.twig' %}
+
+{% block content %}
+
+    <table class="table tableAcrylic">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Posts created</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% set i = 1 %}
+        {% for user in users %}
+
+            <tr class="elementHoverLight">
+                <th scope="row">{{ i }}</th>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+            </tr>
+
+            {% set i = i + 1 %}
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    {% for user in users %}
+        <h1>{{ user.username }} {{ user.role }}</h1>
+    {% endfor %}
+
+{% endblock %}

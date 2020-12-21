@@ -30,9 +30,23 @@ class UserModel extends BaseModel {
     }
 
     function getRole($roleId) {
-        $statement = 'SELECT role from ROLE_LOV where id = (?)';
+        $statement = 'SELECT role FROM ROLE_LOV where id = (?)';
         $query = $this->prepare($statement);
         $query->execute([$roleId]);
         return $query->fetch();
+    }
+
+    function getAllUsers() {
+        $statement = 'SELECT * FROM USER';
+        $query = $this->prepare($statement);
+        $query->execute();
+        return $query->fetchAll();
+    }
+
+     function getAllRoles() {
+         $statement = 'SELECT * FROM ROLE_LOV';
+         $query = $this->prepare($statement);
+         $query->execute();
+         return $query->fetchAll();
     }
 }

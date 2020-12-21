@@ -8,11 +8,16 @@ class Session {
 
     function __construct() {
         session_start();
-        $_SESSION['role'] = 'viewer';
     }
 
     function isUserLoggedIn(): bool {
-        return isset($_SESSION['username']);
+        if (isset($_SESSION['username'])) {
+            return true;
+        }
+        else {
+            $_SESSION['role'] = 'viewer';
+            return false;
+        }
     }
 
     function setUserInfo($username, $role) {
@@ -23,8 +28,7 @@ class Session {
     public function getUserInfo(): array {
         return [
             'username' => $_SESSION['username'],
-            'role' => $_SESSION['role'],
-            'password' => $_SESSION['password']
+            'role' => $_SESSION['role']
         ];
     }
 

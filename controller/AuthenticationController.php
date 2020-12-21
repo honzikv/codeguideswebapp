@@ -25,8 +25,7 @@ class AuthenticationController extends BaseController {
     function renderLoginPage() {
         if ($this->session->isUserLoggedIn()) {
             $this->redirectToIndex();
-        }
-        else {
+        } else {
             $this->__render(self::VIEW);
         }
     }
@@ -43,14 +42,15 @@ class AuthenticationController extends BaseController {
             $loginModel->validate();
             $loginModel->checkPassword($this->userModel);
         } catch (Exception $exception) {
-            $this->__render(self::VIEW, ['error' => $exception->getMessage()]);
+            $this->__render(self::VIEW, ['error' => $exception->getMessage(),
+                'username' => $loginModel->username]);
             return;
         }
 
         # pokud doposud nebyla vyhozena zadna exception pak je uzivatel autentifikovany
         $user = $this->userModel->getUser($loginModel->username);
         $role = $this->userModel->getRole($user['role_id']);
-        $this->session->setUserInfo($user['username'], $role);
+        $this->session->setUserInfo($user['username'], $role['role']);
 
         $this->__render(self::LOGIN_SUCCESSFUL);
     }

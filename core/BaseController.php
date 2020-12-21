@@ -15,8 +15,9 @@ class BaseController {
     protected function __render($view, $params = []) {
         if ($this->session->isUserLoggedIn()) {
             $params['user'] = $this->session->getUserInfo();
-            $params['pagename'] = $view;
         }
+
+        $params['view'] = $view;
 
         print(Application::getInstance()->getTwig()->render($view, $params));
     }
