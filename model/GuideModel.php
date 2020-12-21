@@ -76,6 +76,10 @@ class GuideModel extends BaseModel {
             throw new Exception('Name of the guide is too long, max ' . self::NAME_LIMIT . ' characters allowed');
         }
 
+        if ($this->existsInDatabase('guide','name',$this->guideName)) {
+            throw new Exception('Error, this guide name already exists in the database');
+        }
+
         if (!preg_match(parent::CHARACTERS_NUMBERS_REGEX, $this->guideName)) {
             throw new Exception('Invalid characters in the name of the guide');
         }

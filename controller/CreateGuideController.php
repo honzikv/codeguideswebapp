@@ -36,7 +36,6 @@ class CreateGuideController extends BaseController {
             $userId = $this->userModel->getUserId($this->session->getUsername());
             $guideModel->addGuideToDatabase($fileName, $userId);
         } catch (Exception $exception) {
-            print $exception->getMessage();
             $this->__render(self::VIEW,
                 [
                     'error' => $exception->getMessage(),
