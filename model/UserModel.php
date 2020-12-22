@@ -23,14 +23,14 @@ class UserModel extends BaseModel {
     }
 
     function getUserFromUsername($username) {
-        $statement = 'SELECT * FROM USER WHERE username = (?)';
+        $statement = 'SELECT id, username, password, email, role_id, banned FROM USER WHERE username = (?)';
         $query = $this->prepare($statement);
         $query->execute([$username]);
         return $query->fetch();
     }
 
     function getUserFromId($userId) {
-        $statement = 'SELECT * FROM USER WHERE id = (?)';
+        $statement = 'SELECT id, username, email, role_id, banned FROM USER WHERE id = (?)';
         $query = $this->prepare($statement);
         $query->execute([$userId]);
         return $query->fetch();
@@ -43,7 +43,7 @@ class UserModel extends BaseModel {
         return $query->fetch();
     }
 
-    private function getRoleId($roleString) {
+    function getRoleId($roleString) {
         $statement = 'SELECT * FROM role_lov';
         $query = $this->prepare($statement);
         $query->execute();
@@ -80,7 +80,7 @@ class UserModel extends BaseModel {
      * Ziska uzivatelske id
      */
     function getUserId($username) {
-        $statement = 'SELECT * FROM USER where username = (?)';
+        $statement = 'SELECT id, username, email, role_id, banned FROM USER where username = (?)';
         $query = $this->prepare($statement);
         $query->execute([$username]);
         return $query->fetch()['id'];

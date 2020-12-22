@@ -6,6 +6,7 @@ use app\controller\CreateGuideController;
 use app\controller\GuideListController;
 use app\controller\MainPageController;
 use app\controller\ManageContentController;
+use app\controller\ManageReviewsController;
 use app\controller\ManageUsersController;
 use app\controller\MyGuidesController;
 use app\controller\ProfileController;
@@ -27,12 +28,14 @@ $router->setGetMethod('/profile', [ProfileController::class, 'render']);
 $router->setGetMethod('/manageusers', [ManageUsersController::class, 'render']);
 $router->setGetMethod('/myguides', [MyGuidesController::class, 'render']);
 $router->setGetMethod('/managecontent', [ManageContentController::class, 'render']);
+$router->setGetMethod('/managereviews', [ManageReviewsController::class, 'render']);
 
 $router->setPostMethod('/register', [RegistrationController::class, 'processRegistration']);
 $router->setPostMethod('/login', [AuthenticationController::class, 'processLogin']);
 $router->setPostMethod('/logout', [AuthenticationController::class, 'processLogout']);
 $router->setPostMethod('/createguide', [CreateGuideController::class, 'processGuideUpload']);
 $router->setPostMethod('/ban', [ManageUsersController::class, 'processBan']);
-
+$router->setPostMethod('/changerole', [ManageUsersController::class, 'processRoleChange']);
+$router->setPostMethod('/deleteuser', [ManageUsersController::class, 'processDeleteUser']);
 
 $application->run();

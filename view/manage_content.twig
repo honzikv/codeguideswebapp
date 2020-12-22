@@ -1,43 +1,29 @@
 {% extends 'layout/main_layout.twig' %}
 
 {% block content %}
-    <script type='text/javascript'>
-        $(".dropdown-menu").on('click', 'a', function () {
-            $(this).parents('.dropdown').find('button').text($(this).text());
-        });
-    </script>
-
-    <table class="table tableAcrylic">
+    <h1 class="display-4">Manage Content</h1>
+    <table class="table tableAcrylic table-responsive">
         <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
             <th scope="col">Guide name</th>
-            <th scope="col">Creator</th>
-            <th scope="col">State</th>
-            <th scope="col"></th>
+            <th scope="col">Author</th>
+            <th scope="col">Reviews</th>
+            <th scope="col">Overall score</th>
         </tr>
         </thead>
 
         <tbody>
         {% set i = 1 %}
-        {% for user in users %}
+        {% for guide in guides %}
 
         <tr class="elementHoverLight">
             <th scope="row">{{ i }}</th>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.role }}</td>
+            <td>{{ guide.name }}</td>
+            <td>{{ guide.username }}</td>
+
             <td>
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        Active
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Active</a>
-                        <a class="dropdown-item" href="#">Inactive</a>
-                    </div>
-                </div>
+                <a href="/managereviews?guideId={{ guide.id }}" class="btn btn-primary">Manage Reviews</a>
             </td>
 
             {% set i = i + 1 %}
@@ -45,7 +31,5 @@
 
         </tbody>
     </table>
-
-
 
 {% endblock %}

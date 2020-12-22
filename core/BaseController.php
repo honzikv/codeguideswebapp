@@ -22,8 +22,11 @@ class BaseController {
         print(Application::getInstance()->getTwig()->render($view, $params));
     }
 
-    protected function sendResponse(array $response) {
-        print(json_encode($response));
+    /**
+     * Posle response - uzitecne pro async odpovedi
+     */
+    protected function sendResponse($response) {
+        print($response);
     }
 
     protected function redirectToIndex() {

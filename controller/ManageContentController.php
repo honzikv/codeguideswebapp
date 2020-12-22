@@ -21,12 +21,22 @@ class ManageContentController extends BaseController {
     }
 
     function render() {
+        if (!$this->session->isUserLoggedIn()) {
+            $this->redirectToIndex();
+        }
 
-        $this->__render(self::VIEW);
+        $user = $this->session->getUserInfo();
+        if ($user['role'] != 'publisher') {
+            $this->redirectToIndex();
+        }
+
         $reviewers = $this->userModel->getAllReviewers();
+        $allReviewableGuides = $this->guideModel->getAllReviewableGuides();
+        foreach ($allReviewableGuides as $guide) {
+            $reviews = $this->guideModel->getGuideReviews($guide['id']);
+            $guide['reviews'] = $reviews;
+        }
 
-        $content = $this->guideModel->getAllReviewableGuides();
-        $content = $this->getAllReviews();
-        var_dump($content);
+        $this->__render(self::VIEW, ['guides' => $allReviewableGuides, 'reviewers' => $reviewers]);
     }
 }

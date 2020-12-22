@@ -73,6 +73,13 @@ class GuideModel extends BaseModel {
         return $query->fetch();
     }
 
+    function getUserGuides($userId) {
+        $statement = 'SELECT * FROM guide WHERE user_id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$userId]);
+        return $query->fetchAll();
+    }
+
     function getAllGuideStates() {
         $statement = 'SELECT * FROM guide_state_lov ORDER BY id';
         $query = $this->prepare($statement);
@@ -114,10 +121,17 @@ class GuideModel extends BaseModel {
     }
 
     function getAllReviewableGuides() {
-        $reviewedId = $this->getGuideState('reviewed')['id'];
-        $statement = 'SELECT * FROM guide WHERE guide_state = (?)';
+        $reviewedId = $this->getGuideState('reviewed')['id']; # id pro reviewed stav
+        $statement = 'SELECT * FROM guide INNER JOIN user user ON guide.user_id = user.id WHERE guide_state = (?)';
         $query = $this->prepare($statement);
         $query->execute([$reviewedId]);
+        return $query->fetchAll();
+    }
+
+    function getGuideReviews($guideId) {
+        $statement = 'SELECT * FROM review WHERE guide_id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$guideId]);
         return $query->fetchAll();
     }
 
