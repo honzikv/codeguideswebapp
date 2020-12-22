@@ -48,7 +48,7 @@ class AuthenticationController extends BaseController {
         }
 
         # pokud doposud nebyla vyhozena zadna exception pak je uzivatel autentifikovany
-        $user = $this->userModel->getUser($loginModel->username);
+        $user = $this->userModel->getUserFromUsername($loginModel->username);
         $role = $this->userModel->getRole($user['role_id']);
         $this->session->setUserInfo($user['username'], $role['role']);
 

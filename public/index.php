@@ -5,7 +5,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use app\controller\CreateGuideController;
 use app\controller\GuideListController;
 use app\controller\MainPageController;
+use app\controller\ManageContentController;
 use app\controller\ManageUsersController;
+use app\controller\MyGuidesController;
 use app\controller\ProfileController;
 use app\core\Application;
 use app\controller\AuthenticationController;
@@ -23,11 +25,14 @@ $router->setGetMethod('/createguide', [CreateGuideController::class, 'render']);
 $router->setGetMethod('/guidelist', [GuideListController::class, 'render']);
 $router->setGetMethod('/profile', [ProfileController::class, 'render']);
 $router->setGetMethod('/manageusers', [ManageUsersController::class, 'render']);
+$router->setGetMethod('/myguides', [MyGuidesController::class, 'render']);
+$router->setGetMethod('/managecontent', [ManageContentController::class, 'render']);
 
-$application->router->setPostMethod('/register', [RegistrationController::class, 'processRegistration']);
-$application->router->setPostMethod('/login', [AuthenticationController::class, 'processLogin']);
-$application->router->setPostMethod('/logout', [AuthenticationController::class, 'processLogout']);
-$application->router->setPostMethod('/createguide', [CreateGuideController::class, 'processGuideUpload']);
+$router->setPostMethod('/register', [RegistrationController::class, 'processRegistration']);
+$router->setPostMethod('/login', [AuthenticationController::class, 'processLogin']);
+$router->setPostMethod('/logout', [AuthenticationController::class, 'processLogout']);
+$router->setPostMethod('/createguide', [CreateGuideController::class, 'processGuideUpload']);
+$router->setPostMethod('/ban', [ManageUsersController::class, 'processBan']);
 
 
 $application->run();

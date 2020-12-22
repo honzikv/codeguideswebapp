@@ -5,7 +5,10 @@ namespace app\controller;
 
 
 use app\core\BaseController;
+use app\core\Request;
+use app\model\BanModel;
 use app\model\UserModel;
+use Exception;
 
 class ManageUsersController extends BaseController {
 
@@ -16,6 +19,40 @@ class ManageUsersController extends BaseController {
     public function __construct() {
         parent::__construct();
         $this->userModel = new UserModel();
+    }
+
+    function processBan(Request $request) {
+
+        if (!$this->session->isUserLoggedIn()) {
+            $this->redirectToIndex();
+            return;
+        }
+
+        $user = $this->session->getUserInfo();
+        if ($user['role'] != 'publisher') {
+            $this->redirectToIndex();
+            return;
+        }
+
+        $banModel = new BanModel();
+        $banModel->loadData($request->getBody());
+        try {
+            $banModel->validate();
+        }
+        catch (Exception $exception) {
+            $this->redirectToIndex();
+            return; # toto by se nikdy nemelo stat, pokud nebudeme posilat post rucne (tzn. mimo stranku)
+        }
+
+        $user = $this->userModel->getUserFromId($banModel->userId);
+        if ($user['username'] == $this->session->getUsername()) {
+            return; # toto take nedava smysl aby slo zabanovat sebe
+        }
+
+        $banStatus = $user['banned'] == 1 ? 0 : 1;
+        $banModel->banUser($banStatus);
+
+        $this->sendResponse();
     }
 
     function render() {
@@ -31,17 +68,16 @@ class ManageUsersController extends BaseController {
             return;
         }
 
-        $users = $this->userModel->getAllUsers();
+        $users = $this->userModel->getAllUsersWithRoles();
         # filter uzivatele aby se nemohl sam upravovat
         $filterBy = $user['username'];
         $users = array_filter($users, fn($var) => ($var['username'] != $filterBy));
-        $mapping = $this->userModel->getAllRoles();
 
-        for ($i = 0; $i < count($users); $i += 1) {
-            $users[$i]['role'] = $mapping[((int)$users[$i]['role_id'])]['role'];
-        }
+        # ziska role, ktere lze zmenit - tzn autor a recenzent
+        $changeableRoles = $this->userModel->getChangeableRoles();
 
-        $this->__render(self::VIEW, ['users' => $users]);
+        $this->__render(self::VIEW, ['users' => $users, 'roles' => $changeableRoles]);
     }
+
 
 }

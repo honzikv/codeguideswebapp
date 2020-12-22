@@ -36,7 +36,7 @@ class LoginModel extends BaseModel {
     }
 
     function checkPassword(UserModel $userModel) {
-        $user = $userModel->getUser($this->username);
+        $user = $userModel->getUserFromUsername($this->username);
         if ($user == false || !password_verify($this->password, $user['password'])) {
             throw new Exception('Error, incorrect username password combination');
         }

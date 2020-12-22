@@ -22,6 +22,10 @@ class BaseController {
         print(Application::getInstance()->getTwig()->render($view, $params));
     }
 
+    protected function sendResponse(array $response) {
+        print(json_encode($response));
+    }
+
     protected function redirectToIndex() {
         header('Location: /'); # presmerovani na hlavni stranku
         die();

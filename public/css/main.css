@@ -85,7 +85,14 @@ div::after {
 
 h1 {
     color: #faf9f9;
+}
 
+.table td {
+    text-align: center;
+}
+
+.table th {
+    text-align: center;
 }
 
 .mainTitle {

@@ -1,0 +1,51 @@
+{% extends 'layout/main_layout.twig' %}
+
+{% block content %}
+    <script type='text/javascript'>
+        $(".dropdown-menu").on('click', 'a', function () {
+            $(this).parents('.dropdown').find('button').text($(this).text());
+        });
+    </script>
+
+    <table class="table tableAcrylic">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Guide name</th>
+            <th scope="col">Creator</th>
+            <th scope="col">State</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% set i = 1 %}
+        {% for user in users %}
+
+        <tr class="elementHoverLight">
+            <th scope="row">{{ i }}</th>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Active
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Active</a>
+                        <a class="dropdown-item" href="#">Inactive</a>
+                    </div>
+                </div>
+            </td>
+
+            {% set i = i + 1 %}
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

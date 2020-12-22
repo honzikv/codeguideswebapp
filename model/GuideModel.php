@@ -18,7 +18,6 @@ class GuideModel extends BaseModel {
     const MEDIUM_TEXT_LIMIT_CHARACTERS = 30000;
     const FILE_MAX_SIZE = 10 * 1024 * 1024 * 1024; # max 10 MB
 
-
     function uploadFile(Request $request) {
         $file = $request->getMultipart('pdfFile');
 
@@ -60,11 +59,25 @@ class GuideModel extends BaseModel {
         $query->execute([$this->guideName, $this->guideAbstract, $fileName, $userId, $guideStateReviewed['id']]);
     }
 
-    function getGuideState($guideState): array {
+    function getGuideState($guideState) {
         $statement = 'SELECT * FROM guide_state_lov WHERE state = (?)';
         $query = $this->prepare($statement);
         $query->execute([$guideState]);
         return $query->fetch();
+    }
+
+    function getGuideStateFromId($stateId) {
+        $statement = 'SELECT * FROM guide_state_lov WHERE id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$stateId]);
+        return $query->fetch();
+    }
+
+    function getAllGuideStates() {
+        $statement = 'SELECT * FROM guide_state_lov ORDER BY id';
+        $query = $this->prepare($statement);
+        $query->execute();
+        return $query->fetchAll();
     }
 
     function validate() {
@@ -98,6 +111,14 @@ class GuideModel extends BaseModel {
             'guideName' => $this->guideName,
             'guideAbstract' => $this->guideAbstract
         ];
+    }
+
+    function getAllReviewableGuides() {
+        $reviewedId = $this->getGuideState('reviewed')['id'];
+        $statement = 'SELECT * FROM guide WHERE guide_state = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$reviewedId]);
+        return $query->fetchAll();
     }
 
 }

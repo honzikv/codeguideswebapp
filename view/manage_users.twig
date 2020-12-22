@@ -2,14 +2,18 @@
 
 {% block content %}
 
-    <table class="table tableAcrylic">
+
+    <table class="table tableAcrylic" id="users">
         <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
+            <th scope="col">User Id</th>
             <th scope="col">Username</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
-            <th scope="col">Guides created</th>
+            <th scope="col">Change Role</th>
+            <th scope="col">Ban User</th>
+            <th scope="col">Delete User</th>
         </tr>
         </thead>
 
@@ -19,9 +23,36 @@
 
             <tr class="elementHoverLight">
                 <th scope="row">{{ i }}</th>
-                <td>{{ user.username }}</td>
+                <td> {{ user.id }}</td>
+                <td>{{ user.username }} {% if user.banned == true %} (banned) {% endif %}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.role }}</td>
+                <td class="dropdown">
+                    <form action="" name="FILTER" class="">
+                        <select class="form-control form-control-sm" name="filter_for">
+                            {% for changeableRole in roles %}
+                                <option
+                                        {% if user.role == changeableRole.role %} selected="selected" {% endif %}
+                                        value="{{ changeableRole.id }}">{{ changeableRole.role }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </td>
+                <td class="col">
+                    {% if user.banned == true %}
+                        <button onclick="banUser('{{ user.id }}', '{{ user.username }}', 'ban')"
+                                id="ban{{ user.id }}" class="btn btn-warning">Unban
+                        </button>
+                    {% else %}
+                        <button onclick="banUser('{{ user.id }}', '{{ user.username }}', 'unban')"
+                                id="ban{{ user.id }}" class="btn btn-warning">Ban
+                        </button>
+                    {% endif %}
+
+                </td>
+                <td>
+                    <button class="btn btn-danger">Delete</button>
+                </td>
             </tr>
 
             {% set i = i + 1 %}
@@ -30,8 +61,13 @@
         </tbody>
     </table>
 
-    {% for user in users %}
-        <h1>{{ user.username }} {{ user.role }}</h1>
-    {% endfor %}
+    <button id="refresh" class="btn btn-primary my-2 float-end">Commit Changes</button>
+
+
+    <script src="js/send-users.js"></script>
+    <script type="text/javascript" src="js/banUser.js"></script>
+    <script>
+        $('#refresh').click(() => sendUsers('users'));
+    </script>
 
 {% endblock %}

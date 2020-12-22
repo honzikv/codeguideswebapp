@@ -22,10 +22,17 @@ class UserModel extends BaseModel {
         throw new Exception("Invalid validate call");
     }
 
-    function getUser($username) {
+    function getUserFromUsername($username) {
         $statement = 'SELECT * FROM USER WHERE username = (?)';
         $query = $this->prepare($statement);
         $query->execute([$username]);
+        return $query->fetch();
+    }
+
+    function getUserFromId($userId) {
+        $statement = 'SELECT * FROM USER WHERE id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$userId]);
         return $query->fetch();
     }
 
@@ -36,24 +43,75 @@ class UserModel extends BaseModel {
         return $query->fetch();
     }
 
-    function getAllUsers() {
-        $statement = 'SELECT * FROM USER';
+    private function getRoleId($roleString) {
+        $statement = 'SELECT * FROM role_lov';
+        $query = $this->prepare($statement);
+        $query->execute();
+        foreach ($query->fetchAll() as $row) {
+            $id = $row['id'];
+            $role = $row['role'];
+            if ($role == $roleString) {
+                return $id;
+            }
+        }
+
+        throw new Exception("Error, no such role in the db"); # nemelo by se stat
+    }
+
+    function getAllUsersWithRoles() {
+        $statement = 'SELECT user.id, username, role, email, banned FROM user INNER JOIN 
+                        role_lov role_lov ON user.role_id = role_lov.id';
         $query = $this->prepare($statement);
         $query->execute();
         return $query->fetchAll();
     }
 
-     function getAllRoles() {
-         $statement = 'SELECT * FROM ROLE_LOV';
-         $query = $this->prepare($statement);
-         $query->execute();
-         return $query->fetchAll();
+    /**
+     * Ziska vsechny role
+     */
+    function getAllRoles() {
+        $statement = 'SELECT * FROM ROLE_LOV';
+        $query = $this->prepare($statement);
+        $query->execute();
+        return $query->fetchAll();
     }
 
-     function getUserId($username) {
+    /**
+     * Ziska uzivatelske id
+     */
+    function getUserId($username) {
         $statement = 'SELECT * FROM USER where username = (?)';
         $query = $this->prepare($statement);
         $query->execute([$username]);
         return $query->fetch()['id'];
+    }
+
+    /**
+     * Ziska vsechny guides i s danymi stavy jako stringy - pres inner join
+     */
+    function getUserGuidesWithStates($userId) {
+        $statement = 'SELECT * FROM guide INNER JOIN guide_state_lov guide_state_lov on 
+                        guide.guide_state = guide_state_lov.id WHERE user_id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$userId]);
+        return $query->fetchAll();
+    }
+
+    /**
+     * Ziska vsechny reviewers
+     */
+    function getAllReviewers(): array {
+        $reviewerRoleId = $this->getRoleId('reviewer');
+        $statement = 'SELECT id, username, role_id FROM user where role_id = (?) and banned = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([(int)$reviewerRoleId, false]);
+        return $query->fetchAll();
+    }
+
+    function getChangeableRoles(): array {
+        $statement = 'SELECT * FROM role_lov WHERE role = (?) OR role = (?)';
+        $query = $this->prepare($statement);
+        $query->execute(['author', 'reviewer']);
+        return $query->fetchAll();
     }
 }

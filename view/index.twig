@@ -18,7 +18,7 @@
                 <p class="lead">
                     <a class="btn btn-primary btn-lg" href="#" role="button">Browse</a>
                     {% if user.role == 'author' %}
-                    <a class="btn btn-primary btn-lg" href="#" role="button">My Guides</a>
+                    <a class="btn btn-primary btn-lg" href="/myguides" role="button">My Guides</a>
                     <a class="btn btn-primary btn-lg" href="/createguide" role="button">Create a Guide</a>
                     {% elseif user.role == 'reviewer' %}
                     <a class="btn btn-primary btn-lg" href="#" role="button">My Reviews</a>
