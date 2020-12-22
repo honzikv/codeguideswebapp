@@ -20,4 +20,11 @@ class ManageReviewsModel extends BaseModel {
             throw new Exception('Error, guide id is not a number');
         }
     }
+
+    function getGuideReviews() {
+        $statement = 'SELECT * from review WHERE guide_id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$statement]);
+        return $query->fetchAll();
+    }
 }

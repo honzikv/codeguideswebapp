@@ -22,11 +22,10 @@ class Request {
             $this->path = rtrim($this->path, '/');
         }
 
-        if (!empty($parts['variables'])) {
-            $this->variables = $parts['variables'];
+        if (!empty($parts['query'])) {
+            $this->variables = $parts['query'];
         }
     }
-
 
     /**
      * Ziskani cesty z $_SERVER[REQUEST_URI]
@@ -68,6 +67,9 @@ class Request {
     function getVariables() {
         $result = [];
         parse_str($this->variables, $result);
+        foreach ($result as $key => $value) {
+            $result[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+        }
         return $result;
     }
 

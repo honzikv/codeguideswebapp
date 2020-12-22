@@ -96,7 +96,7 @@ class GuideModel extends BaseModel {
             throw new Exception('Name of the guide is too long, max ' . self::NAME_LIMIT . ' characters allowed');
         }
 
-        if ($this->existsInDatabase('guide','name',$this->guideName)) {
+        if ($this->existsInDatabase('guide', 'name', $this->guideName)) {
             throw new Exception('Error, this guide name already exists in the database');
         }
 
@@ -122,7 +122,8 @@ class GuideModel extends BaseModel {
 
     function getAllReviewableGuides() {
         $reviewedId = $this->getGuideState('reviewed')['id']; # id pro reviewed stav
-        $statement = 'SELECT * FROM guide INNER JOIN user user ON guide.user_id = user.id WHERE guide_state = (?)';
+        $statement = 'SELECT name, username, guide.id as guide_id, user_id as user_id FROM guide INNER JOIN user 
+    user ON guide.user_id = user.id WHERE guide_state = (?)';
         $query = $this->prepare($statement);
         $query->execute([$reviewedId]);
         return $query->fetchAll();
@@ -133,6 +134,13 @@ class GuideModel extends BaseModel {
         $query = $this->prepare($statement);
         $query->execute([$guideId]);
         return $query->fetchAll();
+    }
+
+    function getGuide(string $guideId) {
+        $statement = 'SELECT * FROM guide WHERE id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$guideId]);
+        return $query->fetch();
     }
 
 }

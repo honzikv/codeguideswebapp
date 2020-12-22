@@ -33,4 +33,9 @@ class BaseController {
         header('Location: /'); # presmerovani na hlavni stranku
         die();
     }
+
+    protected function redirectTo404() {
+        header('Location: /error');
+        die();
+    }
 }

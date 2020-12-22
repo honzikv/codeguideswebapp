@@ -33,7 +33,7 @@ class ManageContentController extends BaseController {
         $reviewers = $this->userModel->getAllReviewers();
         $allReviewableGuides = $this->guideModel->getAllReviewableGuides();
         foreach ($allReviewableGuides as $guide) {
-            $reviews = $this->guideModel->getGuideReviews($guide['id']);
+            $reviews = $this->guideModel->getGuideReviews($guide['guide_id']);
             $guide['reviews'] = $reviews;
         }
 
