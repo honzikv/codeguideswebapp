@@ -19,7 +19,8 @@ class Session {
         }
     }
 
-    function setUserInfo($username, $role) {
+    function setUserInfo($username, $role, $id) {
+        $_SESSION['id'] = $id;
         $_SESSION['username'] = $username;
         $_SESSION['role'] = $role;
     }
@@ -38,5 +39,9 @@ class Session {
 
     function getUsername() {
         return $_SESSION['username'];
+    }
+
+    function getUserId() {
+        return $_SESSION['id'];
     }
 }

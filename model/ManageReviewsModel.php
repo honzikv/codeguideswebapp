@@ -23,9 +23,9 @@ class ManageReviewsModel extends BaseModel {
 
     function getGuideReviews() {
         $statement = 'SELECT username, info_score, theme_score, originality_score, quality_score, overall_score,
-                       notes FROM review INNER JOIN user u ON review.reviewer_id = u.id  WHERE guide_id = (?)';
+                       notes, is_finished FROM review INNER JOIN user u ON review.reviewer_id = u.id  WHERE guide_id = (?)';
         $query = $this->prepare($statement);
-        $query->execute([$statement]);
+        $query->execute([$this->guideId]);
         return $query->fetchAll();
     }
 }

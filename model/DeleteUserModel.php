@@ -24,7 +24,7 @@ class DeleteUserModel extends BaseModel {
 
     private function deleteUserGuides($userGuides) {
         foreach ($userGuides as $userGuide) {
-            $path = Application::$FILES_PATH + $userGuide['filename'];
+            $path = Application::$FILES_PATH . $userGuide['filename'];
             unlink($path);
         }
     }

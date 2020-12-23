@@ -1,0 +1,18 @@
+{% extends 'layout/main_layout.twig' %}
+
+{% block content %}
+
+    <h1 class="display-4">Pending reviews</h1>
+    <div class="d-flex justify-content-center">
+        {% for review in reviews %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ review.name }}</h5>
+                    <p class="card-text smallParagraph">{{ review.abstract }}</p>
+                    <a class="btn btn-primary" href="/review?reviewId={{ review.review_id }}">Review</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

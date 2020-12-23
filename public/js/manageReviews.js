@@ -4,23 +4,18 @@ function redirectAndShowError() {
 }
 
 function createReview(userSelectionId, rowId, guideId, guideName) {
-    const optionValue = $('#' + userSelectionId + ' option:selected').val()
-    const optionText = $('#' + userSelectionId + ' option:selected').html()
+    const optionValue = $('#' + userSelectionId + ' option:selected').val();
+    const optionText = $('#' + userSelectionId + ' option:selected').html();
     if (confirm('Assign '+ optionText + ' to create review for guide \'' + guideName + '\' ?')) {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
-        formData.append('reviewerId', optionValue);
+        formData.append('userId', optionValue);
         formData.append('guideId', guideId);
 
         xhr.open('POST', '/assignreview', true);
         xhr.onload = () => {
-            const result = JSON.parse(xhr.response);
-
-            if (result.result === 'error') {
-                const error = result.error;
-                alert('An Error occurred: ' + error);
-            }
-            window.location.href = '/';
+            const jsonResponse = JSON.parse(xhr.response);
+            $('#content').replaceWith(jsonResponse.fragment);
         }
 
         xhr.onerror = () => {
