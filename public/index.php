@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use app\controller\CreateGuideController;
+use app\controller\ErrorController;
 use app\controller\GuideListController;
 use app\controller\MainPageController;
 use app\controller\ManageContentController;
@@ -19,6 +20,8 @@ $router = $application->router;
 
 # nastaveni routeru pro metody, pri triggeru jedne z metod zavola dany controller a obslouzi request
 
+$router->setGetMethod('/error', [ErrorController::class, 'render']);
+
 $router->setGetMethod('/', [MainPageController::class, 'render']);
 $router->setGetMethod('/login', [AuthenticationController::class, 'renderLoginPage']);
 $router->setGetMethod('/register', [RegistrationController::class, 'render']);
@@ -29,6 +32,8 @@ $router->setGetMethod('/manageusers', [ManageUsersController::class, 'render']);
 $router->setGetMethod('/myguides', [MyGuidesController::class, 'render']);
 $router->setGetMethod('/managecontent', [ManageContentController::class, 'render']);
 $router->setGetMethod('/managereviews', [ManageReviewsController::class, 'render']);
+
+$router->setPostMethod('/error', [ErrorController::class, 'render']);
 
 $router->setPostMethod('/register', [RegistrationController::class, 'processRegistration']);
 $router->setPostMethod('/login', [AuthenticationController::class, 'processLogin']);

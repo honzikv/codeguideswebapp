@@ -5,6 +5,7 @@ $('#loginForm').on('submit', (e) => {
         type: 'post',
         url: '/login',
         data: $('#loginForm').serialize(),
+        processData: false,
         success: (response) => {
             const jsonResponse = JSON.parse(response);
             if ('html' in jsonResponse) {

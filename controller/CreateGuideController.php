@@ -36,15 +36,14 @@ class CreateGuideController extends BaseController {
             $userId = $this->userModel->getUserId($this->session->getUsername());
             $guideModel->addGuideToDatabase($fileName, $userId);
         } catch (Exception $exception) {
-            $this->__render(self::VIEW,
-                [
-                    'error' => $exception->getMessage(),
-                    'formData' => $guideModel->getFormData()
-                ]);
+            $response = ['error' => $exception->getMessage()];
+            $response = json_encode($response);
+            $this->sendResponse($response);
             return;
         }
 
-        # jinak vyrenderujeme success
-        $this->__render(self::VIEW_SUCCESS);
+        $response = ['html' => $this->getRenderedView(self::VIEW_SUCCESS)];
+        $response = json_encode($response);
+        $this->sendResponse($response);
     }
 }

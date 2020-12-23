@@ -1,11 +1,17 @@
-$('#registerForm').on('submit', (e) => {
+
+$('#createGuideForm').on('submit', (e) => {
     e.preventDefault();
+
+    const data = new FormData($('#createGuideForm')[0]);
 
     $.ajax({
         type: 'post',
-        url: '/register',
-        data: $('#registerForm').serialize(),
+        url: '/createguide',
+        enctype: 'multipart/form-data',
         processData: false,
+        contentType: false,
+        cache: false,
+        data: data,
         success: (response) => {
             const jsonResponse = JSON.parse(response);
             if ('html' in jsonResponse) {
@@ -13,12 +19,12 @@ $('#registerForm').on('submit', (e) => {
                 document.write(jsonResponse.html);
                 document.close();
             } else {
-                $('#password').val('');
                 $('#error').html(jsonResponse.error);
             }
         },
         error: () => {
             alert('Error while communicating with server');
         }
-    });
+    })
 });
+

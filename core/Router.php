@@ -46,10 +46,8 @@ class Router {
         $callback = $this->routes[$method][$path] ?? false;
 
         if ($callback == false) {
-            Application::getInstance()->response->setStatusCode(404);
-            $errorController = new ErrorController();
-            Application::getInstance()->setController($errorController);
-            $errorController->render();
+            header('Location: /error');
+            die();
             return;
         }
 
