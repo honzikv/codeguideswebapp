@@ -37,14 +37,14 @@ function banUser(userId, username, action) {
  * @param dropdown dropdown menu objekt
  */
 function changeRole(userId, username, dropdown) {
-    const option_text = dropdown.options[dropdown.selectedIndex].text;
-    const option_value = dropdown.options[dropdown.selectedIndex].value;
+    const optionText = dropdown.options[dropdown.selectedIndex].text;
+    const optionValue = dropdown.options[dropdown.selectedIndex].value;
 
-    if (confirm('Are you sure you want to change role of the user ' + username + ' to ' + option_text + '?')) {
+    if (confirm('Are you sure you want to change role of the user ' + username + ' to ' + optionText + '?')) {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
         formData.append('userId', userId);
-        formData.append('role', option_value);
+        formData.append('role', optionValue);
 
         xhr.open('POST', '/changerole', true);
         xhr.onload = () => {

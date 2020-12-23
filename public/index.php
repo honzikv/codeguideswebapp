@@ -37,5 +37,6 @@ $router->setPostMethod('/createguide', [CreateGuideController::class, 'processGu
 $router->setPostMethod('/ban', [ManageUsersController::class, 'processBan']);
 $router->setPostMethod('/changerole', [ManageUsersController::class, 'processRoleChange']);
 $router->setPostMethod('/deleteuser', [ManageUsersController::class, 'processDeleteUser']);
+$router->setPostMethod('/assignreview', [ManageReviewsController::class, 'assignReview']);
 
 $application->run();

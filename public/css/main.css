@@ -71,10 +71,10 @@ div::after {
     box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
 }
 
-.tableBlueAcrylic {
+.tableDarkAcrylic {
     color: #f8f6f6;
     border-color: rgba(0, 0, 0, 0);
-    background: rgba(25, 56, 212, 0.2);
+    background: rgba(9, 8, 8, 0.2);
     backdrop-filter: blur(10px);
     border-radius: 8px;
     box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);

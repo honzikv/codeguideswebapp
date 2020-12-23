@@ -12,6 +12,11 @@ class BaseController {
         $this->session = Application::getInstance()->getSession();
     }
 
+    /**
+     * Provede render daneho view - tzn posle ho frontendu jako hotovou stranku
+     * @param $view
+     * @param array $params
+     */
     protected function __render($view, $params = []) {
         if ($this->session->isUserLoggedIn()) {
             $params['user'] = $this->session->getUserInfo();
@@ -20,6 +25,16 @@ class BaseController {
         $params['view'] = $view;
 
         print(Application::getInstance()->getTwig()->render($view, $params));
+    }
+
+    protected function getRenderedView($view, $params = []) {
+        if ($this->session->isUserLoggedIn()) {
+            $params['user'] = $this->session->getUserInfo();
+        }
+
+        $params['view'] = $view;
+
+        return Application::getInstance()->getTwig()->render($view, $params);
     }
 
     /**

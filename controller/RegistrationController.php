@@ -27,10 +27,6 @@ class RegistrationController extends BaseController {
         }
     }
 
-    private function renderSuccessfulRegistration() {
-        $this->__render(self::SUCCESSFUL_REGISTRATION);
-    }
-
     function processRegistration(Request $request) {
         if ($this->session->isUserLoggedIn()) {
             return; # asi by nedavalo smysl odpovidat na POST pro registraci kdyz je uzivatel uz prihlaseny
@@ -41,20 +37,22 @@ class RegistrationController extends BaseController {
 
         try {
             $userRegistrationModel->validate();
-        } catch (Exception $ex) {
-            $this->__render(self::VIEW, ['error' => $ex->getMessage(),
-                'formData' => $userRegistrationModel->getFormData()]);
+            $userRegistrationModel->checkIfExists();
+        } catch (Exception $exception) {
+            $response = ['error' => $exception->getMessage()];
+            $response = json_encode($response);
+            $this->sendResponse($response);
             return;
         }
 
         if ($userRegistrationModel->register()) {
-            $this->renderSuccessfulRegistration();
+            $response = ['html' => $this->getRenderedView(self::SUCCESSFUL_REGISTRATION)];
+            $response = json_encode($response);
+            $this->sendResponse($response);
         } else {
-            $this->__render(self::VIEW,
-                [
-                    'error' => 'Error while connecting to database',
-                    'formData' => $userRegistrationModel->getFormData()
-                ]);
+            $response = ['error' => 'Internal server error, try later'];
+            $response = json_encode($response);
+            $this->sendResponse($response);
         }
 
     }

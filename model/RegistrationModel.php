@@ -75,6 +75,9 @@ class RegistrationModel extends BaseModel {
             throw new Exception('Error, password is too long (max ' . self::PASSWORD_LIMIT . " characters).");
         }
 
+    }
+
+    function checkIfExists() {
         if ($this->existsInDatabase('USER','username', $this->username)) {
             throw new Exception('Error username is taken');
         }
@@ -83,7 +86,6 @@ class RegistrationModel extends BaseModel {
             throw new Exception('Error, email is taken');
         }
     }
-
 
     private function getAllUsers(): array {
         $statement = 'SELECT * FROM user';

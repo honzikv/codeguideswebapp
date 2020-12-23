@@ -44,18 +44,10 @@ class UserModel extends BaseModel {
     }
 
     function getRoleId($roleString) {
-        $statement = 'SELECT * FROM role_lov';
+        $statement = 'SELECT id FROM role_lov where role = (?)';
         $query = $this->prepare($statement);
-        $query->execute();
-        foreach ($query->fetchAll() as $row) {
-            $id = $row['id'];
-            $role = $row['role'];
-            if ($role == $roleString) {
-                return $id;
-            }
-        }
-
-        throw new Exception("Error, no such role in the db"); # nemelo by se stat
+        $query->execute([$roleString]);
+        return $query->fetch()['id'];
     }
 
     function getAllUsersWithRoles() {
@@ -104,7 +96,7 @@ class UserModel extends BaseModel {
         $reviewerRoleId = $this->getRoleId('reviewer');
         $statement = 'SELECT id, username, role_id FROM user where role_id = (?) and banned = (?)';
         $query = $this->prepare($statement);
-        $query->execute([(int)$reviewerRoleId, false]);
+        $query->execute([$reviewerRoleId, false]);
         return $query->fetchAll();
     }
 

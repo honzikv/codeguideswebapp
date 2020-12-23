@@ -42,8 +42,9 @@ class AuthenticationController extends BaseController {
             $loginModel->validate();
             $loginModel->checkPassword($this->userModel);
         } catch (Exception $exception) {
-            $this->__render(self::VIEW, ['error' => $exception->getMessage(),
-                'username' => $loginModel->username]);
+            $response = ['error' => $exception->getMessage()];
+            $response = json_encode($response);
+            $this->sendResponse($response);
             return;
         }
 
@@ -52,7 +53,9 @@ class AuthenticationController extends BaseController {
         $role = $this->userModel->getRole($user['role_id']);
         $this->session->setUserInfo($user['username'], $role['role']);
 
-        $this->__render(self::LOGIN_SUCCESSFUL);
+        $response = ['html' => $this->getRenderedView(self::LOGIN_SUCCESSFUL)];
+        $response = json_encode($response);
+        $this->sendResponse($response);
     }
 
     function processLogout() {
