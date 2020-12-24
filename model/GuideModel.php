@@ -136,6 +136,24 @@ class GuideModel extends BaseModel {
         return $query->fetchAll();
     }
 
+    function getGuideReviewsWithReviewers($guideId) {
+        $statement = 'SELECT review.id,
+                           theme_score,
+                           info_score,
+                           originality_score,
+                           quality_score,
+                           overall_score,
+                           notes,
+                           is_finished,
+                           username,
+                           role_id,
+       reviewer.id as reviewer_id FROM review INNER JOIN user as reviewer 
+           on reviewer.id = review.reviewer_id WHERE guide_id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$guideId]);
+        return $query->fetchAll();
+    }
+
     function getGuide(string $guideId) {
         $statement = 'SELECT * FROM guide WHERE id = (?)';
         $query = $this->prepare($statement);

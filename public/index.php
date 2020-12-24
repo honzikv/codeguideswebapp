@@ -5,9 +5,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use app\controller\ErrorController;
 use app\controller\GuideController;
 use app\controller\MainPageController;
-use app\controller\ManageContentController;
-use app\controller\ManageReviewsController;
-use app\controller\ManageUsersController;
 use app\controller\MyReviewsController;
 use app\controller\ProfileController;
 use app\controller\PublisherController;
@@ -47,6 +44,7 @@ $router->setPostMethod('/ban', [PublisherController::class, 'processBan']);
 $router->setPostMethod('/changerole', [PublisherController::class, 'processRoleChange']);
 $router->setPostMethod('/deleteuser', [PublisherController::class, 'processDeleteUser']);
 $router->setPostMethod('/assignreview', [PublisherController::class, 'assignReview']);
+$router->setPostMethod('/deletereview', [PublisherController::class, 'deleteReview']);
 
 $router->setGetMethod('/profile', [ProfileController::class, 'render']);
 

@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1 class="display-4">Manage Content</h1>
-    <table class="table tableAcrylic table-responsive">
+    <table class="table tableAcrylic">
         <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
@@ -25,6 +25,8 @@
             <td>
                 <a href="/managereviews?guideId={{ guide.guide_id }}" class="btn btn-primary">Manage Reviews</a>
             </td>
+
+            <td>??</td>
 
             {% set i = i + 1 %}
             {% endfor %}

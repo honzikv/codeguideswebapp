@@ -38,6 +38,13 @@ class AssignReviewModel extends BaseModel {
         if (count($guideReviews) >= self::REVIEWS_PER_GUIDE) {
             throw new Exception('Error, there are already three reviews in progrress for this guide');
         }
+
+        foreach ($guideReviews as $guideReview) {
+            if ($guideReview['reviewerId'] == $this->userId) {
+                throw new Exception('Error, this user already reviews/reviewed this guide');
+            }
+        }
+
         $statement = 'INSERT INTO review (reviewer_id, guide_id) VALUES (?, ?)';
         $query = $this->prepare($statement);
         $query->execute([$this->userId, $this->guideId]);

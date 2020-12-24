@@ -6,7 +6,7 @@ namespace app\core;
 
 abstract class BaseModel {
 
-    const CHARACTERS_NUMBERS_REGEX = '[\w]';
+    const CHARACTERS_NUMBERS_REGEX = '[\w+]';
 
     function loadData($data) {
         foreach ($data as $key => $value) {

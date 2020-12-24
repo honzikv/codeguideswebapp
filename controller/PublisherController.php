@@ -8,6 +8,7 @@ use app\core\BaseController;
 use app\core\Request;
 use app\model\AssignReviewModel;
 use app\model\BanModel;
+use app\model\DeleteReviewModel;
 use app\model\DeleteUserModel;
 use app\model\GuideModel;
 use app\model\ManageReviewsModel;
@@ -75,8 +76,8 @@ class PublisherController extends BaseController {
             return;
         }
 
-        $reviews = $manageReviewsModel->getGuideReviews();
-        $reviewers = $this->userModel->getAllReviewers();
+        $reviews = $this->guideModel->getGuideReviewsWithReviewers($manageReviewsModel->guideId);
+        $usableReviewers = $this->getAllUsableReviewers($reviews);
         $guide = $this->guideModel->getGuide($manageReviewsModel->guideId);
 
         if ($guide == false) {
@@ -86,7 +87,28 @@ class PublisherController extends BaseController {
         if ($reviews == false) {
             $reviews = [];
         }
-        $this->__render(self::MANAGE_REVIEWS_VIEW, ['guide' => $guide, 'reviews' => $reviews, 'reviewers' => $reviewers]);
+        $this->__render(self::MANAGE_REVIEWS_VIEW, ['guide' => $guide, 'reviews' => $reviews, 'reviewers' => $usableReviewers]);
+    }
+
+    private function getAllUsableReviewers($reviews) {
+        $allReviewers = $this->userModel->getAllReviewers();
+
+        # filtr pro pouzitelne reviewers aby nemohl uzivatel vybrat nekoho vicekrat
+        $usableReviewers = [];
+        foreach ($allReviewers as $reviewer) {
+            $used = false;
+            foreach ($reviews as $alreadyUsed) {
+                if ($reviewer['id'] == $alreadyUsed['reviewer_id']) {
+                    $used = true;
+                    break;
+                }
+            }
+
+            if (!$used) {
+                array_push($usableReviewers, $reviewer);
+            }
+        }
+        return $usableReviewers;
     }
 
     function assignReview(Request $request) {
@@ -104,20 +126,51 @@ class PublisherController extends BaseController {
             $error = $exception->getMessage();
         }
 
-        $reviews = $this->guideModel->getGuideReviews($assignReviewModel->guideId);
-        $reviewers = $this->userModel->getAllReviewers();
+        $guideReviews = $this->guideModel->getGuideReviewsWithReviewers($assignReviewModel->guideId);
+        $usableReviewers = $this->getAllUsableReviewers($guideReviews);
         $guide = $this->guideModel->getGuide($assignReviewModel->guideId);
         $response = ['fragment' => $this->getRenderedView(
             self::MANAGE_REVIEWS_TABLE_FRAGMENT, [
             'error' => $error,
             'guide' => $guide,
-            'reviews' => $reviews,
-            'reviewers' => $reviewers
+            'reviews' => $guideReviews,
+            'reviewers' => $usableReviewers
         ])];
 
         $response = json_encode($response);
         $this->sendResponse($response);
+    }
 
+    function deleteReview(Request $request) {
+        if ($this->redirectIfNotPublisher()) {
+            return;
+        }
+
+        $deleteReviewModel = new DeleteReviewModel();
+        $deleteReviewModel->loadData($request->getBody());
+
+        $error = '';
+        try {
+            $deleteReviewModel->validate();
+            $deleteReviewModel->deleteReview();
+        }
+        catch (Exception $exception) {
+            $error = $exception->getMessage();
+        }
+
+        $guideReviews = $this->guideModel->getGuideReviewsWithReviewers($deleteReviewModel->guideId);
+        $usableReviewers = $this->getAllUsableReviewers($guideReviews);
+        $guide = $this->guideModel->getGuide($deleteReviewModel->guideId);
+        $response = ['fragment' => $this->getRenderedView(
+            self::MANAGE_REVIEWS_TABLE_FRAGMENT, [
+            'error' => $error,
+            'guide' => $guide,
+            'reviews' => $guideReviews,
+            'reviewers' => $usableReviewers
+        ])];
+
+        $response = json_encode($response);
+        $this->sendResponse($response);
     }
 
     function processBan(Request $request) {

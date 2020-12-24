@@ -7,21 +7,20 @@
                 <h1 class="display-4 justify-content-center">Welcome back
                     <span class="text-primary"> {{ user.username }}</span>!
                 </h1>
-                <p class="lead">This site contains thousands of guides for popular game League of Legends
-                    completely for free! To browse just click the button below. We have something for every
-                    League player out there.</p>
+                <p class="lead">This site contains thousands of guides for coding in many languages and frameworks
+                such as JavaScript, TypeScript, Java, Python, SQL, PHP and many more!</p>
                 <hr class="my-4">
 
 
-                <p>Continue right where you left off or browse other guides...</p>
+                <p class="lead">Quick access:</p>
 
                 <p class="lead">
-                    <a class="btn btn-primary btn-lg" href="#" role="button">Browse</a>
+                    <a class="btn btn-primary btn-lg" href="/guidelist" role="button">Browse</a>
                     {% if user.role == 'author' %}
                     <a class="btn btn-primary btn-lg" href="/myguides" role="button">My Guides</a>
                     <a class="btn btn-primary btn-lg" href="/createguide" role="button">Create a Guide</a>
                     {% elseif user.role == 'reviewer' %}
-                    <a class="btn btn-primary btn-lg" href="#" role="button">My Reviews</a>
+                    <a class="btn btn-primary btn-lg" href="/myreviews" role="button">My Reviews</a>
                     {% elseif user.role == 'publisher' %}
                     <a class="btn btn-primary btn-lg" href="/manageusers" role="button">Manage Users</a>
                     <a class="btn btn-primary btn-lg" href="/managecontent" role="button">Manage Content</a>
@@ -41,14 +40,15 @@
                 <hr class="my-1">
                 <p>You can also register to create your guides or review others</p>
                 <div class="jumbotron text-center">
-                    <a class="btn btn-danger btn-lg my-2" href="/guidelist" role="button">Browse</a>
+                    <a class="btn btn-secondary btn-lg my-2" href="/guidelist" role="button">Browse</a>
                     <a class="btn btn-primary btn-lg my-2" href="/login" role="button">Login</a>
+                    <a class="btn btn-primary btn-lg my-2" href="/register" role="button">Register</a>
                 </div>
             </div>
         {% endif %}
     </div>
 
-    <div class="jumbotron mx-auto text-center mt-lg-5 contentDefault ">
+    <div class="jumbotron mx-auto text-center contentDefault ">
         <h1 class="display-5">Currently popular guides</h1>
         <p>Check out our currently most popular guides here!</p>
 

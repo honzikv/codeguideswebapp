@@ -2,17 +2,24 @@
 
 {% block content %}
 
-    <h1 class="display-4">Pending reviews</h1>
-    <div class="d-flex justify-content-center">
-        {% for review in reviews %}
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ review.name }}</h5>
-                    <p class="card-text smallParagraph">{{ review.abstract }}</p>
-                    <a class="btn btn-primary" href="/review?reviewId={{ review.review_id }}">Review</a>
+    <div class="justify-content-center">
+        <h1 class="display-3">Pending reviews</h1>
+        <div class="d-flex mt-4 ">
+            {% for review in reviews %}
+                <div class="jumbotron reviewItem backgroundAcrylic">
+                    <h1 class="display-5">{{ review.name }}</h1>
+                    <p class="smallParagraph">{{ review.abstract }}</p>
+                    <div class="d-flex">
+                        <div class="ml-auto">
+                            <a class="btn btn-primary"
+                               href="/review?reviewId={{ review.review_id }}">Review</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
 
+
+
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

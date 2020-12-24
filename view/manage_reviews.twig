@@ -2,10 +2,8 @@
 
 {% block content %}
     <h1 class="display-4">Review of "<span class="text-primary">{{ guide.name }}</span>"</h1>
-    <p>Reviews in progress: {{ reviews|length }}</p>
-    <div id="content">
+
         {% include 'fragment/manage_reviews_fragment.twig' %}
-    </div>
 
     <script src="js/manageReviews.js"></script>
 {% endblock %}

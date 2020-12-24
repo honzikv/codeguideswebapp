@@ -16,11 +16,32 @@ function createReview(userSelectionId, rowId, guideId, guideName) {
         xhr.onload = () => {
             const jsonResponse = JSON.parse(xhr.response);
             $('#content').replaceWith(jsonResponse.fragment);
-        }
+        };
 
         xhr.onerror = () => {
             redirectAndShowError();
-        }
+        };
+
+        xhr.send(formData);
+    }
+}
+
+function deleteReview(reviewId, guideId) {
+    if (confirm('Are you sure you want to remove this review?')) {
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append('reviewId', reviewId);
+        formData.append('guideId', guideId)
+
+        xhr.open('POST', '/deletereview', true);
+        xhr.onload = () => {
+            const jsonResponse = JSON.parse(xhr.response);
+            $('#content').replaceWith(jsonResponse.fragment);
+        };
+
+        xhr.onerror = () => {
+            redirectAndShowError();
+        };
 
         xhr.send(formData);
     }
