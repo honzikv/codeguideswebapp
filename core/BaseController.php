@@ -14,8 +14,8 @@ class BaseController {
 
     /**
      * Provede render daneho view - tzn posle ho frontendu jako hotovou stranku
-     * @param $view
-     * @param array $params
+     * @param $view: lokace souboru s VIEW - twig, html nebo jine
+     * @param array $params: parametry, ktere se predaji view
      */
     protected function __render($view, $params = []) {
         if ($this->session->isUserLoggedIn()) {
@@ -39,6 +39,7 @@ class BaseController {
 
     /**
      * Posle response - uzitecne pro async odpovedi
+     * @param $response: response, ktera se ma odeslat - musi by prevedena pomoci json_encode pokud chceme json
      */
     protected function sendResponse($response) {
         print($response);

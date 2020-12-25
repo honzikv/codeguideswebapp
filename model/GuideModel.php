@@ -150,4 +150,11 @@ class GuideModel extends BaseModel {
         return $query->fetch();
     }
 
+    function getPublishedGuides(int $count) {
+        $statement = 'SELECT * FROM guide ORDER BY RAND() LIMIT ?';
+        $query = $this->prepare($statement);
+        $query->execute([$count]);
+        return $query->fetchAll();
+    }
+
 }

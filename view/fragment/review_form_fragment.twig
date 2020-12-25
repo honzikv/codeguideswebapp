@@ -1,0 +1,74 @@
+<div id="content">
+    <h1 class="display-3 mb-lg-4">Review</h1>
+    <div class="jumbotron backgroundAcrylic mb-lg-5">
+        <h3 class="mt-2">How to review</h3>
+        <p>Score from one to ten. 1 - worst, 10 - best. Review can be saved with
+            the 'Save All' button and submitted as complete with the 'Complete Review' button.</p>
+        <h5>Review categories</h5>
+        <ul>
+            <li>Info score - how informative is the guide, does it provide valuable information etc.</li>
+            <li>Complexity score - how difficult is given guide to understand for regular viewer</li>
+            <li>Efficiency score - how efficient is the guide - e.g, does it contain unneccessary info, does it use
+                bad practice code ...
+            </li>
+            <li>Quality score - how well is the document formatted, quality of the text</li>
+            <li>Overall score - overall quality of the guide</li>
+        </ul>
+        <hr class="bg-white">
+        <div>
+            <h3>{{ guide.name }}</h3>
+            <p>{{ guide.abstract }}</p>
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <form method="GET" action="/review/download">
+                        <input readonly hidden name="reviewId" value="{{ review.id }}">
+                        <button type="submit" class="btn btn-primary">
+                            Download content
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <hr class="bg-white">
+        <form id="reviewForm">
+            <input readonly hidden name="reviewId" value="{{ review.id }}">
+            {% for i in 0..scores|length-1 %}
+                <div class="form-group">
+                    <div class="d-flex">
+                        <label class="reviewScore" for="{{ scores[i] }}">{{ scoreNames[i] }}</label>
+                        <div class="ml-auto">
+                            <select id="{{ scores[i] }}" name="{{ modelNames[i] }}" class="form-control-sm">
+                                {% for value in reviewValues %}
+                                    <option
+                                            {% if review[scores[i]] == value %} selected {% endif %}
+                                            value="{{ value }}">{{ value }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea placeholder="Here you can write your additional notes (not required) (max 10 000 characters)"
+                          class="form-control"
+                          id="notes" name="notes"
+                          maxlength="10000" rows="10">{{ review.notes }}</textarea>
+            </div>
+
+            <div class="d-flex mb-lg-2">
+                <h5 id="saveResult">{{ result }}</h5>
+                <div class="ml-auto">
+                    <button type="button" id="completeReview" class="btn btn-warning">Complete Review</button>
+                    <button type="submit" class="btn btn-primary">Save All</button>
+                </div>
+            </div>
+
+        </form>
+
+
+        <script src="js/review.js"></script>
+    </div>
+</div>

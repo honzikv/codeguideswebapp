@@ -29,9 +29,12 @@
                 {% if review.is_finished == "1" %}
                     <th scope="row">{{ i + 1 }}</th>
                     <td>{{ review.username }}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteReview('{{ review.id }}', '{{ guide.id }}')">Remove</button>
+                    </td>
                     <td>{{ review.info_score }}</td>
-                    <td>{{ review.theme_score }}</td>
-                    <td>{{ review.originality_score }}</td>
+                    <td>{{ review.complexity_score }}</td>
+                    <td>{{ review.efficiency_score }}</td>
                     <td>{{ review.quality_score }}</td>
                     <td>{{ review.overall_score }}</td>
                 {% else %}
@@ -79,4 +82,13 @@
         </tbody>
 
     </table>
+
+    {% if reviews|length == 3 %}
+        <div class="d-flex">
+            <div class="ml-auto">
+                <button class="btn btn-danger">Remove Guide</button>
+                <button class="btn btn-primary">Release Guide</button>
+            </div>
+        </div>
+    {% endif %}
 </div>

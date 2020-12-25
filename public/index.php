@@ -48,6 +48,8 @@ $router->setPostMethod('/deletereview', [PublisherController::class, 'deleteRevi
 $router->setGetMethod('/myreviews', [ReviewerController::class, 'renderMyReviews']);
 $router->setGetMethod('/review', [ReviewerController::class, 'renderReview']);
 $router->setGetMethod('/review/download', [ReviewerController::class, 'downloadGuide']);
+$router->setPostMethod('/savereview', [ReviewerController::class, 'saveReview']);
+$router->setPostMethod('/completereview', [ReviewerController::class, 'completeReview']);
 
 
 $application->run();

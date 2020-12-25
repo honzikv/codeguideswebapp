@@ -46,3 +46,42 @@ function deleteReview(reviewId, guideId) {
         xhr.send(formData);
     }
 }
+
+function deleteGuide(guideId) {
+    if (confirm('Are you sure you want to remove this guide? (This action is irreversible)')) {
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append('guideId', guideId);
+
+        xhr.open('POST', '/deleteguide', true);
+        xhr.onload = () => {
+            const jsonResponse = JSON.parse(xhr.response);
+            $('#content').replaceWith(jsonResponse.fragment);
+        };
+
+        xhr.onerror = () => {
+            redirectAndShowError();
+        };
+
+        xhr.send(formData);
+    }
+}
+
+function releaseGuide(guideId) {
+    if (confirm('Are you sure you want to release this guide?')) {
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+
+        formData.append('guideId', guideId);
+        xhr.onload = () => {
+            const jsonResponse = JSON.parse(xhr.response);
+            $('#content').replaceWith(jsonResponse.fragment);
+        };
+
+        xhr.onerror = () => {
+            redirectAndShowError();
+        };
+
+        xhr.send(formData);
+    }
+}

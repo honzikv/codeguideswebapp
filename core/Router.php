@@ -48,7 +48,6 @@ class Router {
         if ($callback == false) {
             header('Location: /error');
             die();
-            return;
         }
 
         # Pokud se jedna o array, tak vytvorime controller. Tento array by mel mit vzdy 2 prvky

@@ -42,50 +42,45 @@ class Application {
     }
 
     function run() {
-        echo $this->router->resolve();
+        $this->router->resolve();
     }
 
     /**
      * @return BaseController
      */
-    public function getController(): BaseController {
+    function getController(): BaseController {
         return $this->controller;
     }
 
     /**
-     * @return FilesystemLoader
-     */
-    public function getLoader(): FilesystemLoader {
-        return $this->loader;
-    }
-
-    /**
+     * Ziska twig instanci pro render daneho view
      * @return Environment
      */
-    public function getTwig(): Environment {
+    function getTwig(): Environment {
         return $this->twig;
     }
 
     /**
+     * Ziska databazovy objekt pro pristup
      * @return Database
      */
-    public function getDatabase(): Database {
+    function getDatabase(): Database {
         return $this->database;
     }
 
     /**
+     * Nastaveni controlleru
      * @param BaseController $controller
      */
-    public function setController(BaseController $controller): void {
+    function setController(BaseController $controller): void {
         $this->controller = $controller;
     }
 
     /**
      * @return Session
      */
-    public function getSession(): Session {
+    function getSession(): Session {
         return $this->session;
     }
-
 
 }
