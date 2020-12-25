@@ -1,0 +1,85 @@
+{% extends 'layout/main_layout.twig' %}
+{% block content %}
+
+    {% if error %}
+        <h1>{{ error }}</h1>
+    {% else %}
+
+        <!-- tohle by se asi idealne melo psat do controlleru-->
+        {% set reviewValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] %}
+        {% set scores = ['info_score', 'complexity_score', 'efficiency_score', 'quality_score', 'overall_score'] %}
+        {% set scoreNames = ['Info score', 'Complexity score', 'Efficiency score', 'Quality score', 'Overall score'] %}
+
+        <h1 class="display-3">Review</h1>
+        <div class="jumbotron backgroundAcrylic">
+            <h3 class="mt-2">How to review</h3>
+            <p>Score from one to ten. 1 - worst, 10 - best. Mean of all categories is then used to determine whether
+                the guide will be accepted or not. Guide with mean of 5.0 or more is accepted. Review can be saved with
+                the 'Save All' button and submitted as complete with the 'Complete Review' button.</p>
+            <h5>Review categories</h5>
+            <ul>
+                <li>Info score - how informative is the guide, does it provide valuable information etc.</li>
+                <li>Complexity score - how difficult is given guide to understand for regular viewer</li>
+                <li>Efficiency score - how efficient is the guide - e.g, does it contain unneccessary info, does it use
+                    bad practice code ...
+                </li>
+                <li>Quality score - how well is the document formatted, quality of the text</li>
+                <li>Overall score - overall quality of the guide. This score is counted twice</li>
+            </ul>
+            <hr class="bg-white">
+            <div>
+                <h3>{{ guide.name }}</h3>
+                <p>{{ guide.abstract }}</p>
+                <div class="d-flex">
+                    <div class="ml-auto">
+                        <form method="get" action="/review/download">
+                            <input readonly hidden name="reviewId" value="{{ review.id }}">
+                            <button type="submit" class="btn btn-primary">
+                                Download content
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-white">
+            <form type="POST" action="/savereview" id="reviewForm">
+                {% for i in 0..scores|length-1 %}
+                    <div class="form-group">
+                        <div class="d-flex">
+                            <label class="reviewScore" for="{{ scores[i] }}">{{ scoreNames[i] }}</label>
+                            <div class="ml-auto">
+                                <select id="{{ scores[i] }}" class="form-control-sm">
+                                    {% for value in reviewValues %}
+                                        <option
+                                                {% if review[scores[i]] == value %} selected {% endif %}
+                                                value="{{ value }}">{{ value }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea placeholder="Here you can write your additional notes (not required)" class="form-control"
+                              id="notes" name="notes"
+                              maxlength="10000" rows="10"></textarea>
+                </div>
+
+                <div class="d-flex">
+                    <div class="ml-auto">
+                        <button class="btn btn-warning float-end">Complete Review</button>
+                        <button type="submit" class="btn btn-primary float-end">Save All</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        <script src="js/review.js"></script>
+    {% endif %}
+
+{% endblock %}

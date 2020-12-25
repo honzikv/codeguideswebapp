@@ -6,64 +6,99 @@
     <link rel="stylesheet" href='bootstrap/css/bootstrap.min.css'/>
     <link rel="stylesheet" href="css/main.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/logout.js"></script>
     <title>Coding Guides WebApp</title>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light ">
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a href="/" class="nav-link
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top ">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a href="/" class="nav-link
                         {% if view == 'index.twig' %}
-                            fw-bold
+                            text-warning
                         {% endif %}"
-                >Home</a>
-            </li>
-            <li class="nav-item">
+                    >Home</a>
+                </li>
+                <li class="nav-item">
 
-                <a href="/guidelist" class="nav-link
+                    <a href="/guidelist" class="nav-link
                 {% if view == 'guide_list.twig' %}
                             fw-bold
                         {% endif %}">Guides</a>
-            </li>
+                </li>
 
-            <li class="nav-item">
-                <a href="/myguides" class="nav-link
-                {% if view == 'profile.twig' %}
+                {% if user.role == 'author' or user.role == 'reviewer' %}
+                    <li class="nav-item">
+                        <a href="/myguides" class="nav-link
+                {% if view == 'my_guides.twig' %}
                     fw-bold
-                    {% endif %}">Profile</a>
-            </li>
-        </ul>
+                    {% endif %}">My Guides</a>
+                    </li>
+                {% endif %}
 
-        <ul class="navbar-nav ml-auto">
-            {% if not user %}
-                <li class="nav-item">
-                    <a href="/register" class="nav-link">Register</a>
+                {% if user.role == 'reviewer' %}
+                    <li class="nav-item">
+                        <a href="/myreviews" class="nav-link
+                        {% if view == 'my_reviews.twig' %}
+                        fw-bold
+                        {% endif %}">My Reviews</a>
+                    </li>
+                {% endif %}
+
+                {% if user.role == 'publisher' %}
+                    <li class="nav-item">
+                        <a href="/manageusers" class="nav-link
+                        {% if view == 'manage_users.twig' %}
+                        fw-bold
+                        {% endif %}">Manage Users</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/managecontent" class="nav-link">Manage Content</a>
+                    </li>
+                {% endif %}
+
+                <li>
+
                 </li>
+            </ul>
 
-                <li class="nav-item">
-                    <a href="/login" class="nav-link">Login</a>
-                </li>
+            <ul class="navbar-nav ml-auto">
+                {% if not user %}
+                    <li class="nav-item">
+                        <a href="/register" class="nav-link
+                        {% if view == 'register.twig' %}
+                            fw-bold
+                            {% endif %}">Register</a>
+                    </li>
 
-            {% endif %}
+                    <li class="nav-item">
+                        <a href="/login" class="nav-link
+                        {% if view == 'login.twig' %}
+                            fw-bold
+                        {% endif %}">Login</a>
+                    </li>
 
-            {% if user %}
-                <li class="nav-item">
-                    <form id="logoutForm" action="/logout" method="post">
-                        <button type="submit" class="buttonAsLink nav-item">Logout</button>
-                    </form>
-                </li>
-            {% endif %}
-        </ul>
+                {% endif %}
 
-    </div>
-</nav>
+                {% if user %}
+                    <li class="nav-item">
+                        <form id="logoutForm" action="/logout" method="post">
+                            <button type="submit" class="buttonAsLink nav-item">Logout</button>
+                        </form>
+                    </li>
+                {% endif %}
+            </ul>
 
+        </div>
+    </nav>
+</header>
 <div class="container mt-4">
     {% block content %}
     {% endblock %}
 </div>
-
 
 </body>

@@ -113,13 +113,6 @@ class GuideModel extends BaseModel {
         }
     }
 
-    function getFormData() {
-        return [
-            'guideName' => $this->guideName,
-            'guideAbstract' => $this->guideAbstract
-        ];
-    }
-
     function getAllReviewableGuides() {
         $reviewedId = $this->getGuideState('reviewed')['id']; # id pro reviewed stav
         $statement = 'SELECT name, username, guide.id as guide_id, user_id as user_id FROM guide INNER JOIN user 
@@ -138,11 +131,7 @@ class GuideModel extends BaseModel {
 
     function getGuideReviewsWithReviewers($guideId) {
         $statement = 'SELECT review.id,
-                           theme_score,
-                           info_score,
-                           originality_score,
-                           quality_score,
-                           overall_score,
+                           info_score, efficiency_score, complexity_score, quality_score, overall_score,
                            notes,
                            is_finished,
                            username,

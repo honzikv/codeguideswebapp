@@ -2,13 +2,12 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use app\controller\ReviewerController;
+use app\core\Application;
 use app\controller\ErrorController;
 use app\controller\GuideController;
 use app\controller\MainPageController;
-use app\controller\MyReviewsController;
-use app\controller\ProfileController;
 use app\controller\PublisherController;
-use app\core\Application;
 use app\controller\AuthenticationController;
 
 $application = new Application(dirname(__DIR__));
@@ -46,9 +45,9 @@ $router->setPostMethod('/deleteuser', [PublisherController::class, 'processDelet
 $router->setPostMethod('/assignreview', [PublisherController::class, 'assignReview']);
 $router->setPostMethod('/deletereview', [PublisherController::class, 'deleteReview']);
 
-$router->setGetMethod('/profile', [ProfileController::class, 'render']);
-
-$router->setGetMethod('/myreviews', [MyReviewsController::class, 'render']);
+$router->setGetMethod('/myreviews', [ReviewerController::class, 'renderMyReviews']);
+$router->setGetMethod('/review', [ReviewerController::class, 'renderReview']);
+$router->setGetMethod('/review/download', [ReviewerController::class, 'downloadGuide']);
 
 
 $application->run();

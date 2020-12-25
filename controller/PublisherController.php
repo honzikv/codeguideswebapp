@@ -26,19 +26,15 @@ class PublisherController extends BaseController {
     private UserModel $userModel;
     private GuideModel $guideModel;
 
-    private function redirectIfNotPublisher(): bool {
+    private function redirectIfNotPublisher() {
         if (!$this->session->isUserLoggedIn()) {
             $this->redirectToIndex();
-            return true;
         }
 
         $user = $this->session->getUserInfo();
         if ($user['role'] != 'publisher') {
             $this->redirectToIndex();
-            return true;
         }
-
-        return false;
     }
 
     function __construct() {
@@ -49,9 +45,7 @@ class PublisherController extends BaseController {
     }
 
     function renderManageContent() {
-        if ($this->redirectIfNotPublisher()) {
-            return;
-        }
+        $this->redirectIfNotPublisher();
 
         $allReviewableGuides = $this->guideModel->getAllReviewableGuides();
         foreach ($allReviewableGuides as $guide) {
@@ -63,9 +57,7 @@ class PublisherController extends BaseController {
     }
 
     function renderManageReviews(Request $request) {
-        if ($this->redirectIfNotPublisher()) {
-            return;
-        }
+        $this->redirectIfNotPublisher();
         $manageReviewsModel = new ManageReviewsModel();
 
         try {
@@ -87,7 +79,8 @@ class PublisherController extends BaseController {
         if ($reviews == false) {
             $reviews = [];
         }
-        $this->__render(self::MANAGE_REVIEWS_VIEW, ['guide' => $guide, 'reviews' => $reviews, 'reviewers' => $usableReviewers]);
+        $this->__render(self::MANAGE_REVIEWS_VIEW, ['guide' => $guide,
+            'reviews' => $reviews, 'reviewers' => $usableReviewers]);
     }
 
     private function getAllUsableReviewers($reviews) {
@@ -112,9 +105,7 @@ class PublisherController extends BaseController {
     }
 
     function assignReview(Request $request) {
-        if ($this->redirectIfNotPublisher()) {
-            return;
-        }
+        $this->redirectIfNotPublisher();
         $assignReviewModel = new AssignReviewModel();
         $assignReviewModel->loadData($request->getBody());
 
@@ -142,9 +133,7 @@ class PublisherController extends BaseController {
     }
 
     function deleteReview(Request $request) {
-        if ($this->redirectIfNotPublisher()) {
-            return;
-        }
+        $this->redirectIfNotPublisher();
 
         $deleteReviewModel = new DeleteReviewModel();
         $deleteReviewModel->loadData($request->getBody());
@@ -153,8 +142,7 @@ class PublisherController extends BaseController {
         try {
             $deleteReviewModel->validate();
             $deleteReviewModel->deleteReview();
-        }
-        catch (Exception $exception) {
+        } catch (Exception $exception) {
             $error = $exception->getMessage();
         }
 
@@ -174,9 +162,7 @@ class PublisherController extends BaseController {
     }
 
     function processBan(Request $request) {
-        if ($this->redirectIfNotPublisher()) {
-            return;
-        }
+        $this->redirectIfNotPublisher();
 
         $banModel = new BanModel();
         $banModel->loadData($request->getBody());
@@ -199,9 +185,7 @@ class PublisherController extends BaseController {
     }
 
     function processDeleteUser(Request $request) {
-        if ($this->redirectIfNotPublisher()) {
-            return;
-        }
+        $this->redirectIfNotPublisher();
 
         $deleteUserModel = new DeleteUserModel();
         $deleteUserModel->loadData($request->getBody());
@@ -219,9 +203,7 @@ class PublisherController extends BaseController {
     }
 
     function processRoleChange(Request $request) {
-        if ($this->redirectIfNotPublisher()) {
-            return;
-        }
+        $this->redirectIfNotPublisher();
 
         $roleChangeModel = new RoleChangeModel();
         $roleChangeModel->loadData($request->getBody());
@@ -240,9 +222,7 @@ class PublisherController extends BaseController {
 
     function renderManageUsers() {
         # spravovat uzivatele smi pouze publisher, tzn ostatni dostanou presmerovani na hlavni stranku
-        if ($this->redirectIfNotPublisher()) {
-            return;
-        }
+        $this->redirectIfNotPublisher();
 
         $user = $this->session->getUserInfo();
         $users = $this->userModel->getAllUsersWithRoles();

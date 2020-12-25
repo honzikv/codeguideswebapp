@@ -9,7 +9,20 @@ use Exception;
 
 class ReviewModel extends BaseModel {
 
+    var string $reviewId;
+
+    private const MIN_SCORE = 0;
+    private const MAX_SCORE = 10;
+
     function validate() {
+        if (empty($this->reviewId)) {
+            throw new Exception('Error, review id is empty');
+        }
+
+        if (!is_numeric($this->reviewId)) {
+            throw new Exception('Error, review id is not a number');
+        }
+
     }
 
     function getPendingReviews($userId) {
@@ -19,4 +32,19 @@ class ReviewModel extends BaseModel {
         $query->execute([$userId]);
         return $query->fetchAll();
     }
+
+    function getReviewFromUserId($userId) {
+        $statement = 'SELECT * FROM review WHERE id = (?) AND reviewer_id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$this->reviewId, $userId]);
+        return $query->fetch();
+    }
+
+    function getReview($reviewId) {
+        $statement = 'SELECT * FROM review WHERE id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$reviewId]);
+        return $query->fetch();
+    }
+
 }

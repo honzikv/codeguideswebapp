@@ -8,8 +8,8 @@
                     <span class="text-primary"> {{ user.username }}</span>!
                 </h1>
                 <p class="lead">This site contains thousands of guides for coding in many languages and frameworks
-                such as JavaScript, TypeScript, Java, Python, SQL, PHP and many more!</p>
-                <hr class="my-4">
+                    such as JavaScript, TypeScript, Java, Python, SQL, PHP and many more!</p>
+                <hr class="my-2">
 
 
                 <p class="lead">Quick access:</p>
@@ -17,13 +17,14 @@
                 <p class="lead">
                     <a class="btn btn-primary btn-lg" href="/guidelist" role="button">Browse</a>
                     {% if user.role == 'author' %}
-                    <a class="btn btn-primary btn-lg" href="/myguides" role="button">My Guides</a>
-                    <a class="btn btn-primary btn-lg" href="/createguide" role="button">Create a Guide</a>
+                        <a class="btn btn-primary btn-lg" href="/myguides" role="button">My Guides</a>
+                        <a class="btn btn-primary btn-lg" href="/createguide" role="button">Create a Guide</a>
                     {% elseif user.role == 'reviewer' %}
-                    <a class="btn btn-primary btn-lg" href="/myreviews" role="button">My Reviews</a>
+                        <a class="btn btn-primary btn-lg" href="/createguide" role="button">Create a Guide</a>
+                        <a class="btn btn-primary btn-lg" href="/myreviews" role="button">My Reviews</a>
                     {% elseif user.role == 'publisher' %}
-                    <a class="btn btn-primary btn-lg" href="/manageusers" role="button">Manage Users</a>
-                    <a class="btn btn-primary btn-lg" href="/managecontent" role="button">Manage Content</a>
+                        <a class="btn btn-primary btn-lg" href="/manageusers" role="button">Manage Users</a>
+                        <a class="btn btn-primary btn-lg" href="/managecontent" role="button">Manage Content</a>
                     {% endif %}
                 </p>
             </div>
