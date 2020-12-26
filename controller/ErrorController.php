@@ -7,9 +7,14 @@ use app\core\BaseController;
 
 class ErrorController extends BaseController {
 
-    private const VIEW = "error_view.html";
+    private const NOT_FOUND_VIEW = "error_view.html";
+    private const TEAPOT_VIEW = "teapot_error.html";
 
-    function render() {
-        $this->__render(self::VIEW);
+    function render404() {
+        $this->__render(self::NOT_FOUND_VIEW);
+    }
+
+    function render418() {
+        $this->__render(self::TEAPOT_VIEW);
     }
 }

@@ -9,7 +9,7 @@
             <th scope="col">Guide name</th>
             <th scope="col">Author</th>
             <th scope="col">Reviews</th>
-            <th scope="col">Overall score</th>
+            <th scope="col">Released</th>
         </tr>
         </thead>
 
@@ -26,7 +26,7 @@
                 <a href="/managereviews?guideId={{ guide.guide_id }}" class="btn btn-primary">Manage Reviews</a>
             </td>
 
-            <td>??</td>
+            <td>{{ guide.is_released }}</td>
 
             {% set i = i + 1 %}
             {% endfor %}

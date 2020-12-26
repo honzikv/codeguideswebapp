@@ -11,9 +11,6 @@ class ReviewModel extends BaseModel {
 
     var string $reviewId;
 
-    private const MIN_SCORE = 0;
-    private const MAX_SCORE = 10;
-
     function validate() {
         if (empty($this->reviewId)) {
             throw new Exception('Error, review id is empty');

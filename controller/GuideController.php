@@ -5,6 +5,7 @@ namespace app\controller;
 
 
 use app\core\BaseController;
+use app\core\TeapotError;
 use app\core\Request;
 use app\model\GuideModel;
 use app\model\UserModel;
@@ -27,7 +28,12 @@ class GuideController extends BaseController {
     }
 
     function renderGuideList() {
-        $this->__render(self::GUIDE_LIST_VIEW);
+        try {
+            $guides = $this->guideModel->getAllPublishedGuides();
+        } catch (TeapotError $error) {
+            $this->redirectTo418();
+        }
+        $this->__render(self::GUIDE_LIST_VIEW, ['guides' => $guides]);
     }
 
     function renderCreateGuide() {

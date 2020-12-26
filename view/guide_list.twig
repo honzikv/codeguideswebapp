@@ -1,10 +1,27 @@
-{% extends 'layout/main_layout.twig'%}
+{% extends 'layout/main_layout.twig' %}
 
 {% block content %}
+    {% if guides|length == 0 %}
+        <p>Sadly, no guides were published yet</p>
+    {% endif %}
 
-    {% for item in items %}
-
-    {% endfor %}
+    <div class="container justify-content-center">
+        <h4 class="display-3 text-center">Guides</h4>
+        {% for guide in guides %}
+            <div class="row  justify-content-center">
+                <div class="jumbotron mt-4 r reviewItem backgroundAcrylic">
+                    <h1 class="display-5">{{ guide.name }}</h1>
+                    <p class="smallParagraph">{{ guide.abstract }}</p>
+                    <div class="d-flex">
+                        <div class="ml-auto">
+                            <a class="btn btn-primary"
+                               href="/guide?guideId={{ guide.id }}">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
 
 {% endblock %}

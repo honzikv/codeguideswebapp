@@ -19,8 +19,10 @@ $router = $application->router;
 $router->setGetMethod('/', [MainPageController::class, 'render']);
 
 # error stranka kam se presune uzivatel pri spatnem requestu
-$router->setGetMethod('/error', [ErrorController::class, 'render']);
-$router->setPostMethod('/error', [ErrorController::class, 'render']);
+$router->setGetMethod('/error', [ErrorController::class, 'render404']);
+$router->setPostMethod('/error', [ErrorController::class, 'render404']);
+$router->setGetMethod('/teapot', [ErrorController::class, 'render418']);
+$router->setPostMethod('/teapot', [ErrorController::class, 'render418']);
 
 # autentizace
 $router->setGetMethod('/login', [AuthenticationController::class, 'renderLoginPage']);
@@ -44,6 +46,8 @@ $router->setPostMethod('/changerole', [PublisherController::class, 'processRoleC
 $router->setPostMethod('/deleteuser', [PublisherController::class, 'processDeleteUser']);
 $router->setPostMethod('/assignreview', [PublisherController::class, 'assignReview']);
 $router->setPostMethod('/deletereview', [PublisherController::class, 'deleteReview']);
+$router->setPostMethod('/releaseguide', [PublisherController::class, 'releaseGuide']);
+$router->setPostMethod('/rejectguide', [PublisherController::class, 'rejectGuide']);
 
 $router->setGetMethod('/myreviews', [ReviewerController::class, 'renderMyReviews']);
 $router->setGetMethod('/review', [ReviewerController::class, 'renderReview']);

@@ -10,6 +10,7 @@ use app\model\AssignReviewModel;
 use app\model\BanModel;
 use app\model\DeleteReviewModel;
 use app\model\DeleteUserModel;
+use app\model\FinalizeGuideModel;
 use app\model\GuideModel;
 use app\model\ManageReviewsModel;
 use app\model\RoleChangeModel;
@@ -22,6 +23,8 @@ class PublisherController extends BaseController {
     private const MANAGE_REVIEWS_VIEW = 'manage_reviews.twig';
     private const MANAGE_REVIEWS_TABLE_FRAGMENT = 'fragment/manage_reviews_fragment.twig';
     private const MANAGE_USERS_VIEW = 'manage_users.twig';
+    private const GUIDE_PUBLISHED_FRAGMENT = 'fragment/guide_published_fragment.twig';
+    private const GUIDE_REJECTED_FRAGMENT = 'fragment/guide_rejected_fragment.twig';
 
     private UserModel $userModel;
     private GuideModel $guideModel;
@@ -83,7 +86,7 @@ class PublisherController extends BaseController {
             'reviews' => $reviews, 'reviewers' => $usableReviewers]);
     }
 
-    private function getAllUsableReviewers($reviews) {
+    private function getAllUsableReviewers($reviews): array {
         $allReviewers = $this->userModel->getAllReviewers();
 
         # filtr pro pouzitelne reviewers aby nemohl uzivatel vybrat nekoho vicekrat
@@ -161,6 +164,48 @@ class PublisherController extends BaseController {
         $this->sendResponse($response);
     }
 
+    function releaseGuide(Request $request) {
+        $this->redirectIfNotPublisher();
+
+        $finalizeGuideModel = new FinalizeGuideModel();
+
+        try {
+            $finalizeGuideModel->loadData($request->getBody());
+            $finalizeGuideModel->validate();
+            $finalizeGuideModel->acceptGuide();
+        }
+        catch (Exception $exception) {
+            $response = ['error' => $exception->getMessage()];
+            $response = json_encode($response);
+            $this->sendResponse($response);
+            return;
+        }
+
+        $response = ['fragment' => $this->getRenderedView(self::GUIDE_PUBLISHED_FRAGMENT)];
+        $response = json_encode($response);
+        $this->sendResponse($response);
+    }
+
+    function rejectGuide(Request $request) {
+        $this->redirectIfNotPublisher();
+
+        $finalizeGuideModel = new FinalizeGuideModel();
+        try {
+            $finalizeGuideModel->loadData($request->getBody());
+            $finalizeGuideModel->validate();
+            $finalizeGuideModel->rejectGuide();
+        }
+        catch (Exception $exception) {
+            $response = ['error' => $exception->getMessage()];
+            $response = json_encode($response);
+            $this->sendResponse($response);
+        }
+
+        $response = ['fragment' => $this->getRenderedView(self::GUIDE_REJECTED_FRAGMENT)];
+        $response = json_encode($response);
+        $this->sendResponse($response);
+    }
+
     function processBan(Request $request) {
         $this->redirectIfNotPublisher();
 
@@ -217,7 +262,6 @@ class PublisherController extends BaseController {
             $this->redirectToIndex();
             return;
         }
-
     }
 
     function renderManageUsers() {
@@ -235,4 +279,5 @@ class PublisherController extends BaseController {
 
         $this->__render(self::MANAGE_USERS_VIEW, ['users' => $users, 'roles' => $changeableRoles]);
     }
+
 }

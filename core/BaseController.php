@@ -51,7 +51,14 @@ class BaseController {
     }
 
     protected function redirectTo404() {
-        header('Location: /error');
+        Application::getInstance()->response->setStatusCode(404);
+        header('Location: /error'); # presmerovani na error
+        die();
+    }
+
+    protected function redirectTo418() {
+        Application::getInstance()->response->setStatusCode(518);
+        header('Location: /teapot'); # presmerovani na 418 "i'm a teapot" error
         die();
     }
 }

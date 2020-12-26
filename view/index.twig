@@ -1,7 +1,7 @@
 {% extends 'layout/main_layout.twig' %}
 {% block content %}
 
-    <div id="welcome" class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center">
         {% if user %}
             <div class="jumbotron mx-auto text-center contentDefault">
                 <h1 class="display-4 justify-content-center">Welcome back
@@ -55,18 +55,18 @@
 
         <div class="album">
             <div class="container">
-                {% for item in items %}
+                {% for guide in guides %}
                     <div class="row mt-lg-3">
                         <div class="col-md-4 contentDefault mx-auto">
                             <div class="card mb-4 box-shadow">
                                 <div class="card-body">
                                     <p class="card-text smallParagraph">
-                                        {{ item.abstract }}
+                                        {{ guide.abstract }}
                                     </p>
                                     <div class="d-flex justify-content-between float-end">
                                         <div class="btn-group ">
                                             <button type="button" class="btn btn-sm btn-danger">View</button>
-                                            {% if user.username == item.author %}
+                                            {% if user.username == guide.author %}
                                                 <button type="button" class="btn btn-sm btn-danger">Edit</button>
                                             {% endif %}
                                         </div>

@@ -20,8 +20,8 @@ class AuthenticationController extends BaseController {
 
     private const LOGIN_VIEW = 'login.twig'; # view s loginem
     private const REGISTRATION_VIEW = 'register.twig'; # view s registraci
-    private const SUCCESSFUL_REGISTRATION = 'successful_registration.html'; # staticka html pro zobrazeni uspesne registrace
-    private const LOGIN_SUCCESSFUL = 'successful_login.html'; # staticka html pro zobrazeni uspesneho loginu
+    private const SUCCESSFUL_REGISTRATION = 'successful_registration.html'; # html pro zobrazeni uspesne registrace
+    private const LOGIN_SUCCESSFUL = 'successful_login.html'; # html pro zobrazeni uspesneho loginu
 
     private UserModel $userModel; # user model pro pristup k databazi
 

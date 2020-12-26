@@ -1,7 +1,7 @@
 <div id="content">
+    <h1 class="display-4">Review of "<span class="text-primary">{{ guide.name }}</span>"</h1>
     <p id="error">{{ error }}</p>
-    <p>Reviews in progress: {{ reviews|length }}</p>
-    {% if reviewers|length == 0 %}
+    {% if reviewers|length == 0 and reviews|length < 3 %}
         <p class="text-danger fw-bold">Error, no free reviewers available for this guide at least three reviewers are
             neccessary</p>
     {% endif %}
@@ -86,8 +86,8 @@
     {% if reviews|length == 3 %}
         <div class="d-flex">
             <div class="ml-auto">
-                <button class="btn btn-danger">Remove Guide</button>
-                <button class="btn btn-primary">Release Guide</button>
+                <button onclick="rejectGuide('{{ guide.id }}')" class="btn btn-warning">Reject Guide</button>
+                <button onclick="releaseGuide('{{ guide.id }}')" class="btn btn-primary">Accept Guide</button>
             </div>
         </div>
     {% endif %}

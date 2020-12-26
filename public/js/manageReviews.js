@@ -47,13 +47,13 @@ function deleteReview(reviewId, guideId) {
     }
 }
 
-function deleteGuide(guideId) {
-    if (confirm('Are you sure you want to remove this guide? (This action is irreversible)')) {
+function releaseGuide(guideId) {
+    if (confirm('Are you sure you want to release this guide?')) {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
-        formData.append('guideId', guideId);
 
-        xhr.open('POST', '/deleteguide', true);
+        formData.append('guideId', guideId);
+        xhr.open('POST', '/releaseguide', true);
         xhr.onload = () => {
             const jsonResponse = JSON.parse(xhr.response);
             $('#content').replaceWith(jsonResponse.fragment);
@@ -67,12 +67,13 @@ function deleteGuide(guideId) {
     }
 }
 
-function releaseGuide(guideId) {
-    if (confirm('Are you sure you want to release this guide?')) {
+function rejectGuide(guideId) {
+    if (confirm('Are you sure you want to reject this guide?')) {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
 
         formData.append('guideId', guideId);
+        xhr.open('POST', '/rejectguide', true);
         xhr.onload = () => {
             const jsonResponse = JSON.parse(xhr.response);
             $('#content').replaceWith(jsonResponse.fragment);

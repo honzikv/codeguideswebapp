@@ -40,7 +40,7 @@ class AssignReviewModel extends BaseModel {
         }
 
         foreach ($guideReviews as $guideReview) {
-            if ($guideReview['reviewerId'] == $this->userId) {
+            if ($guideReview['reviewer_id'] == $this->userId) {
                 throw new Exception('Error, this user already reviews/reviewed this guide');
             }
         }
@@ -48,5 +48,7 @@ class AssignReviewModel extends BaseModel {
         $statement = 'INSERT INTO review (reviewer_id, guide_id) VALUES (?, ?)';
         $query = $this->prepare($statement);
         $query->execute([$this->userId, $this->guideId]);
+
     }
+
 }
