@@ -34,7 +34,7 @@ class Application {
         $this->twig = new Environment($this->loader, []);
 
         $this->database = new Database(); # inicializace databaze
-        $this->session = new Session();
+        $this->session = new Session(); # inicializace session
     }
 
     static function getInstance(): Application {

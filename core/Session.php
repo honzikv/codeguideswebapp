@@ -15,14 +15,16 @@ class Session {
             return true;
         } else {
             $_SESSION['role'] = 'viewer';
+            $_SESSION['banned'] = '0';
             return false;
         }
     }
 
-    function setUserInfo($username, $role, $id) {
+    function setUserInfo($username, $role, $id, $banned) {
         $_SESSION['id'] = $id;
         $_SESSION['username'] = $username;
         $_SESSION['role'] = $role;
+        $_SESSION['banned'] = $banned;
     }
 
     public function getUserInfo(): array {
@@ -34,6 +36,8 @@ class Session {
 
     function removeUser() {
         unset($_SESSION['username']);
+        unset($_SESSION['id']);
+        $_SESSION['banned'] = '0';
         $_SESSION['role'] = 'viewer';
     }
 
@@ -43,5 +47,9 @@ class Session {
 
     function getUserId() {
         return $_SESSION['id'];
+    }
+
+    public function isUserBanned(): bool {
+        return $_SESSION['banned'] == '1' || $_SESSION['banned'] == true;
     }
 }

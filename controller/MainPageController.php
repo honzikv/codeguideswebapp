@@ -20,7 +20,6 @@ class MainPageController extends BaseController {
 
     function render() {
         $guides = $this->guideModel->getPublishedGuides(10);
-
-        $this->__render(self::VIEW);
+        $this->__render(self::VIEW, ['guides' => $guides]);
     }
 }

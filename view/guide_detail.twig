@@ -1,0 +1,28 @@
+{% extends 'layout/main_layout.twig' %}
+{% block content %}
+
+    <div class="container justify-content-center">
+        <h4 class="display-3">{{ guide.name }}</h4>
+        <h4 class="lead">By: {{ guide.username }}</h4>
+
+        <hr>
+
+        <div class="jumbotron backgroundAcrylic">
+            <h4>Abstract</h4>
+            <p>{{ guide.abstract }}</p>
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <div class="ml-auto">
+                        <form method="GET" action="/guide/download">
+                            <input readonly hidden name="guideId" value="{{ guide.id }}">
+                            <button type="submit" class="btn btn-primary mb-lg-2">
+                                Download content
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

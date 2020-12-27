@@ -29,13 +29,17 @@ $router->setGetMethod('/login', [AuthenticationController::class, 'renderLoginPa
 $router->setGetMethod('/register', [AuthenticationController::class, 'renderRegistrationPage']);
 $router->setPostMethod('/register', [AuthenticationController::class, 'processRegistration']);
 $router->setPostMethod('/login', [AuthenticationController::class, 'processLogin']);
-$router->setPostMethod('/logout', [AuthenticationController::class, 'processLogout']);
+$router->setGetMethod('/logout', [AuthenticationController::class, 'processLogout']);
+$router->setGetMethod('/banned', [AuthenticationController::class, 'renderBanned']);
 
 # akce pro manipulaci s user guides
 $router->setGetMethod('/createguide', [GuideController::class, 'renderCreateGuide']);
 $router->setPostMethod('/createguide', [GuideController::class, 'processGuideUpload']);
 $router->setGetMethod('/guidelist', [GuideController::class, 'renderGuideList']);
 $router->setGetMethod('/myguides', [GuideController::class, 'renderMyGuides']);
+$router->setGetMethod('/guide', [GuideController::class, 'renderGuideDetail']);
+$router->setGetMethod('/guide/download', [GuideController::class, 'downloadGuide']);
+$router->setPostMethod('/removeguide',[GuideController::class, 'removeGuide']);
 
 # akce pro publishera (admina) stranky
 $router->setGetMethod('/manageusers', [PublisherController::class, 'renderManageUsers']);
@@ -53,7 +57,6 @@ $router->setGetMethod('/myreviews', [ReviewerController::class, 'renderMyReviews
 $router->setGetMethod('/review', [ReviewerController::class, 'renderReview']);
 $router->setGetMethod('/review/download', [ReviewerController::class, 'downloadGuide']);
 $router->setPostMethod('/savereview', [ReviewerController::class, 'saveReview']);
-$router->setPostMethod('/completereview', [ReviewerController::class, 'completeReview']);
 
 
 $application->run();

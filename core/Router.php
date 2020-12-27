@@ -2,7 +2,9 @@
 
 namespace app\core;
 
+use app\controller\AuthenticationController;
 use app\controller\ErrorController;
+use app\controller\PublisherController;
 
 class Router {
 
@@ -48,6 +50,13 @@ class Router {
         if ($callback == false) {
             header('Location: /error');
             die();
+        }
+
+        if (Application::getInstance()->getSession()->isUserBanned()) {
+            if ($path !== '/logout' or $method !== 'get') {
+                (new AuthenticationController())->renderBanned();
+                return;
+            }
         }
 
         # Pokud se jedna o array, tak vytvorime controller. Tento array by mel mit vzdy 2 prvky

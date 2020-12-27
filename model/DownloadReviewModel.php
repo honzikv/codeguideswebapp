@@ -7,7 +7,7 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
-class DownloadFileModel extends BaseModel {
+class DownloadReviewModel extends BaseModel {
 
     var string $reviewId;
 

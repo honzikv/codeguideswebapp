@@ -82,8 +82,8 @@ class UserModel extends BaseModel {
      * Ziska vsechny guides i s danymi stavy jako stringy - pres inner join
      */
     function getUserGuidesWithStates($userId) {
-        $statement = 'SELECT * FROM guide INNER JOIN guide_state_lov guide_state_lov on 
-                        guide.guide_state = guide_state_lov.id WHERE user_id = (?)';
+        $statement = 'SELECT guide.id, name, abstract, filename, guide_state, state FROM guide INNER JOIN guide_state_lov guide_state on 
+                        guide.guide_state = guide_state.id WHERE user_id = (?)';
         $query = $this->prepare($statement);
         $query->execute([$userId]);
         return $query->fetchAll();

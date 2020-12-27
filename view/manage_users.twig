@@ -1,60 +1,63 @@
 {% extends 'layout/main_layout.twig' %}
 
 {% block content %}
-
-    <table class="table tableAcrylic" id="users">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">User Id</th>
-            <th scope="col">Username</th>
-            <th scope="col">Email</th>
-            <th scope="col">Role</th>
-            <th scope="col">Change Role</th>
-            <th scope="col">Ban User</th>
-            <th scope="col">Delete User</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% set i = 1 %}
-        {% for user in users %}
-
-            <tr class="elementHoverLight">
-                <th scope="row">{{ i }}</th>
-                <td>{{ user.id }}</td>
-                <td id="user{{ user.id }}Username">{{ user.username }} {% if user.banned == true %} (banned) {% endif %}</td>
-                <td>{{ user.email }}</td>
-                <td id="user{{ user.id }}Role">{{ user.role }}</td>
-                <td id="user" class="dropdown">
-                    <form action="" name="FILTER" class="">
-                        <select onchange="changeRole('{{ user.id }}', '{{ user.username }}', this)"
-                                class="form-control form-control-sm" name="filter_for">
-                            {% for changeableRole in roles %}
-                                <option id="user{{ user.id }}Option{{ user.role }}"
-                                        {% if user.role == changeableRole.role %} selected="selected" {% endif %}
-                                        value="{{ changeableRole.role }}">{{ changeableRole.role }}</option>
-                            {% endfor %}
-                        </select>
-                    </form>
-                </td>
-                <td>
-                    <button onclick="banUser('{{ user.id }}', '{{ user.username }}', 'ban')"
-                            id="banButton{{ user.id }}"
-                            class="btn btn-warning">{% if user.banned == true %}Unban{% else %}Ban{% endif %}
-                    </button>
-                </td>
-                <td>
-                    <button onclick="deleteUser('{{ user.id }}','{{ user.username }}')" class="btn btn-danger">Delete
-                    </button>
-                </td>
+    <h1 class="display-3">Users</h1>
+    <div class="table-responsive">
+        <table class="table tableAcrylic " id="users">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">User Id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Change Role</th>
+                <th scope="col">Ban User</th>
+                <th scope="col">Delete User</th>
             </tr>
+            </thead>
 
-            {% set i = i + 1 %}
-        {% endfor %}
+            <tbody>
+            {% set i = 1 %}
+            {% for user in users %}
 
-        </tbody>
-    </table>
+                <tr class="elementHoverLight">
+                    <th scope="row">{{ i }}</th>
+                    <td>{{ user.id }}</td>
+                    <td id="user{{ user.id }}Username">{{ user.username }} {% if user.banned == true %} (banned) {% endif %}</td>
+                    <td>{{ user.email }}</td>
+                    <td id="user{{ user.id }}Role">{{ user.role }}</td>
+                    <td id="user" class="dropdown">
+                        <form action="" name="FILTER" class="">
+                            <select onchange="changeRole('{{ user.id }}', '{{ user.username }}', this)"
+                                    class="form-control form-control-sm" name="filter_for">
+                                {% for changeableRole in roles %}
+                                    <option id="user{{ user.id }}Option{{ user.role }}"
+                                            {% if user.role == changeableRole.role %} selected="selected" {% endif %}
+                                            value="{{ changeableRole.role }}">{{ changeableRole.role }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </td>
+                    <td>
+                        <button onclick="banUser('{{ user.id }}', '{{ user.username }}', 'ban')"
+                                id="banButton{{ user.id }}"
+                                class="btn btn-warning">{% if user.banned == true %}Unban{% else %}Ban{% endif %}
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="deleteUser('{{ user.id }}','{{ user.username }}')" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+
+                {% set i = i + 1 %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
     <script type="text/javascript" src="js/manageUsers.js"></script>
     <script>
         $('#refresh').click(() => sendUsers('users'));

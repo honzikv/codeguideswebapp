@@ -2,18 +2,17 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href='bootstrap/css/bootstrap.min.css'/>
     <link rel="stylesheet" href="css/main.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="js/logout.js"></script>
     <title>Coding Guides WebApp</title>
 </head>
 <body>
 
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top ">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a href="/" class="nav-link
@@ -24,36 +23,24 @@
                 </li>
                 <li class="nav-item">
 
-                    <a href="/guidelist" class="nav-link
-                {% if view == 'guide_list.twig' %}
-                            fw-bold
-                        {% endif %}">Guides</a>
+                    <a href="/guidelist" class="nav-link">Guides</a>
                 </li>
 
                 {% if user.role == 'author' or user.role == 'reviewer' %}
                     <li class="nav-item">
-                        <a href="/myguides" class="nav-link
-                {% if view == 'my_guides.twig' %}
-                    fw-bold
-                    {% endif %}">My Guides</a>
+                        <a href="/myguides" class="nav-link">My Guides</a>
                     </li>
                 {% endif %}
 
                 {% if user.role == 'reviewer' %}
                     <li class="nav-item">
-                        <a href="/myreviews" class="nav-link
-                        {% if view == 'my_reviews.twig' %}
-                        fw-bold
-                        {% endif %}">My Reviews</a>
+                        <a href="/myreviews" class="nav-link">My Reviews</a>
                     </li>
                 {% endif %}
 
                 {% if user.role == 'publisher' %}
                     <li class="nav-item">
-                        <a href="/manageusers" class="nav-link
-                        {% if view == 'manage_users.twig' %}
-                        fw-bold
-                        {% endif %}">Manage Users</a>
+                        <a href="/manageusers" class="nav-link">Manage Users</a>
                     </li>
 
                     <li class="nav-item">
@@ -61,34 +48,24 @@
                     </li>
                 {% endif %}
 
-                <li>
-
-                </li>
             </ul>
 
             <ul class="navbar-nav ml-auto">
                 {% if not user %}
                     <li class="nav-item">
-                        <a href="/register" class="nav-link
-                        {% if view == 'register.twig' %}
-                            fw-bold
-                            {% endif %}">Register</a>
+                        <a href="/register" class="nav-link">Register</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/login" class="nav-link
-                        {% if view == 'login.twig' %}
-                            fw-bold
-                        {% endif %}">Login</a>
+                        <a href="/login" class="nav-link">Login</a>
                     </li>
 
                 {% endif %}
 
                 {% if user %}
+                    <li class="nav-link ">Logged in as: {{ user.username }} ({{ user.role }})</li>
                     <li class="nav-item">
-                        <form id="logoutForm" action="/logout" method="post">
-                            <button type="submit" class="buttonAsLink nav-item">Logout</button>
-                        </form>
+                        <a href="/logout" class="nav-link">Logout</a>
                     </li>
                 {% endif %}
             </ul>
@@ -96,7 +73,7 @@
         </div>
     </nav>
 </header>
-<div class="container mt-4">
+<div class="container-fluid contentDefault mt-4">
     {% block content %}
     {% endblock %}
 </div>

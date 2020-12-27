@@ -6,7 +6,7 @@ function redirectAndShowError() {
 function createReview(userSelectionId, rowId, guideId, guideName) {
     const optionValue = $('#' + userSelectionId + ' option:selected').val();
     const optionText = $('#' + userSelectionId + ' option:selected').html();
-    if (confirm('Assign '+ optionText + ' to create review for guide \'' + guideName + '\' ?')) {
+    if (confirm('Assign ' + optionText + ' to create review for guide \'' + guideName + '\' ?')) {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
         formData.append('userId', optionValue);
@@ -36,7 +36,11 @@ function deleteReview(reviewId, guideId) {
         xhr.open('POST', '/deletereview', true);
         xhr.onload = () => {
             const jsonResponse = JSON.parse(xhr.response);
-            $('#content').replaceWith(jsonResponse.fragment);
+            if ('error' in jsonResponse) {
+                $('#error').html(jsonResponse.error);
+            } else {
+                $('#content').replaceWith(jsonResponse.fragment);
+            }
         };
 
         xhr.onerror = () => {
@@ -55,8 +59,13 @@ function releaseGuide(guideId) {
         formData.append('guideId', guideId);
         xhr.open('POST', '/releaseguide', true);
         xhr.onload = () => {
+            console.log(xhr.response);
             const jsonResponse = JSON.parse(xhr.response);
-            $('#content').replaceWith(jsonResponse.fragment);
+            if ('error' in jsonResponse) {
+                $('#error').html(jsonResponse.error);
+            } else {
+                $('#content').replaceWith(jsonResponse.fragment);
+            }
         };
 
         xhr.onerror = () => {

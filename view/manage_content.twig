@@ -1,37 +1,42 @@
 {% extends 'layout/main_layout.twig' %}
 
 {% block content %}
-    <h1 class="display-4">Manage Content</h1>
-    <table class="table tableAcrylic">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Guide name</th>
-            <th scope="col">Author</th>
-            <th scope="col">Reviews</th>
-            <th scope="col">Released</th>
-        </tr>
-        </thead>
+    {% if guides|length == 0 %}
+        <p class="lead text-center">No content to manage currently, wait for users to submit their reviews...</p>
+    {% else %}
 
-        <tbody>
-        {% set i = 1 %}
-        {% for guide in guides %}
+        <h1 class="display-4">Manage Content</h1>
+        <table class="table tableAcrylic">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Guide name</th>
+                <th scope="col">Author</th>
+                <th scope="col">Reviews</th>
+                <th scope="col">Released</th>
+            </tr>
+            </thead>
 
-        <tr class="elementHoverLight">
-            <th scope="row">{{ i }}</th>
-            <td>{{ guide.name }}</td>
-            <td>{{ guide.username }}</td>
+            <tbody>
+            {% set i = 1 %}
+            {% for guide in guides %}
 
-            <td>
-                <a href="/managereviews?guideId={{ guide.guide_id }}" class="btn btn-primary">Manage Reviews</a>
-            </td>
+            <tr class="elementHoverLight">
+                <th scope="row">{{ i }}</th>
+                <td>{{ guide.name }}</td>
+                <td>{{ guide.username }}</td>
 
-            <td>{{ guide.is_released }}</td>
+                <td>
+                    <a href="/managereviews?guideId={{ guide.guide_id }}" class="btn btn-primary">Manage Reviews</a>
+                </td>
 
-            {% set i = i + 1 %}
-            {% endfor %}
+                <td>{{ guide.is_released }}</td>
 
-        </tbody>
-    </table>
+                {% set i = i + 1 %}
+                {% endfor %}
+
+            </tbody>
+        </table>
+    {% endif %}
 
 {% endblock %}

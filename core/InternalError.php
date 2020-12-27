@@ -6,6 +6,6 @@ namespace app\core;
 
 use Exception;
 
-class TeapotError extends Exception {
+class InternalError extends Exception {
 
 }

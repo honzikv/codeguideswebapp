@@ -3,13 +3,13 @@
 {% block content %}
 
     <div class=" justify-content-center">
-        <h1 class="display-4">Pending reviews</h1>
+        <h1 class="display-4 text-center">Pending reviews</h1>
         {% if reviews|length == 0 %}
             <p>Currently, there are no pending reviews for you...</p>
         {% endif %}
         <div class="mt-4">
             {% for review in reviews %}
-                <div class="jumbotron mt-4 reviewItem backgroundAcrylic">
+                <div class="jumbotron mt-4  backgroundAcrylic">
                     <h1 class="display-5">{{ review.name }}</h1>
                     <p class="smallParagraph">{{ review.abstract }}</p>
                     <div class="d-flex">

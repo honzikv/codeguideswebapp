@@ -1,4 +1,3 @@
-
 $('#createGuideForm').on('submit', (e) => {
     e.preventDefault();
 

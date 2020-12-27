@@ -6,7 +6,7 @@ namespace app\model;
 
 use app\core\Application;
 use app\core\BaseModel;
-use app\core\TeapotError;
+use app\core\InternalError;
 use app\core\Request;
 use Exception;
 use PDO;
@@ -153,8 +153,10 @@ class GuideModel extends BaseModel {
     }
 
     function getPublishedGuides(int $count) {
-        $statement = 'SELECT * FROM guide ORDER BY RAND() LIMIT 1, :count';
+        $statement = 'SELECT * FROM guide WHERE guide_state = :state ORDER BY RAND() LIMIT :count';
+        $statePublished = $this->getGuideState('published');
         $query = $this->prepare($statement);
+        $query->bindParam(':state', $statePublished['id'], PDO::PARAM_INT);
         $query->bindParam(':count', $count, PDO::PARAM_INT);
         $query->execute();
         return $query->fetchAll();
@@ -167,9 +169,8 @@ class GuideModel extends BaseModel {
             $query = $this->prepare($statement);
             $query->execute([$guideStatePublished['id']]);
             return $query->fetchAll();
-        }
-        catch (Exception $exception) {
-            throw new TeapotError();
+        } catch (Exception $exception) {
+            throw new InternalError();
         }
     }
 

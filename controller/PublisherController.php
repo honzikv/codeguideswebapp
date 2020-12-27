@@ -13,6 +13,7 @@ use app\model\DeleteUserModel;
 use app\model\FinalizeGuideModel;
 use app\model\GuideModel;
 use app\model\ManageReviewsModel;
+use app\model\ReviewModel;
 use app\model\RoleChangeModel;
 use app\model\UserModel;
 use Exception;
@@ -28,6 +29,7 @@ class PublisherController extends BaseController {
 
     private UserModel $userModel;
     private GuideModel $guideModel;
+    private ReviewModel $reviewModel;
 
     private function redirectIfNotPublisher() {
         if (!$this->session->isUserLoggedIn()) {
@@ -45,6 +47,7 @@ class PublisherController extends BaseController {
 
         $this->userModel = new UserModel();
         $this->guideModel = new GuideModel();
+        $this->reviewModel = new ReviewModel();
     }
 
     function renderManageContent() {
@@ -172,9 +175,16 @@ class PublisherController extends BaseController {
         try {
             $finalizeGuideModel->loadData($request->getBody());
             $finalizeGuideModel->validate();
-            $finalizeGuideModel->acceptGuide();
-        }
-        catch (Exception $exception) {
+
+            # pokud guide neobsahuje 3 dokoncene recenze nelze ji zverejnit
+            $reviews = $this->reviewModel->getFinishedReviewsForGuide($finalizeGuideModel->guideId);
+            if (empty($reviews) || count($reviews) < 3) {
+                throw new Exception('Error, 3 complete reviews required');
+            } else {
+                $statePublished = $this->guideModel->getGuideState('published');
+                $finalizeGuideModel->acceptGuide($statePublished);
+            }
+        } catch (Exception $exception) {
             $response = ['error' => $exception->getMessage()];
             $response = json_encode($response);
             $this->sendResponse($response);
@@ -194,8 +204,7 @@ class PublisherController extends BaseController {
             $finalizeGuideModel->loadData($request->getBody());
             $finalizeGuideModel->validate();
             $finalizeGuideModel->rejectGuide();
-        }
-        catch (Exception $exception) {
+        } catch (Exception $exception) {
             $response = ['error' => $exception->getMessage()];
             $response = json_encode($response);
             $this->sendResponse($response);

@@ -5,6 +5,7 @@ namespace app\core;
 
 
 class BaseController {
+    private const BANNED_VIEW = 'banned.html'; # view pro zobrazeni, kdyz je uzivatel zabanovany
 
     protected Session $session;
 
@@ -18,6 +19,7 @@ class BaseController {
      * @param array $params: parametry, ktere se predaji view
      */
     protected function __render($view, $params = []) {
+
         if ($this->session->isUserLoggedIn()) {
             $params['user'] = $this->session->getUserInfo();
         }

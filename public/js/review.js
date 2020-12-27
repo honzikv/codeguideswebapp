@@ -22,21 +22,21 @@ $('#reviewForm').on('submit', (e) => {
     }
 
 });
-
-$('#completeReview').click(() => {
-    if (confirm('Complete review? This action cannot be reverted without a publisher')) {
-        $.ajax({
-            type: 'post',
-            url: '/completereview',
-            data: $('#reviewForm').serialize(),
-            processData: false,
-            success: (response) => {
-                const jsonResponse = JSON.parse(response);
-                if ('fragment' in jsonResponse) {
-                    $('#content').replaceWith(jsonResponse.fragment);
-                }
-            }
-        });
-    }
-
-});
+//
+// $('#completeReview').click(() => {
+//     if (confirm('Complete review? This action cannot be reverted without a publisher')) {
+//         $.ajax({
+//             type: 'post',
+//             url: '/completereview',
+//             data: $('#reviewForm').serialize(),
+//             processData: false,
+//             success: (response) => {
+//                 const jsonResponse = JSON.parse(response);
+//                 if ('fragment' in jsonResponse) {
+//                     $('#content').replaceWith(jsonResponse.fragment);
+//                 }
+//             }
+//         });
+//     }
+//
+// });

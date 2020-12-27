@@ -22,6 +22,7 @@ class AuthenticationController extends BaseController {
     private const REGISTRATION_VIEW = 'register.twig'; # view s registraci
     private const SUCCESSFUL_REGISTRATION = 'successful_registration.html'; # html pro zobrazeni uspesne registrace
     private const LOGIN_SUCCESSFUL = 'successful_login.html'; # html pro zobrazeni uspesneho loginu
+    private const BANNED_VIEW = 'banned.html'; # view pro zobrazeni, kdyz je uzivatel zabanovany
 
     private UserModel $userModel; # user model pro pristup k databazi
 
@@ -67,7 +68,7 @@ class AuthenticationController extends BaseController {
         # pokud doposud nebyla vyhozena zadna exception pak je uzivatel autentifikovany
         $user = $this->userModel->getUserFromUsername($loginModel->username);
         $role = $this->userModel->getRole($user['role_id']);
-        $this->session->setUserInfo($user['username'], $role['role'], $user['id']);
+        $this->session->setUserInfo($user['username'], $role['role'], $user['id'], $user['banned']);
 
         $response = ['html' => $this->getRenderedView(self::LOGIN_SUCCESSFUL)];
         $response = json_encode($response);
@@ -106,5 +107,9 @@ class AuthenticationController extends BaseController {
     function processLogout() {
         $this->session->removeUser();
         $this->redirectToIndex();
+    }
+
+    function renderBanned() {
+        $this->__render(self::BANNED_VIEW);
     }
 }

@@ -1,0 +1,45 @@
+<div id="content">
+    {% if guides|length == 0 %}
+        <p class="lead text-center">You have no guides</p>
+    {% else %}
+
+        <h1 class="display-4 text-center">Your Guides</h1>
+
+        <div class="table-responsive">
+            <table class="table tableAcrylic">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Guide Name</th>
+                    <th scope="col">File name</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% set i = 1 %}
+                {% for guide in guides %}
+
+                    <tr class="elementHoverLight">
+                        <th scope="row">{{ i }}</th>
+                        <td>
+                            <a href="guide?guideId={{ guide.id }}" class="">{{ guide.name }}</a>
+                        </td>
+                        <td>{{ guide.filename }}</td>
+                        <td>{{ guide.state }}</td>
+                        <td>
+                            <button onclick="deleteGuide('{{ guide.id }}')" id="delete" class="btn btn-danger">Delete
+                            </button>
+                        </td>
+                    </tr>
+
+                    {% set i = i + 1 %}
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        <p id="error" class="text-danger"></p>
+    {% endif %}
+</div>

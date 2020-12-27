@@ -78,14 +78,6 @@ class SaveReviewModel extends BaseModel {
 
     function saveReview() {
         $statement = 'UPDATE review SET info_score = (?), efficiency_score = (?), complexity_score = (?),
-                      quality_score = (?), overall_score = (?), notes = (?) WHERE id = (?)';
-        $query = $this->prepare($statement);
-        $query->execute([$this->infoScore, $this->efficiencyScore,
-            $this->complexityScore, $this->qualityScore, $this->overallScore, $this->notes, $this->reviewId]);
-    }
-
-    function completeReview() {
-        $statement = 'UPDATE review SET info_score = (?), efficiency_score = (?), complexity_score = (?),
                       quality_score = (?), overall_score = (?), notes = (?), is_finished = true WHERE id = (?)';
         $query = $this->prepare($statement);
         $query->execute([$this->infoScore, $this->efficiencyScore,

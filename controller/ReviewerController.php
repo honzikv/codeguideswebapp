@@ -7,7 +7,7 @@ namespace app\controller;
 use app\core\Application;
 use app\core\BaseController;
 use app\core\Request;
-use app\model\DownloadFileModel;
+use app\model\DownloadReviewModel;
 use app\model\GuideModel;
 use app\model\ReviewModel;
 use app\model\SaveReviewModel;
@@ -18,8 +18,7 @@ class ReviewerController extends BaseController {
 
     private const MY_REVIEWS_VIEW = 'my_reviews.twig'; # view pro render recenzi daneho uzivatele
     private const REVIEW_VIEW = 'review.twig'; # view pro render jednotlive recenze
-    private const REVIEW_COMPLETED = 'fragment/review_completed_fragment.twig';
-    private const REVIEW_ALREADY_COMPLETED = 'review_already_completed.twig';
+    private const GUIDE_NOT_REVIEWABLE = 'guide_not_reviewable.twig';
 
     private UserModel $userModel;
     private ReviewModel $reviewModel;
@@ -46,6 +45,9 @@ class ReviewerController extends BaseController {
         }
     }
 
+    /**
+     * Render stranky "my reviews"
+     */
     function renderMyReviews() {
         # presmerovani na hlavni stranku pokud se nejedna o reviewera nebo publishera
         $this->redirectIfNotReviewerOrPublisher();
@@ -55,10 +57,14 @@ class ReviewerController extends BaseController {
         $this->__render(self::MY_REVIEWS_VIEW, ['reviews' => $reviews]);
     }
 
+    /**
+     * Render formulare pro recenzi
+     * @param Request $request request s promennou reviewId
+     */
     function renderReview(Request $request) {
         $this->redirectIfNotReviewerOrPublisher();
 
-        $this->reviewModel = new ReviewModel(); # pro jistotu vytvorime novy "cisty objekt", ktery neobsahuje zadna predchozi data
+        $this->reviewModel = new ReviewModel();
         $this->reviewModel->loadData($request->getVariables()); # nacteme promenne z url
 
         $error = false;
@@ -74,13 +80,18 @@ class ReviewerController extends BaseController {
         $guide = null;
         try {
             $review = $this->reviewModel->getReviewFromUserId($this->session->getUserId());
-
-            if ($review['is_finished'] == '1') {
-                $this->__render(self::REVIEW_ALREADY_COMPLETED);
-                return;
+            if ($review == null || $review == false) {
+                $this->redirectTo404(); # presmerovani na 404, pokud nekdo jiny nez recenzent pristoupi ke strance
             }
 
             $guide = $this->guideModel->getGuide($review['guide_id']);
+            $guidePublished = $this->guideModel->getGuideState('published');
+
+            if ($guide['guide_state'] == $guidePublished['id']) {
+                $this->__render(self::GUIDE_NOT_REVIEWABLE);
+                return;
+            }
+
         } catch (Exception $exception) {
             $error = $exception->getMessage();
         }
@@ -93,14 +104,18 @@ class ReviewerController extends BaseController {
         $this->__render(self::REVIEW_VIEW, ['review' => $review, 'guide' => $guide]);
     }
 
+    /**
+     * Stahnuti souboru ze serveru
+     * @param Request $request
+     */
     function downloadGuide(Request $request) {
         $this->redirectIfNotReviewerOrPublisher();
 
-        $downloadFileModel = new DownloadFileModel();
+        $downloadFileModel = new DownloadReviewModel();
         $downloadFileModel->loadData($request->getVariables());
 
-        $error = false;
-        $fileName = false;
+        $error = null;
+        $fileName = null;
         try {
             $downloadFileModel->validate();
             $review = $this->reviewModel->getReview($downloadFileModel->reviewId);
@@ -116,6 +131,7 @@ class ReviewerController extends BaseController {
         }
 
         $filePath = Application::$FILES_PATH . $fileName;
+
         if (file_exists($filePath)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
@@ -135,6 +151,11 @@ class ReviewerController extends BaseController {
 
     }
 
+    /**
+     * Funkce k ulozeni recenze - tzn. nastavi recenzi jako is_finished = true - publisher pote vi, ze recenzent
+     * pridelenou recenzi zpracoval.
+     * @param Request $request request od klienta
+     */
     function saveReview(Request $request) {
         $this->redirectIfNotReviewerOrPublisher();
 
@@ -147,15 +168,27 @@ class ReviewerController extends BaseController {
             $saveReviewModel->validate();
 
             $review = $this->reviewModel->getReview($saveReviewModel->reviewId);
+            $guide = $this->guideModel->getGuide($review['guide_id']);
+            $reviewdedState = $this->guideModel->getGuideState(['reviewed']);
+
+            # pokud guide neni ve stavu reviewed pak odesleme obrazovku s upozornenim, ze recenzi jiz neslo ulozit
+            if ($guide['guide_state'] != $reviewdedState['id']) {
+                $fragment = $this->getRenderedView(self::GUIDE_NOT_REVIEWABLE);
+                $response = ['fragment' => $fragment];
+                $response = json_encode($response);
+                $this->sendResponse($response);
+                return;
+            }
+
+            # pokud je reviewer_id jine, nez id prihlaseneho uzivatele vyhodime exception (toto by nemelo byt mozne pres
+            # webovou stranku ale pouze pomoci posilani requestu primo - napr. Postman etc.)
             if ($review['reviewer_id'] != $this->session->getUserId()) {
                 throw new Exception('Access denied');
             }
 
-            $saveReviewModel->saveReview();
-            $guide = $this->guideModel->getGuide($review['guide_id']);
-            $review = $this->reviewModel->getReview($saveReviewModel->reviewId); # refresh, protoze jsme review upravili
+            $saveReviewModel->saveReview(); # jinak ulozeni recenze
         } catch (Exception $exception) {
-            $this->__render(self::REVIEW_VIEW, ['error' => $exception->getMessage()]);
+            $this->__render(self::REVIEW_VIEW, ['error' => $exception->getMessage()]); # vyhozeni validacni chyby
             return;
         }
 
@@ -166,37 +199,4 @@ class ReviewerController extends BaseController {
         $this->sendResponse($response);
     }
 
-    function completeReview(Request $request) {
-        $this->redirectIfNotReviewerOrPublisher();
-
-        $saveReviewModel = new SaveReviewModel();
-        $saveReviewModel->loadData($request->getBody());
-
-        $review = null;
-        $guide = null;
-        try {
-            $saveReviewModel->validate();
-
-            $review = $this->reviewModel->getReview($saveReviewModel->reviewId);
-            if ($review['is_finished'] == '1') {
-                $fragment = $this->getRenderedView(self::REVIEW_ALREADY_COMPLETED);
-                $response = ['fragment' => $fragment];
-                $response = json_encode($response);
-                $this->sendResponse($response);
-                return;
-            }
-            if ($review['reviewer_id'] != $this->session->getUserId()) {
-                throw new Exception('Access denied');
-            }
-            $saveReviewModel->completeReview();
-        } catch (Exception $exception) {
-            $this->__render(self::REVIEW_VIEW, ['error' => $exception->getMessage()]);
-            return;
-        }
-
-        $fragment = $this->getRenderedView(self::REVIEW_COMPLETED);
-        $response = ['fragment' => $fragment];
-        $response = json_encode($response);
-        $this->sendResponse($response);
-    }
 }

@@ -44,4 +44,11 @@ class ReviewModel extends BaseModel {
         return $query->fetch();
     }
 
+    function getFinishedReviewsForGuide(string $guideId) {
+        $statement = 'SELECT * FROM review WHERE guide_id = (?) and is_finished = true';
+        $query = $this->prepare($statement);
+        $query->execute([$guideId]);
+        return $query->fetchAll();
+    }
+
 }

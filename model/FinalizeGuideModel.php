@@ -21,12 +21,10 @@ class FinalizeGuideModel extends BaseModel {
         }
     }
 
-    function acceptGuide() {
-        $guideModel = new GuideModel();
-        $statePublished = $guideModel->getGuideState('published');
+    function acceptGuide($publishedId) {
         $statement = 'UPDATE guide SET guide_state = (?) WHERE id = (?)';
         $query = $this->prepare($statement);
-        $query->execute([$statePublished['id'], $this->guideId]);
+        $query->execute([$publishedId, $this->guideId]);
     }
 
     function removeGuide() {

@@ -20,7 +20,7 @@
 
 /* globalni override */
 body {
-    background: linear-gradient(rgba(1, 1, 1, 0.7), rgba(1, 1, 1, 0.7)),
+    background: linear-gradient(rgba(1, 1, 1, 0.9), rgba(1, 1, 1, 0.9)),
     url("../asset/background.jpg") no-repeat center center fixed;
 
     -webkit-background-size: cover;
@@ -42,9 +42,10 @@ body {
     width: 80%;
 }
 
-.guideDescription {
-
+.currentMenuItem {
+    color: #5b55ff;
 }
+
 
 .hintText {
     margin-left: 8px;
