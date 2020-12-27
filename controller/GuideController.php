@@ -33,63 +33,94 @@ class GuideController extends BaseController {
         $this->guideModel = new GuideModel();
     }
 
+    /**
+     * Render stranky se senznamem vsech verejne dostupnych navodu
+     */
     function renderGuideList() {
-        try {
-            $guides = $this->guideModel->getAllPublishedGuides();
-        } catch (InternalError $error) {
-            $this->redirectTo418();
-        }
+        $guides = $this->guideModel->getAllPublishedGuides();
         $this->__render(self::GUIDE_LIST_VIEW, ['guides' => $guides]);
     }
 
+    /**
+     * Render stranky s formularem pro vytvoreni guide
+     */
     function renderCreateGuide() {
         $this->__render(self::CREATE_GUIDE_VIEW);
     }
 
+    /**
+     * Obslouzeni POST pozadavku pro nahrani nove guide
+     * @param Request $request POST request s informacemi o guide
+     */
     function processGuideUpload(Request $request) {
+        if (!$this->session->isUserLoggedIn()) { # pokud neni uzivatel prihlaseny request ignorujeme
+            return;
+        }
         $guideModel = new GuideModel();
         $guideModel->loadData($request->getBody());
 
         try {
-            $guideModel->validate();
-            $fileName = $guideModel->uploadFile($request);
-            $userId = $this->userModel->getUserId($this->session->getUsername());
-            $guideModel->addGuideToDatabase($fileName, $userId);
+            $guideModel->validate(); # validace dat
+            $fileName = $guideModel->uploadFile($request); # upload souboru
+            $userId = $this->userModel->getUserId($this->session->getUsername()); # ziskani id uzivatele
+            $guideModel->createGuide($fileName, $userId); # vytvoreni guide v databazi
         } catch (Exception $exception) {
-            $response = ['error' => $exception->getMessage()];
+            $response = ['error' => $exception->getMessage()]; # pri chybe posleme klientovi zpravu s chybou
             $response = json_encode($response);
             $this->sendResponse($response);
             return;
         }
 
+        # jinak posleme html stranku, kterou uzivatel vyrenderuje
         $response = ['html' => $this->getRenderedView(self::VIEW_GUIDE_CREATED)];
         $response = json_encode($response);
         $this->sendResponse($response);
     }
 
+    /**
+     * Render stranky s guides uzivatele
+     */
     function renderMyGuides() {
-        if (!$this->session->isUserLoggedIn()) {
+        if (!$this->session->isUserLoggedIn()) { # pokud neni uzivatel prihlaseny presmerujeme na vychozi stranku
             $this->redirectToIndex();
         }
 
-        $userId = $this->userModel->getUserId($this->session->getUsername());
-        $userGuides = $this->userModel->getUserGuidesWithStates($userId);
-        $this->__render(self::MY_GUIDES_VIEW, ['guides' => $userGuides]);
+        $userId = $this->userModel->getUserId($this->session->getUsername()); # id uzivatele
+        $userGuides = $this->userModel->getUserGuidesWithStates($userId); # guides uzivatele
+        $this->__render(self::MY_GUIDES_VIEW, ['guides' => $userGuides]); # posleme stranku s guides
     }
 
+    /**
+     * Render stranky s detaily o tutorialu
+     * @param Request $request GET request s id guide
+     */
     function renderGuideDetail(Request $request) {
+        $guideDetailModel = new GuideDetailModel();
+        $guideDetailModel->loadData($request->getVariables());
+
+        $guide = null;
         try {
-            $guideDetailModel = new GuideDetailModel();
-            $guideDetailModel->loadData($request->getVariables());
             $guideDetailModel->validate();
             $guide = $guideDetailModel->getGuideWithAuthor();
-            $this->__render(self::GUIDE_DETAIL_VIEW, ['guide' => $guide]);
+            $statePublished = $this->guideModel->getGuideState('published');
+
+            # pokud by nekdo pristupoval k necemu co neni jeho a neni zverejnene vyhodime chybu
+            if ($guide['guide_state'] != $statePublished['id'] || $this->session->getUserId() != $guide['user_id']) {
+                throw new Exception('Access denied');
+            }
+        } catch (Exception $exception) { # render chyby
+            $this->__render(self::GUIDE_DETAIL_VIEW, ['error' => $exception->getMessage()]);
+            return;
         }
-        catch (Exception|InternalError $error) {
-            $this->redirectTo418();
-        }
+
+        # pokud vse probehne spravne, vyrenderujeme view
+        $this->__render(self::GUIDE_DETAIL_VIEW, ['guide' => $guide]);
     }
 
+    /**
+     * Obslouzeni GET pozadavku pro stazeni souboru
+     * @param Request $request
+     */
     function downloadGuide(Request $request) {
         $downloadGuideModel = new DownloadGuideModel();
 
@@ -100,13 +131,12 @@ class GuideController extends BaseController {
             $guide = $this->guideModel->getGuide($downloadGuideModel->guideId);
 
             $guidePublished = $this->guideModel->getGuideState('published');
-            if ($guide['guide_state'] != $guidePublished['id']) {
-                $this->redirectTo418();
+            if ($guide['guide_state'] != $guidePublished['id'] || $guide['user_id'] != $this->session->getUserId()) {
+                throw new Exception('Access denied');
             }
 
             $fileName = $guide['filename'];
-        }
-        catch (Exception $exception) {
+        } catch (Exception $exception) {
             $this->__render(self::GUIDE_DETAIL_VIEW, ['error' => $exception->getMessage()]);
             return;
         }
@@ -125,36 +155,40 @@ class GuideController extends BaseController {
             flush();
             readfile($filePath);
             exit;
-        }
-        else {
+        } else {
             $this->__render(self::GUIDE_DETAIL_VIEW, ['error' => 'File not found, please contact support']);
         }
     }
 
+    /**
+     * Odstrani guide daneho uzivatele
+     * @param Request $request POST request s id guide
+     */
     function removeGuide(Request $request) {
         if (!$this->session->isUserLoggedIn()) {
             $this->redirectToIndex();
         }
 
         $deleteGuideModel = new DeleteGuideModel();
-        $deleteGuideModel->loadData($request->getBody());
+        $deleteGuideModel->loadData($request->getBody()); # nacteni dat z requestu
 
         try {
-            $deleteGuideModel->validate();
+            $deleteGuideModel->validate(); # validace id
+            $guide = $this->guideModel->getGuide($deleteGuideModel->guideId); # ziskani guide
 
-            $guide = $this->guideModel->getGuide($deleteGuideModel->guideId);
+            # pokud neni prihlaseny uzivatel autorem nelze smazat
             if ($guide['user_id'] != $this->session->getUserId()) {
                 throw new Exception('Access denied');
             }
-            $deleteGuideModel->delete();
-        }
-        catch (Exception $exception) {
+            $deleteGuideModel->delete(); # jinak smazeme
+        } catch (Exception $exception) { # pri chybe vratime response s chybou
             $response = ['error' => $exception->getMessage()];
             $response = json_encode($response);
             $this->sendResponse($response);
             return;
         }
 
+        # pokud vse probehlo spravne vratime fragment s novou tabulkou bez smazaneho zaznamu
         $userId = $this->userModel->getUserId($this->session->getUsername());
         $userGuides = $this->userModel->getUserGuidesWithStates($userId);
         $fragment = $this->getRenderedView(self::MY_GUIDES_TABLE_FRAGMENT, ['guides' => $userGuides]);

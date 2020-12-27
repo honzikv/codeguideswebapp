@@ -19,6 +19,10 @@ class ManageReviewsModel extends BaseModel {
         if (!is_numeric($this->guideId)) {
             throw new Exception('Error, guide id is not a number');
         }
+
+        if ($this->existsInDatabase('guide', 'id', $this->guideId)) {
+            throw new Exception('Error, guide id does not exist');
+        }
     }
 
     function getGuideReviews() {

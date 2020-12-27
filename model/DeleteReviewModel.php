@@ -28,6 +28,14 @@ class DeleteReviewModel extends BaseModel {
         if (!is_numeric($this->guideId)) {
             throw new Exception('Error, guide id is not a number');
         }
+
+        if (!$this->existsInDatabase('review', 'id', $this->reviewId)) {
+            throw new Exception('Error, review id does not exist');
+        }
+
+        if (!$this->existsInDatabase('guide', 'id', $this->guideId)) {
+            throw new Exception('Error, guide id does not exist');
+        }
     }
 
     function deleteReview() {

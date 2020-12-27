@@ -64,6 +64,11 @@ class Request {
         return $_FILES[$name];
     }
 
+    /**
+     * Vrati promenne z query url.
+     * Napr. localhost/test?myVar1=2 vrati [myVar1 => 2]
+     * @return array vraci asociativni pole
+     */
     function getVariables() {
         $result = [];
         parse_str($this->variables, $result);

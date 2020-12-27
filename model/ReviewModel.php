@@ -20,6 +20,10 @@ class ReviewModel extends BaseModel {
             throw new Exception('Error, review id is not a number');
         }
 
+        if (!$this->existsInDatabase('review', 'id', $this->reviewId)) {
+            throw new Exception('Error, review id does not exist');
+        }
+
     }
 
     function getPendingReviews($userId) {

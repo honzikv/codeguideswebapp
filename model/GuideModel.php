@@ -54,7 +54,12 @@ class GuideModel extends BaseModel {
         return $filename;
     }
 
-    function addGuideToDatabase($fileName, $userId) {
+    /**
+     * Vytvori zaznam o guide v databazi
+     * @param $fileName: nazev souboru
+     * @param $userId: id uzivatele v user tabulce
+     */
+    function createGuide($fileName, $userId) {
         $guideStateReviewed = $this->getGuideState('reviewed');
         $statement = 'INSERT INTO guide (name, abstract, filename, user_id, guide_state) VALUES (?, ?, ?, ?, ?)';
         $query = $this->prepare($statement);
@@ -152,7 +157,7 @@ class GuideModel extends BaseModel {
         return $query->fetch();
     }
 
-    function getPublishedGuides(int $count) {
+    function getPublishedGuidesRandom(int $count) {
         $statement = 'SELECT * FROM guide WHERE guide_state = :state ORDER BY RAND() LIMIT :count';
         $statePublished = $this->getGuideState('published');
         $query = $this->prepare($statement);
@@ -162,16 +167,16 @@ class GuideModel extends BaseModel {
         return $query->fetchAll();
     }
 
+    /**
+     * Ziskani vsech publikovanych guides
+     * @return array
+     */
     function getAllPublishedGuides() {
-        try {
-            $guideStatePublished = $this->getGuideState('published');
-            $statement = 'SELECT * FROM guide WHERE guide_state = (?)';
-            $query = $this->prepare($statement);
-            $query->execute([$guideStatePublished['id']]);
-            return $query->fetchAll();
-        } catch (Exception $exception) {
-            throw new InternalError();
-        }
+        $guideStatePublished = $this->getGuideState('published');
+        $statement = 'SELECT * FROM guide WHERE guide_state = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$guideStatePublished['id']]);
+        return $query->fetchAll();
     }
 
 }

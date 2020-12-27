@@ -18,7 +18,11 @@ class DeleteUserModel extends BaseModel {
         }
 
         if (!is_numeric($this->userId)) {
-            throw new Exception('Error user id is not a number');
+            throw new Exception('Error, user id is not a number');
+        }
+
+        if (!$this->existsInDatabase('user', 'id', $this->userId)) {
+            throw new Exception('Error, user id does not exist');
         }
     }
 

@@ -47,12 +47,16 @@ class AuthenticationController extends BaseController {
         }
     }
 
+    /**
+     * Zpracovani prihlaseni uzivatele
+     * @param Request $request POST request s informacemi o loginu - heslo a username
+     */
     function processLogin(Request $request) {
-        if ($this->session->isUserLoggedIn()) {
+        if ($this->session->isUserLoggedIn()) { # nelze se prihlasit pokud se uzivatel uz prihlasil
             return;
         }
 
-        $loginModel = new LoginModel();
+        $loginModel = new LoginModel(); # data pro login
         $loginModel->loadData($request->getBody());
 
         try {
@@ -75,17 +79,21 @@ class AuthenticationController extends BaseController {
         $this->sendResponse($response);
     }
 
+    /**
+     * Zpracovani pozadavku na registraci
+     * @param Request $request POST request s udaji pro registraci
+     */
     function processRegistration(Request $request) {
         if ($this->session->isUserLoggedIn()) {
             return; # asi by nedavalo smysl odpovidat na POST pro registraci kdyz je uzivatel uz prihlaseny
         }
 
-        $userRegistrationModel = new RegistrationModel();
-        $userRegistrationModel->loadData($request->getBody());
+        $userRegistrationModel = new RegistrationModel(); # model s daty z formulare na registraci
+        $userRegistrationModel->loadData($request->getBody()); # nacteni dat
 
         try {
-            $userRegistrationModel->validate();
-            $userRegistrationModel->checkIfExists();
+            $userRegistrationModel->validate(); # validace
+            $userRegistrationModel->register();
         } catch (Exception $exception) {
             $response = ['error' => $exception->getMessage()];
             $response = json_encode($response);
@@ -93,22 +101,23 @@ class AuthenticationController extends BaseController {
             return;
         }
 
-        if ($userRegistrationModel->register()) {
-            $response = ['html' => $this->getRenderedView(self::SUCCESSFUL_REGISTRATION)];
-            $response = json_encode($response);
-            $this->sendResponse($response);
-        } else {
-            $response = ['error' => 'Internal server error, try later'];
-            $response = json_encode($response);
-            $this->sendResponse($response);
-        }
+        # render uspesne registrace
+        $response = ['html' => $this->getRenderedView(self::SUCCESSFUL_REGISTRATION)];
+        $response = json_encode($response);
+        $this->sendResponse($response);
     }
 
+    /**
+     * Zpracovani odhlaseni - odstranime uzivatelska data ze session
+     */
     function processLogout() {
-        $this->session->removeUser();
-        $this->redirectToIndex();
+        $this->session->removeUser(); # odstraneni uzivatelskych dat
+        $this->redirectToIndex(); # presmerovani na hlavni stranku
     }
 
+    /**
+     * Render banned stranky, pokud je uzivatel zabanovany
+     */
     function renderBanned() {
         $this->__render(self::BANNED_VIEW);
     }

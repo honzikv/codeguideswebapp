@@ -19,6 +19,10 @@ class DownloadReviewModel extends BaseModel {
         if (!is_numeric($this->reviewId)) {
             throw new Exception('Error file id is not a number');
         }
+
+        if ($this->existsInDatabase('review', 'id' , $this->reviewId)) {
+            throw new Exception('Error, review id does not exist');
+        }
     }
 
 }

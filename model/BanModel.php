@@ -21,6 +21,10 @@ class BanModel extends BaseModel {
         if (!is_numeric($this->userId)) {
             throw new Exception('Error, provided value is not a number');
         }
+
+        if (!$this->existsInDatabase('user', 'id', $this->userId)) {
+            throw new Exception('Error, user id not found');
+        }
     }
 
     /**

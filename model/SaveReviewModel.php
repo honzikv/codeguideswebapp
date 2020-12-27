@@ -74,6 +74,10 @@ class SaveReviewModel extends BaseModel {
                 throw new Exception('Error, invalid score value');
             }
         }
+
+        if ($this->existsInDatabase('review', 'id', $this->reviewId)) {
+            throw new Exception('Error, this review id does not exist');
+        }
     }
 
     function saveReview() {

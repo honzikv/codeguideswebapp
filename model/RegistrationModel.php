@@ -75,9 +75,6 @@ class RegistrationModel extends BaseModel {
             throw new Exception('Error, password is too long (max ' . self::PASSWORD_LIMIT . " characters).");
         }
 
-    }
-
-    function checkIfExists() {
         if ($this->existsInDatabase('USER','username', $this->username)) {
             throw new Exception('Error username is taken');
         }
@@ -85,6 +82,7 @@ class RegistrationModel extends BaseModel {
         if ($this->existsInDatabase('USER', 'email', $this->email)) {
             throw new Exception('Error, email is taken');
         }
+
     }
 
     private function getAllUsers(): array {
@@ -110,22 +108,11 @@ class RegistrationModel extends BaseModel {
     }
 
     public function register() {
-        try {
-            $roleId = $this->getRoleId($this->role);
-        }
-        catch (Exception $exception) {
-            return false;
-        }
+        $roleId = $this->getRoleId($this->role);
 
         $statement = 'INSERT INTO USER (username, password, email, role_id) VALUES (?, ?, ?, ?)';
-        try {
             $query = $this->prepare($statement);
             $query->execute([$this->username, password_hash($this->password, PASSWORD_DEFAULT),
                 $this->email, $roleId]);
-        } catch (PDOException $exception) {
-            return false;
-        }
-
-        return true;
     }
 }

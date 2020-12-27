@@ -30,6 +30,14 @@ class AssignReviewModel extends BaseModel {
         if (!is_numeric($this->guideId)) {
             throw new Exception('Error, guide id is not a number');
         }
+
+        if (!$this->existsInDatabase('user', 'id', $this->userId)) {
+            throw new Exception('Error, user id not found');
+        }
+
+        if (!$this->existsInDatabase('guide', 'id', $this->guideId)) {
+            throw new Exception('Error, guide id not found');
+        }
     }
 
     function assignReview() {

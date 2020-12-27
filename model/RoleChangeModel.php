@@ -24,6 +24,14 @@ class RoleChangeModel extends BaseModel {
         if (empty($this->role)) {
             throw new Exception('Error, role is empty');
         }
+
+        if (!$this->existsInDatabase('user','id',$this->userId)) {
+            throw new Exception('Error, user does not exist');
+        }
+
+        if (!$this->existsInDatabase('role_lov', 'role', $this->role)) {
+            throw new Exception('Error, this role does not exist');
+        }
     }
 
     function changeRole() {
