@@ -18,6 +18,7 @@ class ReviewerController extends BaseController {
 
     private const MY_REVIEWS_VIEW = 'my_reviews.twig'; # view pro render recenzi daneho uzivatele
     private const REVIEW_VIEW = 'review.twig'; # view pro render jednotlive recenze
+    private const REVIEW_FORM_FRAGMENT = 'fragment/review_form_fragment.twig';
     private const GUIDE_NOT_REVIEWABLE = 'guide_not_reviewable.twig';
 
     private UserModel $userModel;
@@ -53,7 +54,8 @@ class ReviewerController extends BaseController {
         $this->redirectIfNotReviewerOrPublisher();
 
         $userId = $this->session->getUserId(); # ziskani id uzivatele
-        $reviews = $this->reviewModel->getPendingReviews($userId); # ziskani nedodelanych recenzi uzivatele
+        $reviewedId = $this->guideModel->getGuideState('reviewed')['id'];
+        $reviews = $this->reviewModel->getEditableReviews($userId, $reviewedId); # ziskani recenzi uzivatele
         $this->__render(self::MY_REVIEWS_VIEW, ['reviews' => $reviews]);
     }
 
@@ -169,7 +171,7 @@ class ReviewerController extends BaseController {
 
             $review = $this->reviewModel->getReview($saveReviewModel->reviewId);
             $guide = $this->guideModel->getGuide($review['guide_id']);
-            $reviewdedState = $this->guideModel->getGuideState(['reviewed']);
+            $reviewdedState = $this->guideModel->getGuideState('reviewed');
 
             # pokud guide neni ve stavu reviewed pak odesleme obrazovku s upozornenim, ze recenzi jiz neslo ulozit
             if ($guide['guide_state'] != $reviewdedState['id']) {
@@ -187,13 +189,16 @@ class ReviewerController extends BaseController {
             }
 
             $saveReviewModel->saveReview(); # jinak ulozeni recenze
+            $review = $this->reviewModel->getReview($saveReviewModel->reviewId); # ziskame recenzi znovu
         } catch (Exception $exception) {
-            $this->__render(self::REVIEW_VIEW, ['error' => $exception->getMessage()]); # vyhozeni validacni chyby
+            $response = ['error' => $exception->getMessage()];
+            $response = json_encode($response);
+            $this->sendResponse($response);
             return;
         }
 
-        $fragment = $this->getRenderedView(self::REVIEW_VIEW, ['review' => $review, 'guide' => $guide,
-            'result' => 'Review was successfully saved']);
+        $fragment = $this->getRenderedView(self::REVIEW_FORM_FRAGMENT, ['review' => $review, 'guide' => $guide,
+            'result' => 'Review was saved successfully']);
         $response = ['fragment' => $fragment];
         $response = json_encode($response);
         $this->sendResponse($response);

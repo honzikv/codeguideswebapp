@@ -20,17 +20,25 @@ use Exception;
 
 class PublisherController extends BaseController {
 
-    private const MANAGE_CONTENT_VIEW = 'manage_content.twig';
-    private const MANAGE_REVIEWS_VIEW = 'manage_reviews.twig';
+    private const MANAGE_CONTENT_VIEW = 'manage_content.twig'; # view s guides
+    private const MANAGE_REVIEWS_VIEW = 'manage_reviews.twig'; # view s recenzemi
+
+    #  fragment s tabulkou recenzi pro manage reviews view
     private const MANAGE_REVIEWS_TABLE_FRAGMENT = 'fragment/manage_reviews_fragment.twig';
-    private const MANAGE_USERS_VIEW = 'manage_users.twig';
+    private const MANAGE_USERS_VIEW = 'manage_users.twig'; # view pro spravu uzivatelu
+
+    # fragment pro spravu recenzi - prijato
     private const GUIDE_PUBLISHED_FRAGMENT = 'fragment/guide_published_fragment.twig';
+
+    # fragment pro spravu recenzi - zamitnuto
     private const GUIDE_REJECTED_FRAGMENT = 'fragment/guide_rejected_fragment.twig';
+    private UserModel $userModel; # user model pro pristup do db
+    private GuideModel $guideModel; # guide model pro pristup do db
+    private ReviewModel $reviewModel; # review model pro pristup do db
 
-    private UserModel $userModel;
-    private GuideModel $guideModel;
-    private ReviewModel $reviewModel;
-
+    /**
+     * Presmeruje uzivatele na hlavni stranku pokud neni publisher (admin)
+     */
     private function redirectIfNotPublisher() {
         if (!$this->session->isUserLoggedIn()) {
             $this->redirectToIndex();
@@ -44,15 +52,18 @@ class PublisherController extends BaseController {
 
     function __construct() {
         parent::__construct();
-
         $this->userModel = new UserModel();
         $this->guideModel = new GuideModel();
         $this->reviewModel = new ReviewModel();
     }
 
+    /**
+     * Render stranky pro spravu guides (ktere lze recenzovat)
+     */
     function renderManageContent() {
         $this->redirectIfNotPublisher();
 
+        # ziskame vsechny recenzovatelne guides a pro kazde najdeme recenze
         $allReviewableGuides = $this->guideModel->getAllReviewableGuides();
         foreach ($allReviewableGuides as $guide) {
             $reviews = $this->guideModel->getGuideReviews($guide['guide_id']);
@@ -75,10 +86,12 @@ class PublisherController extends BaseController {
         }
 
         $reviews = $this->guideModel->getGuideReviewsWithReviewers($manageReviewsModel->guideId);
-        $usableReviewers = $this->getAllUsableReviewers($reviews);
+        $usableReviewers = $this->getAllUsableReviewers($reviews, $this->session->getUserId());
         $guide = $this->guideModel->getGuide($manageReviewsModel->guideId);
 
-        if ($guide == false) {
+
+        $publishedId = $this->guideModel->getGuideState('published')['id'];
+        if ($guide == false || $guide['guide_state'] == $publishedId) {
             $this->redirectTo404();
         }
 
@@ -89,15 +102,15 @@ class PublisherController extends BaseController {
             'reviews' => $reviews, 'reviewers' => $usableReviewers]);
     }
 
-    private function getAllUsableReviewers($reviews): array {
+    private function getAllUsableReviewers($reviews, $authorId): array {
         $allReviewers = $this->userModel->getAllReviewers();
 
-        # filtr pro pouzitelne reviewers aby nemohl uzivatel vybrat nekoho vicekrat
+        # filtr pro pouzitelne recenzenty aby nemohl uzivatel vybrat nekoho vicekrat
         $usableReviewers = [];
         foreach ($allReviewers as $reviewer) {
             $used = false;
             foreach ($reviews as $alreadyUsed) {
-                if ($reviewer['id'] == $alreadyUsed['reviewer_id']) {
+                if ($reviewer['id'] == $alreadyUsed['reviewer_id'] || $reviewer['id'] == $authorId) {
                     $used = true;
                     break;
                 }
@@ -124,8 +137,8 @@ class PublisherController extends BaseController {
         }
 
         $guideReviews = $this->guideModel->getGuideReviewsWithReviewers($assignReviewModel->guideId);
-        $usableReviewers = $this->getAllUsableReviewers($guideReviews);
         $guide = $this->guideModel->getGuide($assignReviewModel->guideId);
+        $usableReviewers = $this->getAllUsableReviewers($guideReviews, $guide['user_id']);
         $response = ['fragment' => $this->getRenderedView(
             self::MANAGE_REVIEWS_TABLE_FRAGMENT, [
             'error' => $error,
@@ -153,7 +166,7 @@ class PublisherController extends BaseController {
         }
 
         $guideReviews = $this->guideModel->getGuideReviewsWithReviewers($deleteReviewModel->guideId);
-        $usableReviewers = $this->getAllUsableReviewers($guideReviews);
+        $usableReviewers = $this->getAllUsableReviewers($guideReviews, $this->session->getUserId());
         $guide = $this->guideModel->getGuide($deleteReviewModel->guideId);
         $response = ['fragment' => $this->getRenderedView(
             self::MANAGE_REVIEWS_TABLE_FRAGMENT, [
@@ -181,7 +194,7 @@ class PublisherController extends BaseController {
             if (empty($reviews) || count($reviews) < 3) {
                 throw new Exception('Error, 3 complete reviews required');
             } else {
-                $statePublished = $this->guideModel->getGuideState('published');
+                $statePublished = $this->guideModel->getGuideState('published')['id'];
                 $finalizeGuideModel->acceptGuide($statePublished);
             }
         } catch (Exception $exception) {

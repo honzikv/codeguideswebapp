@@ -14,8 +14,7 @@ $('#loginForm').on('submit', (e) => {
                 document.close();
             } else {
                 $('#password').val('');
-                $('#error')
-                    .html(jsonResponse.error);
+                $('#error').html(jsonResponse.error);
             }
         },
         error: () => {

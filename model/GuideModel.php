@@ -6,7 +6,6 @@ namespace app\model;
 
 use app\core\Application;
 use app\core\BaseModel;
-use app\core\InternalError;
 use app\core\Request;
 use Exception;
 use PDO;
@@ -31,7 +30,7 @@ class GuideModel extends BaseModel {
             throw new Exception('File name is too long (max ' . self::NAME_LIMIT . ' characters)');
         }
 
-        if (!preg_match(parent::CHARACTERS_NUMBERS_REGEX, $file['name'])) {
+        if (!preg_match(parent::CHARACTERS_FILE_REGEX, $file['name'])) {
             throw new Exception('Invalid file name (only letters, numbers and _ are allowed');
         }
 
@@ -56,8 +55,8 @@ class GuideModel extends BaseModel {
 
     /**
      * Vytvori zaznam o guide v databazi
-     * @param $fileName: nazev souboru
-     * @param $userId: id uzivatele v user tabulce
+     * @param $fileName : nazev souboru
+     * @param $userId : id uzivatele v user tabulce
      */
     function createGuide($fileName, $userId) {
         $guideStateReviewed = $this->getGuideState('reviewed');
@@ -71,27 +70,6 @@ class GuideModel extends BaseModel {
         $query = $this->prepare($statement);
         $query->execute([$guideState]);
         return $query->fetch();
-    }
-
-    function getGuideStateFromId($stateId) {
-        $statement = 'SELECT * FROM guide_state_lov WHERE id = (?)';
-        $query = $this->prepare($statement);
-        $query->execute([$stateId]);
-        return $query->fetch();
-    }
-
-    function getUserGuides($userId) {
-        $statement = 'SELECT * FROM guide WHERE user_id = (?)';
-        $query = $this->prepare($statement);
-        $query->execute([$userId]);
-        return $query->fetchAll();
-    }
-
-    function getAllGuideStates() {
-        $statement = 'SELECT * FROM guide_state_lov ORDER BY id';
-        $query = $this->prepare($statement);
-        $query->execute();
-        return $query->fetchAll();
     }
 
     function validate() {
@@ -115,9 +93,6 @@ class GuideModel extends BaseModel {
             throw new Exception('Error, abstract is too long, max');
         }
 
-        if (!preg_match(parent::CHARACTERS_NUMBERS_REGEX, $this->guideAbstract)) {
-            throw new Exception('Error, invalid characters in the abstract');
-        }
     }
 
     function getAllReviewableGuides() {

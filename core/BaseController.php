@@ -7,7 +7,7 @@ namespace app\core;
 class BaseController {
     private const BANNED_VIEW = 'banned.html'; # view pro zobrazeni, kdyz je uzivatel zabanovany
 
-    protected Session $session;
+    protected Session $session; # reference na session pro snazsi pristup
 
     public function __construct() {
         $this->session = Application::getInstance()->getSession();
@@ -29,6 +29,11 @@ class BaseController {
         print(Application::getInstance()->getTwig()->render($view, $params));
     }
 
+    /**
+     * Ziska renderovane view - tzn. html jako string
+     * @param $view: cesta k view
+     * @param array $params: parametry pro twig
+     */
     protected function getRenderedView($view, $params = []) {
         if ($this->session->isUserLoggedIn()) {
             $params['user'] = $this->session->getUserInfo();
@@ -47,20 +52,21 @@ class BaseController {
         print($response);
     }
 
+    /**
+     * Funkce pro presmerovani na hlavni stranku
+     */
     protected function redirectToIndex() {
         header('Location: /'); # presmerovani na hlavni stranku
         die();
     }
 
+    /**
+     * Funkce pro presmerovani na 404 pri spatne URL
+     */
     protected function redirectTo404() {
         Application::getInstance()->response->setStatusCode(404);
         header('Location: /error'); # presmerovani na error
         die();
     }
 
-    protected function redirectTo418() {
-        Application::getInstance()->response->setStatusCode(518);
-        header('Location: /teapot'); # presmerovani na 418 "i'm a teapot" error
-        die();
-    }
 }

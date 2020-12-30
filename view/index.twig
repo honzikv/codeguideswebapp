@@ -33,17 +33,16 @@
             <div class="jumbotron mx-auto contentDefault">
                 <h1 class="display-4 d-flex justify-content-center">Welcome to League Guides!</h1>
                 <p class="lead">
-                    This site contains thousands of guides for popular game League of Legends
-                    completely for free! To browse just click the button below. We have something for every
-                    League player out there.
+                    This site contains thousands of guides for coding in many languages and frameworks
+                    such as JavaScript, TypeScript, Java, Python, SQL, PHP and many more!
                 </p>
 
                 <hr class="my-1">
                 <p>You can also register to create your guides or review others</p>
                 <div class="jumbotron text-center">
                     <a class="btn btn-primary btn-lg my-2" href="/guidelist" role="button">Browse</a>
-                    <a class="btn btn-primary btn-lg my-2" href="/login" role="button">Login</a>
                     <a class="btn btn-primary btn-lg my-2" href="/register" role="button">Register</a>
+                    <a class="btn btn-primary btn-lg my-2" href="/login" role="button">Login</a>
                 </div>
             </div>
         {% endif %}
@@ -60,7 +59,7 @@
                 {% for guide in guides %}
                     <div class="row mt-lg-3">
                         <div class="container-fluid contentDefault">
-                            <div class="jumbotron backgroundAcrylic">
+                            <div class="jumbotron  mt-4  backgroundAcrylic">
                                 <h1>{{ guide.name }}</h1>
                                 <p class="card-text smallParagraph">
                                     {{ guide.abstract }}

@@ -12,6 +12,7 @@ $('#createGuideForm').on('submit', (e) => {
         cache: false,
         data: data,
         success: (response) => {
+            console.log(response);
             const jsonResponse = JSON.parse(response);
             if ('html' in jsonResponse) {
                 document.open();

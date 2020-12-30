@@ -75,7 +75,7 @@ class SaveReviewModel extends BaseModel {
             }
         }
 
-        if ($this->existsInDatabase('review', 'id', $this->reviewId)) {
+        if (!$this->existsInDatabase('review', 'id', $this->reviewId)) {
             throw new Exception('Error, this review id does not exist');
         }
     }

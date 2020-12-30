@@ -9,7 +9,7 @@ use Exception;
 
 class AssignReviewModel extends BaseModel {
 
-    const REVIEWS_PER_GUIDE = 3;
+    const REVIEWS_PER_GUIDE = 3; # pozadovany pocet recenzi pro zverejneni
 
     var string $userId;
     var string $guideId;

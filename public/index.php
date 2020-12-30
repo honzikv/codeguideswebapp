@@ -58,5 +58,4 @@ $router->setGetMethod('/review', [ReviewerController::class, 'renderReview']);
 $router->setGetMethod('/review/download', [ReviewerController::class, 'downloadGuide']);
 $router->setPostMethod('/savereview', [ReviewerController::class, 'saveReview']);
 
-
 $application->run();

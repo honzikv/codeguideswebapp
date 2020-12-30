@@ -5,13 +5,20 @@ namespace app\core;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
+/**
+ *
+ * Trida, ktera obsahuje veci potrebne na ovladani cele aplikace
+ * Jedna se o singleton, ktery lze globalne ziskat z kterekoliv casti aplikace, obsahuje informace o session,
+ * routes,
+ * @package app\core
+ */
 class Application {
 
     public Router $router; # router pro routing v aplikaci
     public Request $request; # request pri spusteni aplikace
     public Response $response; # response pro zobrazeni 404 apod.
-    public static string $ROOT_PATH; # root path
-    public static string $FILES_PATH;
+    public static string $ROOT_PATH; # root path - tzn slozka, ve ktere je "public"
+    public static string $FILES_PATH; # path k uzivatelskym souborum (slozka userdata)
 
     private static Application $instance; # instance aplikace, pro globalni referenci
     private FilesystemLoader $loader; # loader instance
@@ -37,15 +44,23 @@ class Application {
         $this->session = new Session(); # inicializace session
     }
 
+    /**
+     * Ziskani aplikace globalne (napr. v Controlleru)
+     * @return Application
+     */
     static function getInstance(): Application {
         return self::$instance;
     }
 
+    /**
+     * Spusteni aplikace (v index.php)
+     */
     function run() {
         $this->router->resolve();
     }
 
     /**
+     * Vrati referenci na controller
      * @return BaseController
      */
     function getController(): BaseController {
@@ -61,23 +76,24 @@ class Application {
     }
 
     /**
-     * Ziska databazovy objekt pro pristup
-     * @return Database
+     * Ziska databazovy objekt pro pristup k db
+     * @return Database databazovy objekt
      */
     function getDatabase(): Database {
         return $this->database;
     }
 
     /**
-     * Nastaveni controlleru
-     * @param BaseController $controller
+     * Setter pro controller
+     * @param BaseController $controller nastavi controller pro zpracovani pozadavku
      */
     function setController(BaseController $controller): void {
         $this->controller = $controller;
     }
 
     /**
-     * @return Session
+     * Ziska session
+     * @return Session session objekt
      */
     function getSession(): Session {
         return $this->session;

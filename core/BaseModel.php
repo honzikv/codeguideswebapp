@@ -6,7 +6,8 @@ namespace app\core;
 
 abstract class BaseModel {
 
-    const CHARACTERS_NUMBERS_REGEX = '[\w+]';
+    const CHARACTERS_NUMBERS_REGEX = '/\b[a-zA-Z0-9]+\b/';
+    const CHARACTERS_FILE_REGEX = '/\b[a-zA-Z0-9.\-_\[\]\(\)]+.pdf\b/';
 
     function loadData($data) {
         foreach ($data as $key => $value) {

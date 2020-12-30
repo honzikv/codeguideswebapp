@@ -31,12 +31,6 @@ class FinalizeGuideModel extends BaseModel {
         $query->execute([$publishedId, $this->guideId]);
     }
 
-    function removeGuide() {
-        $statement = 'DELETE FROM guide WHERE id = (?)';
-        $query = $this->prepare($statement);
-        $query->execute([$this->guideId]);
-    }
-
     function rejectGuide() {
         $guideModel = new GuideModel();
         $stateRejected = $guideModel->getGuideState('rejected');

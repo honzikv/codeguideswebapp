@@ -33,7 +33,7 @@ class GuideDetailModel extends BaseModel {
      * Ziska guide s jmenem autora
      */
     function getGuideWithAuthor() {
-        $statement = 'SELECT guide.id, name, abstract, username, filename FROM guide INNER JOIN user u on guide.user_id = u.id
+        $statement = 'SELECT guide.id, u.id as user_id, name, guide_state, abstract, username, filename FROM guide INNER JOIN user u on guide.user_id = u.id
                     WHERE guide.id = (?)';
         $query = $this->prepare($statement);
         $query->execute([$this->guideId]);

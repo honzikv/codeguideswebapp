@@ -9,7 +9,7 @@ use Exception;
 
 class UserModel extends BaseModel {
 
-    function validate() {
+    function validate() { # tento model se nepouziva pro zadnou validaci
         throw new Exception("Invalid validate call");
     }
 
@@ -20,6 +20,11 @@ class UserModel extends BaseModel {
         return $query->fetch();
     }
 
+    /**
+     * Ziskani informaci o uzivateli z jeho id
+     * @param $userId : id uzivatele
+     * @return mixed: zaznam uzivatele bez jeho hesla
+     */
     function getUserFromId($userId) {
         $statement = 'SELECT id, username, email, role_id, banned FROM USER WHERE id = (?)';
         $query = $this->prepare($statement);
@@ -27,6 +32,11 @@ class UserModel extends BaseModel {
         return $query->fetch();
     }
 
+    /**
+     * Funkce ziska roli z daneho id
+     * @param $roleId id role
+     * @return mixed : vrati radku z tabulky role pro dane id
+     */
     function getRole($roleId) {
         $statement = 'SELECT role FROM ROLE_LOV where id = (?)';
         $query = $this->prepare($statement);
@@ -34,6 +44,11 @@ class UserModel extends BaseModel {
         return $query->fetch();
     }
 
+    /**
+     * Funkce ziska nazev role z id role
+     * @param $roleString: nazev role (sloupec role)
+     * @return mixed: vrati id role (pouze id)
+     */
     function getRoleId($roleString) {
         $statement = 'SELECT id FROM role_lov where role = (?)';
         $query = $this->prepare($statement);
@@ -41,6 +56,10 @@ class UserModel extends BaseModel {
         return $query->fetch()['id'];
     }
 
+    /**
+     * Ziska vsechny uzivatele s rolemi
+     * @return array: uzivatele s rolemi
+     */
     function getAllUsersWithRoles() {
         $statement = 'SELECT user.id, username, role, email, banned FROM user INNER JOIN 
                         role_lov role_lov ON user.role_id = role_lov.id';
@@ -81,7 +100,7 @@ class UserModel extends BaseModel {
     }
 
     /**
-     * Ziska vsechny reviewers
+     * Ziska vsechny recenzenty
      */
     function getAllReviewers(): array {
         $reviewerRoleId = $this->getRoleId('reviewer');
@@ -91,6 +110,10 @@ class UserModel extends BaseModel {
         return $query->fetchAll();
     }
 
+    /**
+     * Ziska vsechny role, ktere lze zmenit - tzn. autor a recenzent
+     * @return array pole s radky
+     */
     function getChangeableRoles(): array {
         $statement = 'SELECT * FROM role_lov WHERE role = (?) OR role = (?)';
         $query = $this->prepare($statement);

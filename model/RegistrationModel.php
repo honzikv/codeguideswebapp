@@ -26,14 +26,6 @@ class RegistrationModel extends BaseModel {
         return $input == self::AUTHOR || $input == self::REVIEWER || $input == self::PUBLISHER;
     }
 
-    function getFormData(): array {
-        return [
-            'username' => $this->username ?? '',
-            'email' => $this->email ?? '',
-            'role' => $this->role ?? ''
-        ];
-    }
-
     function validate() {
         if (empty($this->username)) {
             throw new Exception('Username is empty');
@@ -75,7 +67,7 @@ class RegistrationModel extends BaseModel {
             throw new Exception('Error, password is too long (max ' . self::PASSWORD_LIMIT . " characters).");
         }
 
-        if ($this->existsInDatabase('USER','username', $this->username)) {
+        if ($this->existsInDatabase('USER', 'username', $this->username)) {
             throw new Exception('Error username is taken');
         }
 
@@ -83,13 +75,6 @@ class RegistrationModel extends BaseModel {
             throw new Exception('Error, email is taken');
         }
 
-    }
-
-    private function getAllUsers(): array {
-        $statement = 'SELECT * FROM user';
-        $query = $this->prepare($statement);
-        $query->execute();
-        return $query->fetchAll();
     }
 
     private function getRoleId($roleString) {
@@ -104,15 +89,15 @@ class RegistrationModel extends BaseModel {
             }
         }
 
-        throw new Exception("Error, no such role in the db"); # nemelo by se stat
+        throw new Exception("Error, no such role in the db"); # nemelo by se stat pokud neposila nekdo neco mimo web
     }
 
     public function register() {
         $roleId = $this->getRoleId($this->role);
 
         $statement = 'INSERT INTO USER (username, password, email, role_id) VALUES (?, ?, ?, ?)';
-            $query = $this->prepare($statement);
-            $query->execute([$this->username, password_hash($this->password, PASSWORD_DEFAULT),
-                $this->email, $roleId]);
+        $query = $this->prepare($statement);
+        $query->execute([$this->username, password_hash($this->password, PASSWORD_DEFAULT),
+            $this->email, $roleId]);
     }
 }

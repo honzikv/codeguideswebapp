@@ -20,16 +20,9 @@ class ManageReviewsModel extends BaseModel {
             throw new Exception('Error, guide id is not a number');
         }
 
-        if ($this->existsInDatabase('guide', 'id', $this->guideId)) {
+        if (!$this->existsInDatabase('guide', 'id', $this->guideId)) {
             throw new Exception('Error, guide id does not exist');
         }
     }
 
-    function getGuideReviews() {
-        $statement = 'SELECT username, info_score, efficiency_score, complexity_score, quality_score, overall_score,
-                       notes, is_finished FROM review INNER JOIN user u ON review.reviewer_id = u.id  WHERE guide_id = (?)';
-        $query = $this->prepare($statement);
-        $query->execute([$this->guideId]);
-        return $query->fetchAll();
-    }
 }

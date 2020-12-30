@@ -6,7 +6,6 @@ namespace app\controller;
 
 use app\core\Application;
 use app\core\BaseController;
-use app\core\InternalError;
 use app\core\Request;
 use app\model\DeleteGuideModel;
 use app\model\DownloadGuideModel;
@@ -105,7 +104,8 @@ class GuideController extends BaseController {
             $statePublished = $this->guideModel->getGuideState('published');
 
             # pokud by nekdo pristupoval k necemu co neni jeho a neni zverejnene vyhodime chybu
-            if ($guide['guide_state'] != $statePublished['id'] || $this->session->getUserId() != $guide['user_id']) {
+            if ($guide['guide_state'] != $statePublished['id'] and $this->session->getUserId() != $guide['user_id']
+                and $this->session->getUserInfo()['role'] != 'publisher') {
                 throw new Exception('Access denied');
             }
         } catch (Exception $exception) { # render chyby
@@ -131,7 +131,8 @@ class GuideController extends BaseController {
             $guide = $this->guideModel->getGuide($downloadGuideModel->guideId);
 
             $guidePublished = $this->guideModel->getGuideState('published');
-            if ($guide['guide_state'] != $guidePublished['id'] || $guide['user_id'] != $this->session->getUserId()) {
+            if ($guide['guide_state'] != $guidePublished['id'] and $guide['user_id'] != $this->session->getUserId()
+                and $this->session->getUserInfo()['role'] != 'publisher') {
                 throw new Exception('Access denied');
             }
 

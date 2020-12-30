@@ -1,12 +1,7 @@
-const scores = ['info_score', 'complexity_score', 'efficiency_score', 'quality_score', 'overall_score'];
-
-
-setTimeout(() => $('#saveResult').fadeOut('fast'), 5000); // smaze vysledek po 5 sekundach
-
-$('#reviewForm').on('submit', (e) => {
-    e.preventDefault();
-
-    if (confirm('Save review?')) {
+// posleme request na server pomoci JQuery AJAX (xmlhttprequest)
+$(document).on('submit','#reviewForm', (e) => {
+    e.preventDefault(); // zablokujeme vychozi event
+    if (confirm('Save review?')) { // pokud confirm odesleme request a pri success update dat (jinak nic)
         $.ajax({
             type: 'post',
             url: '/savereview',
@@ -15,28 +10,14 @@ $('#reviewForm').on('submit', (e) => {
             success: (response) => {
                 const jsonResponse = JSON.parse(response);
                 if ('fragment' in jsonResponse) {
-                    $('#conent').replaceWith(jsonResponse.fragment);
+                    $('#content').replaceWith(jsonResponse.fragment); // prepsani formulare
+                    // smaze vysledek po 5 sekundach
+                    setTimeout(() => $('#saveResult').fadeOut('fast'), 5000);
+                } else {
+                    $('#error').html(jsonResponse.error);
                 }
             }
         });
     }
 
 });
-//
-// $('#completeReview').click(() => {
-//     if (confirm('Complete review? This action cannot be reverted without a publisher')) {
-//         $.ajax({
-//             type: 'post',
-//             url: '/completereview',
-//             data: $('#reviewForm').serialize(),
-//             processData: false,
-//             success: (response) => {
-//                 const jsonResponse = JSON.parse(response);
-//                 if ('fragment' in jsonResponse) {
-//                     $('#content').replaceWith(jsonResponse.fragment);
-//                 }
-//             }
-//         });
-//     }
-//
-// });
