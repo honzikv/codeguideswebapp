@@ -8,6 +8,11 @@ use app\core\Application;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro odstraneni uzivatele
+ * Class DeleteUserModel
+ * @package app\model
+ */
 class DeleteUserModel extends BaseModel {
 
     var string $userId;
@@ -26,6 +31,9 @@ class DeleteUserModel extends BaseModel {
         }
     }
 
+    /**
+     * Odstraneni uzivatele z databaze
+     */
     function removeUser() {
         $statement = 'DELETE FROM user where id = (?)';
         $query = $this->prepare($statement);

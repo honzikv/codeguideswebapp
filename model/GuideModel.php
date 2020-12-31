@@ -19,6 +19,35 @@ class GuideModel extends BaseModel {
     const MEDIUM_TEXT_LIMIT_CHARACTERS = 30000;
     const FILE_MAX_SIZE = 10 * 1024 * 1024 * 1024; # max 10 MB
 
+
+    function validate() {
+        if (empty($this->guideName)) {
+            throw new Exception('Error, name of the guide is empty');
+        }
+
+        if ($this->guideName[0] == " ") {
+            throw new Exception('Name of the guide cannot start with a whitespace');
+        }
+
+        if (strlen($this->guideName) > self::NAME_LIMIT) {
+            throw new Exception('Name of the guide is too long, max ' . self::NAME_LIMIT . ' characters allowed');
+        }
+
+        if ($this->existsInDatabase('guide', 'name', $this->guideName)) {
+            throw new Exception('Error, this guide name already exists in the database');
+        }
+
+        if (!preg_match(parent::GUIDE_NAME_REGEX, $this->guideName)) {
+            throw new Exception('Invalid characters in the name of the guide');
+        }
+
+        if (strlen($this->guideAbstract) > self::MEDIUM_TEXT_LIMIT_CHARACTERS) {
+            throw new Exception('Error, abstract is too long, max');
+        }
+
+    }
+
+
     function uploadFile(Request $request) {
         $file = $request->getMultipart('pdfFile');
 
@@ -70,29 +99,6 @@ class GuideModel extends BaseModel {
         $query = $this->prepare($statement);
         $query->execute([$guideState]);
         return $query->fetch();
-    }
-
-    function validate() {
-        if (empty($this->guideName)) {
-            throw new Exception('Error, name of the guide is empty');
-        }
-
-        if (strlen($this->guideName) > self::NAME_LIMIT) {
-            throw new Exception('Name of the guide is too long, max ' . self::NAME_LIMIT . ' characters allowed');
-        }
-
-        if ($this->existsInDatabase('guide', 'name', $this->guideName)) {
-            throw new Exception('Error, this guide name already exists in the database');
-        }
-
-        if (!preg_match(parent::CHARACTERS_NUMBERS_REGEX, $this->guideName)) {
-            throw new Exception('Invalid characters in the name of the guide');
-        }
-
-        if (strlen($this->guideAbstract) > self::MEDIUM_TEXT_LIMIT_CHARACTERS) {
-            throw new Exception('Error, abstract is too long, max');
-        }
-
     }
 
     function getAllReviewableGuides() {
@@ -154,7 +160,12 @@ class GuideModel extends BaseModel {
         return $query->fetchAll();
     }
 
-     function getReviewScores(array $userGuides) {
+    /**
+     * Ziska prumerne hodnoceni napric vsemi kategoriemi pro uzivatelske guides
+     * @param array $userGuides
+     * @return array
+     */
+    function getReviewMeanScores(array $userGuides) {
         $result = [];
         foreach ($userGuides as $userGuide) {
             $reviews = $this->getGuideReviews($userGuide['id']);
@@ -165,7 +176,8 @@ class GuideModel extends BaseModel {
                     + $review['quality_score'] + $review['overall_score'];
             }
 
-            $mean = $total / (count($reviews) * 5);
+            $mean = count($reviews) > 0 ? $total / (count($reviews) * 5) : '???';
+
             array_push($result, $mean);
         }
 

@@ -7,6 +7,11 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro odstraneni recenze
+ * Class DeleteReviewModel
+ * @package app\model
+ */
 class DeleteReviewModel extends BaseModel {
 
     var string $reviewId;
@@ -38,6 +43,9 @@ class DeleteReviewModel extends BaseModel {
         }
     }
 
+    /**
+     * Smazani review z databaze
+     */
     function deleteReview() {
         $statement = 'DELETE FROM review WHERE id = (?)';
         $query = $this->prepare($statement);

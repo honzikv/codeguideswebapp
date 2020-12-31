@@ -7,6 +7,11 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro stazeni guide z formulare pro recenzi
+ * Class DownloadReviewModel
+ * @package app\model
+ */
 class DownloadReviewModel extends BaseModel {
 
     var string $reviewId;

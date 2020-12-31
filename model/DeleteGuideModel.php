@@ -8,10 +8,14 @@ use app\core\Application;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro odstraneni guide uzivatele
+ * Class DeleteGuideModel
+ * @package app\model
+ */
 class DeleteGuideModel extends BaseModel {
 
     var string $guideId;
-
 
     function validate() {
         if (empty($this->guideId)) {
@@ -27,6 +31,10 @@ class DeleteGuideModel extends BaseModel {
         }
     }
 
+    /**
+     * Smazani dane guide
+     * @throws Exception
+     */
     function delete() {
         $statement = 'SELECT * FROM guide where id = (?)';
         $query = $this->prepare($statement);

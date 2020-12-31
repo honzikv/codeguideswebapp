@@ -6,8 +6,12 @@ namespace app\model;
 
 use app\core\BaseModel;
 use Exception;
-use PDOException;
 
+/**
+ * Model pro zabanovani uzivatele
+ * Class BanModel
+ * @package app\model
+ */
 class BanModel extends BaseModel {
 
     var string $userId;
@@ -30,16 +34,11 @@ class BanModel extends BaseModel {
     /**
      * Provede ban - tzn. uzivatel, ktery je zabanovany je odbanovan a ten, co zabanovany nebyl naopak ban dostane
      * (pouze flip booleanu v tabulce)
-     * @param $value: hodnota na, kterou se ban nastavi - tzn. true (pro ban) nebo false (nema ban)
+     * @param $value : hodnota na, kterou se ban nastavi - tzn. true (pro ban) nebo false (nema ban)
      */
     function banUser($value) {
-        try {
-            $statement = 'UPDATE user SET banned = (?) WHERE id = (?)';
-            $query = $this->prepare($statement);
-            $query->execute([$value, $this->userId]);
-        }
-        catch (PDOException $exception) {
-            throw new Exception();
-        }
+        $statement = 'UPDATE user SET banned = (?) WHERE id = (?)';
+        $query = $this->prepare($statement);
+        $query->execute([$value, $this->userId]);
     }
 }

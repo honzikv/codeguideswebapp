@@ -7,6 +7,11 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro stazeni guide
+ * Class DownloadGuideModel
+ * @package app\model
+ */
 class DownloadGuideModel extends BaseModel{
 
     var string $guideId;

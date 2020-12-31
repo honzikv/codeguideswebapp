@@ -7,6 +7,11 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro detail dane guide
+ * Class GuideDetailModel
+ * @package app\model
+ */
 class GuideDetailModel extends BaseModel {
 
     var string $guideId;

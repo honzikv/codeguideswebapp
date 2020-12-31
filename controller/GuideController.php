@@ -91,7 +91,7 @@ class GuideController extends BaseController {
 
         $userId = $this->userModel->getUserId($this->session->getUsername()); # id uzivatele
         $userGuides = $this->userModel->getUserGuidesWithStates($userId); # guides uzivatele
-        $reviewScores = $this->guideModel->getReviewScores($userGuides);
+        $reviewScores = $this->guideModel->getReviewMeanScores($userGuides);
         $this->__render(self::MY_GUIDES_VIEW, ['guides' => $userGuides,
             'reviewScores' => $reviewScores]); # posleme stranku s guides
     }

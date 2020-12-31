@@ -6,6 +6,11 @@ use app\controller\AuthenticationController;
 use app\controller\ErrorController;
 use app\controller\PublisherController;
 
+/**
+ * Trida pro routing v aplikaci podle URI
+ * Class Router
+ * @package app\core
+ */
 class Router {
 
     private array $routes = []; # routes, kam se ukladaji callbacky pro danou path

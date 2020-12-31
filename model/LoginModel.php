@@ -12,8 +12,8 @@ class LoginModel extends BaseModel {
     var string $username;
     var string $password;
 
-    private const USERNAME_LIMIT = 30;
-    private const PASSWORD_LIMIT = 255;
+    private const USERNAME_LIMIT = 30; # max delka uzivatelskeho jmena
+    private const PASSWORD_LIMIT = 255; # max delka hesla
 
     function validate() {
 

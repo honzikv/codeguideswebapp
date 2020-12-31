@@ -19,23 +19,30 @@
                 </thead>
 
                 <tbody>
-                {% set i = 1 %}
+                {% set num = 1 %}
+                {% set i = 0 %}
                 {% for guide in guides %}
 
                     <tr class="elementHoverLight">
-                        <th scope="row">{{ i }}</th>
+                        <th scope="row">{{ num }}</th>
                         <td>
                             <a href="guide?guideId={{ guide.id }}" class="">{{ guide.name }}</a>
                         </td>
                         <td>{{ guide.filename }}</td>
                         <td>{{ guide.state }}</td>
-                        <td>{{ reviewScores[i-1]|number_format(2) }}</td> <!-- index od 1 -->
+
+                        {% if reviewScores[i] matches '/^[-+]?[0-9]*\\.?[0-9]+$/' %}
+                            <td>{{ reviewScores[i]|number_format(2) }}</td>
+                        {% else %}
+                            <td>{{ reviewScores[i] }}</td>
+                        {% endif %}
                         <td>
                             <button onclick="deleteGuide('{{ guide.id }}')" id="delete" class="btn btn-danger">Delete
                             </button>
                         </td>
                     </tr>
 
+                    {% set num = num + 1 %}
                     {% set i = i + 1 %}
                 {% endfor %}
 

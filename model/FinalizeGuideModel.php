@@ -7,6 +7,11 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro finalizaci guide - tzn. prijmuti nebo odmitnuti
+ * Class FinalizeGuideModel
+ * @package app\model
+ */
 class FinalizeGuideModel extends BaseModel {
 
     var string $guideId;

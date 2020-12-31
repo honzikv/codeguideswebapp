@@ -17,7 +17,7 @@ class Request {
             return;
         }
 
-        $this->path = $parts['path'];
+        $this->path = $parts['path']; # zjisteni path
         if (!preg_match('[/+]', $this->path)) {
             $this->path = rtrim($this->path, '/');
         }
@@ -41,6 +41,10 @@ class Request {
         return strtolower($_SERVER['REQUEST_METHOD']);
     }
 
+    /**
+     * Ziska body, pouzito pouze pro POST request
+     * @return array
+     */
     function getBody() {
         $result = [];
 
@@ -60,6 +64,11 @@ class Request {
         return $result;
     }
 
+    /**
+     * Ziska multipart pro ulozeni
+     * @param $name
+     * @return mixed
+     */
     function getMultipart($name) {
         return $_FILES[$name];
     }

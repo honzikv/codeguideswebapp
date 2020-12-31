@@ -7,6 +7,11 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro prirazeni review pro daneho recenzenta
+ * Class AssignReviewModel
+ * @package app\model
+ */
 class AssignReviewModel extends BaseModel {
 
     const REVIEWS_PER_GUIDE = 3; # pozadovany pocet recenzi pro zverejneni
@@ -40,13 +45,20 @@ class AssignReviewModel extends BaseModel {
         }
     }
 
+    /**
+     * Priradi recenzentovi dane review
+     * @throws Exception
+     */
     function assignReview() {
         $guideModel = new GuideModel();
         $guideReviews = $guideModel->getGuideReviews($this->guideId);
+
+        # pokud by nekdo chtel hodnotit vice nez trikrat
         if (count($guideReviews) >= self::REVIEWS_PER_GUIDE) {
-            throw new Exception('Error, there are already three reviews in progrress for this guide');
+            throw new Exception('Error, there are already three reviews in progress for this guide');
         }
 
+        # stejny recenzent muze recenzovat danou guide nejvyse jednou
         foreach ($guideReviews as $guideReview) {
             if ($guideReview['reviewer_id'] == $this->userId) {
                 throw new Exception('Error, this user already reviews/reviewed this guide');
