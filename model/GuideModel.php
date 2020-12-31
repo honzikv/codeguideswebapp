@@ -154,4 +154,22 @@ class GuideModel extends BaseModel {
         return $query->fetchAll();
     }
 
+     function getReviewScores(array $userGuides) {
+        $result = [];
+        foreach ($userGuides as $userGuide) {
+            $reviews = $this->getGuideReviews($userGuide['id']);
+
+            $total = 0;
+            foreach ($reviews as $review) {
+                $total += $review['efficiency_score'] + $review['info_score'] + $review['complexity_score']
+                    + $review['quality_score'] + $review['overall_score'];
+            }
+
+            $mean = $total / (count($reviews) * 5);
+            array_push($result, $mean);
+        }
+
+        return $result;
+    }
+
 }

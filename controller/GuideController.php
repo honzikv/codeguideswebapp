@@ -14,6 +14,11 @@ use app\model\GuideModel;
 use app\model\UserModel;
 use Exception;
 
+/**
+ * Controller pro operace se zpravami
+ * Class GuideController
+ * @package app\controller
+ */
 class GuideController extends BaseController {
 
     private const GUIDE_LIST_VIEW = 'guide_list.twig'; # view se seznamem guides
@@ -86,7 +91,9 @@ class GuideController extends BaseController {
 
         $userId = $this->userModel->getUserId($this->session->getUsername()); # id uzivatele
         $userGuides = $this->userModel->getUserGuidesWithStates($userId); # guides uzivatele
-        $this->__render(self::MY_GUIDES_VIEW, ['guides' => $userGuides]); # posleme stranku s guides
+        $reviewScores = $this->guideModel->getReviewScores($userGuides);
+        $this->__render(self::MY_GUIDES_VIEW, ['guides' => $userGuides,
+            'reviewScores' => $reviewScores]); # posleme stranku s guides
     }
 
     /**

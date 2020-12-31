@@ -5,6 +5,11 @@ namespace app\controller;
 
 use app\core\BaseController;
 
+/**
+ * Controller pro zobrazeni chybovych zprav
+ * Class ErrorController
+ * @package app\controller
+ */
 class ErrorController extends BaseController {
 
     private const NOT_FOUND_VIEW = "error_view.html"; # zobrazeni 404
