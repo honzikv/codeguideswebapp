@@ -6,11 +6,16 @@ use app\core\BaseModel;
 use Exception;
 use PDOException;
 
+/**
+ * Model pro registraci uzivatele
+ * Class RegistrationModel
+ * @package app\model
+ */
 class RegistrationModel extends BaseModel {
 
-    private const USERNAME_LIMIT = 30;
-    private const EMAIL_LIMIT = 255;
-    private const PASSWORD_LIMIT = 255;
+    private const USERNAME_LIMIT = 30; # max delka uzivatelskeho jmena
+    private const EMAIL_LIMIT = 255; # max delka emailu
+    private const PASSWORD_LIMIT = 255; # max delka hesla (prestoze je teoreticky jedno protoze ukladame pouze hash)
 
     # role
     private const AUTHOR = 'author';
@@ -22,6 +27,11 @@ class RegistrationModel extends BaseModel {
     var string $password;
     var string $role;
 
+    /**
+     * Vrati zda-li $input sedi nejake ze tri roli
+     * @param $input - vstup - jmeno role
+     * @return bool - true pokud sedi, jinak false
+     */
     function roleMatches($input): bool {
         return $input == self::AUTHOR || $input == self::REVIEWER || $input == self::PUBLISHER;
     }
@@ -77,6 +87,12 @@ class RegistrationModel extends BaseModel {
 
     }
 
+    /**
+     * Vrati id dane role
+     * @param $roleString - nazev role
+     * @return mixed
+     * @throws Exception
+     */
     private function getRoleId($roleString) {
         $statement = 'SELECT * FROM role_lov';
         $query = $this->prepare($statement);
@@ -92,6 +108,10 @@ class RegistrationModel extends BaseModel {
         throw new Exception("Error, no such role in the db"); # nemelo by se stat pokud neposila nekdo neco mimo web
     }
 
+    /**
+     * Provede registraci uzivatele - zapis do db
+     * @throws Exception
+     */
     public function register() {
         $roleId = $this->getRoleId($this->role);
 

@@ -7,6 +7,11 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro Manage Reviews stranku pro administratora
+ * Class ManageReviewsModel
+ * @package app\model
+ */
 class ManageReviewsModel extends BaseModel {
 
     var string $guideId;
