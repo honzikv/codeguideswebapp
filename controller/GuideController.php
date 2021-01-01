@@ -152,6 +152,7 @@ class GuideController extends BaseController {
             return;
         }
 
+        # header pro stazeni souboru
         $filePath = Application::$FILES_PATH . $fileName;
         if (file_exists($filePath)) {
             header('Content-Description: File Transfer');
