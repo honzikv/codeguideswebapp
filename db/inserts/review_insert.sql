@@ -1,0 +1,15 @@
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (36, 38, 25, 5, 5, 5, 5, 5, '', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (37, 36, 25, 9, 5, 5, 5, 7, '', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (38, 35, 25, 9, 9, 9, 4, 9, 'Very informative......', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (39, 35, 26, 5, 5, 5, 5, 5, '', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (40, 38, 26, 5, 5, 5, 5, 5, '', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (48, 37, 26, 5, 5, 3, 5, 9, 'ok it works i guess', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (49, 35, 28, 5, 5, 5, 5, 5, '', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (50, 36, 28, 5, 5, 5, 5, 5, 'ok', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (51, 37, 28, 5, 5, 5, 5, 5, '', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (52, 35, 31, 8, 6, 7, 9, 10, '', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (53, 36, 31, 7, 7, 7, 7, 7, '', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (54, 37, 31, 3, 2, 2, 3, 10, '', 1);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (56, 38, 30, 5, 5, 5, 5, 5, null, 0);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (57, 35, 30, 5, 5, 5, 5, 5, null, 0);
+INSERT INTO code_guides.review (id, reviewer_id, guide_id, efficiency_score, info_score, complexity_score, quality_score, overall_score, notes, is_finished) VALUES (58, 36, 30, 5, 5, 5, 5, 5, null, 0);

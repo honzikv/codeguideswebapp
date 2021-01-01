@@ -1,0 +1,9 @@
+INSERT INTO code_guides.user (id, username, password, email, role_id, banned) VALUES (20, 'admin', '$2y$10$Dw9YgXabcLaCTmtQqkzv2uK7D9nt6ZxI75W5wm2bVMwxf1jRVKJGO', 'admin@admin.com', 3, 0);
+INSERT INTO code_guides.user (id, username, password, email, role_id, banned) VALUES (35, 'reviewer1', '$2y$10$W.LGDxNxMcOwK3dj3jXpVu8jXJa7nZS3VgY37mdsjyQDZ.Q2zxPvi', 'reviewer1@review.com', 2, 0);
+INSERT INTO code_guides.user (id, username, password, email, role_id, banned) VALUES (36, 'reviewer2', '$2y$10$heG2jMLNHopNyFjjsMxNHen3013We3d740XvrYWuLxJGQx2CYDtAi', 'reviewer2@review.com', 2, 0);
+INSERT INTO code_guides.user (id, username, password, email, role_id, banned) VALUES (37, 'reviewer3', '$2y$10$TV6VipUUeGzIfX6Oz/s1tenlimX8IEeqaD81qgS0K6B4YCSiUNPnW', 'reviewer3@gmail.com', 2, 0);
+INSERT INTO code_guides.user (id, username, password, email, role_id, banned) VALUES (38, 'reviewer4', '$2y$10$Ad9CxU8mIOz1Nr1cRjSjpelmo0L3EdErUzWlSKgs7UgJGUkVqLOSS', 'reviewer4@gmail.com', 2, 0);
+INSERT INTO code_guides.user (id, username, password, email, role_id, banned) VALUES (40, 'author1', '$2y$10$18xLU6c2XEMMI7wKi586..68YpnIv5qy7pcEK9UwRoJ3X.20tISFG', 'author1@gmail.com', 1, 0);
+INSERT INTO code_guides.user (id, username, password, email, role_id, banned) VALUES (41, 'author2', '$2y$10$gDaMRw5rOTxzzJK0LptIoePS/ARXP1.4.16Bq/5Y9v7tYILTCQcES', 'author2@gmail.com', 1, 0);
+INSERT INTO code_guides.user (id, username, password, email, role_id, banned) VALUES (43, 'randomauthor33', '$2y$10$KgBuydOUlR2epBYPNiWFEOASZYEt1SDO1DmqdcPxPw0W3Ln7X2ljW', 'randomauthor33@authors.com', 1, 0);
+INSERT INTO code_guides.user (id, username, password, email, role_id, banned) VALUES (46, 'author3', '$2y$10$/2RO3cYkqB57tVYv/0u4zOG2cx7xtqIr/cw8dDO9GC1Fbdf9w66DW', 'author3@gmail.com', 1, 0);
