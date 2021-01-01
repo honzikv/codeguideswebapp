@@ -201,8 +201,10 @@ class GuideController extends BaseController {
 
         # pokud vse probehlo spravne vratime fragment s novou tabulkou bez smazaneho zaznamu
         $userId = $this->userModel->getUserId($this->session->getUsername());
-        $userGuides = $this->userModel->getUserGuidesWithStates($userId);
-        $fragment = $this->getRenderedView(self::MY_GUIDES_TABLE_FRAGMENT, ['guides' => $userGuides]);
+        $userGuides = $this->userModel->getUserGuidesWithStates($userId); # guides uzivatele
+        $reviewScores = $this->guideModel->getReviewMeanScores($userGuides);
+        $fragment = $this->getRenderedView(self::MY_GUIDES_TABLE_FRAGMENT, ['guides' => $userGuides,
+            'reviewScores' => $reviewScores]);
 
         $response = ['fragment' => $fragment];
         $response = json_encode($response);
