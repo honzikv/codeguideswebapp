@@ -14,12 +14,17 @@ use app\model\SaveReviewModel;
 use app\model\UserModel;
 use Exception;
 
+/**
+ * Controller pro operace reviewera
+ * Class ReviewerController
+ * @package app\controller
+ */
 class ReviewerController extends BaseController {
 
     private const MY_REVIEWS_VIEW = 'my_reviews.twig'; # view pro render recenzi daneho uzivatele
     private const REVIEW_VIEW = 'review.twig'; # view pro render jednotlive recenze
-    private const REVIEW_FORM_FRAGMENT = 'fragment/review_form_fragment.twig';
-    private const GUIDE_NOT_REVIEWABLE = 'guide_not_reviewable.twig';
+    private const REVIEW_FORM_FRAGMENT = 'fragment/review_form_fragment.twig'; # fragment review tabulky
+    private const GUIDE_NOT_REVIEWABLE = 'guide_not_reviewable.twig'; # hlaseni ze guide nelze recenzovat
 
     private UserModel $userModel;
     private ReviewModel $reviewModel;

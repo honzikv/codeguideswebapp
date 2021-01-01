@@ -2,6 +2,7 @@ function redirectAndShowError() {
     alert('Error while communicating with the server');
     window.location.href = '/';
 }
+
 /**
  * Poslani requestu na zabanovani uzivatele
  * @param userId id uzivatele
@@ -37,40 +38,39 @@ function banUser(userId, username, action) {
  * @param dropdown dropdown menu objekt
  */
 function changeRole(userId, username, dropdown) {
-    const optionText = dropdown.options[dropdown.selectedIndex].text;
     const optionValue = dropdown.options[dropdown.selectedIndex].value;
 
-    if (confirm('Are you sure you want to change role of the user ' + username + ' to ' + optionText + '?')) {
-        const xhr = new XMLHttpRequest();
-        const formData = new FormData();
-        formData.append('userId', userId);
-        formData.append('role', optionValue);
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('role', optionValue);
 
-        xhr.open('POST', '/changerole', true);
-        xhr.onload = () => {
-            const result = JSON.parse(xhr.response);
-            $('#user' + result.id + 'Role').html(result.role);
-        };
+    xhr.open('POST', '/changerole', true);
+    xhr.onload = () => { // pokud uspech update view
+        const response = JSON.parse(xhr.response);
+        $('#user' + response.id + 'Role').html(response.role);
 
-        xhr.onerror = () => {
-            redirectAndShowError();
-        };
+    };
 
-        xhr.send(formData);
-    }
+    xhr.onerror = () => {
+        redirectAndShowError();
+    };
+
+    xhr.send(formData);
 }
 
 /**
  * Smazani uzivatele
  * @param userId id uzivatele
+ * @param username uzivatelske jmeno
  */
 function deleteUser(userId, username) {
     if (confirm('Are you sure you want to delete user ' + username + ' ? This action is irreversible!')) {
-        const xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest(); // xhr request
         const formData = new FormData();
         formData.append('userId', userId);
         xhr.open('POST', '/deleteuser', true);
-        xhr.onload = () => {
+        xhr.onload = () => { // pokud uspech update view
             const result = JSON.parse(xhr.response);
             console.log(result);
             alert(result.message);

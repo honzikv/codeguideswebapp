@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta lang="en">
     <link rel="stylesheet" href='bootstrap/css/bootstrap.min.css'/>
     <link rel="stylesheet" href="css/main.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
@@ -20,7 +21,7 @@
                 <li class="nav-item">
                     <a href="/" class="nav-link d-flex flex-column" data-toggle="collapse">
                         <i class="fas fa-home"></i>
-                        <span class="d-none d-sm-inline mt-1">home</span>
+                        <span class="d-none d-sm-inline mt-1">Home</span>
                     </a>
 
                 </li>
@@ -31,11 +32,19 @@
                     </a>
                 </li>
 
+
                 {% if user.role == 'author' or user.role == 'reviewer' %}
                     <li class="nav-item">
                         <a href="/myguides" class="nav-link d-flex flex-column">
                             <i class="far fa-newspaper"></i>
                             <span class="d-none d-sm-inline mt-1">My Guides</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/createguide" class="nav-link d-flex flex-column">
+                            <i class="far fa-file"></i>
+                            <span class="d-none d-sm-inline mt-1">Create a Guide</span>
                         </a>
                     </li>
                 {% endif %}
@@ -89,7 +98,7 @@
                     <li class="nav-item">
                         <div class="nav-link d-flex flex-column">
                             <i class="fas fa-info"></i>
-                            <span class="d-none d-sm-inline mt-1">Logged in as: {{ user.username }} ({{ user.role }})</span>
+                            <span class="d-none d-sm-inline mt-1">User: {{ user.username }} ({{ user.role }})</span>
                         </div>
 
                     </li>

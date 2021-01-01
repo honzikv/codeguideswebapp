@@ -25,7 +25,7 @@ class RoleChangeModel extends BaseModel {
             throw new Exception('Error, role is empty');
         }
 
-        if (!$this->existsInDatabase('user','id',$this->userId)) {
+        if (!$this->existsInDatabase('user', 'id', $this->userId)) {
             throw new Exception('Error, user does not exist');
         }
 
@@ -42,7 +42,7 @@ class RoleChangeModel extends BaseModel {
         $query->execute([$roleId, $this->userId]);
     }
 
-     function getResult() {
+    function getResult() {
         $statement = 'SELECT user.id, role from user INNER JOIN role_lov rl on user.role_id = rl.id WHERE user.id = (?)';
         $query = $this->prepare($statement);
         $query->execute([$this->userId]);

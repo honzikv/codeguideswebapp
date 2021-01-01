@@ -87,6 +87,9 @@ class Session {
      * @return bool - true pokud ano, jinak false
      */
     public function isUserBanned(): bool {
+        if (!isset($_SESSION['banned'])) {
+            return false;
+        }
         return $_SESSION['banned'] == '1' || $_SESSION['banned'] == true;
     }
 }

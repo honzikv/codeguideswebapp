@@ -17,7 +17,7 @@ class Database {
     private PDO $pdo; # pdo instance pro pristup k db
 
     function __construct() { # konstruktor vytvori nove pdo pro pripojeni k databazi
-        $this->pdo = new PDO('mysql:host=' . DB_SERVER . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
+        $this->pdo = new PDO('mysql:host=' . DB_SERVER . 'charset=utf8' . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
 #        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); # pouze pro debug
     }
 

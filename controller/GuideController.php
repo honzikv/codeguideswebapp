@@ -49,6 +49,9 @@ class GuideController extends BaseController {
      * Render stranky s formularem pro vytvoreni guide
      */
     function renderCreateGuide() {
+        if (!$this->session->isUserLoggedIn()) { # pokud neni uzivatel prihlaseny presmerujeme na vychozi stranku
+            $this->redirectToIndex();
+        }
         $this->__render(self::CREATE_GUIDE_VIEW);
     }
 

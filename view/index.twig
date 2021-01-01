@@ -9,11 +9,9 @@
                 </h1>
                 <p class="lead">This site contains thousands of guides for coding in many languages and frameworks
                     such as JavaScript, TypeScript, Java, Python, SQL, PHP and many more!</p>
-                <hr class="my-2">
-
+                <hr class="bg-light">
 
                 <p class="lead">Quick access:</p>
-
                 <p class="lead">
                     <a class="btn btn-primary btn-lg" href="/guidelist" role="button">Browse</a>
                     {% if user.role == 'author' %}
@@ -37,7 +35,7 @@
                     such as JavaScript, TypeScript, Java, Python, SQL, PHP and many more!
                 </p>
 
-                <hr class="my-1">
+                <hr class="bg-light">
                 <p>You can also register to create your guides or review others</p>
                 <div class="jumbotron text-center">
                     <a class="btn btn-primary btn-lg my-2" href="/guidelist" role="button">Browse</a>
@@ -62,9 +60,9 @@
                             <div class="jumbotron  mt-4  backgroundAcrylic">
                                 <h1>{{ guide.name }}</h1>
                                 <p class="card-text smallParagraph">
-                                    {{ guide.abstract }}
+                                    {{ guide.abstract|raw }}
                                 </p>
-                                <div class="d-flex">
+                                <div class="d-flex mb-lg-2">
                                     <div class="ml-auto">
                                         <a href="/guide?guideId= {{ guide.id }}" type="button"
                                            class="btn btn-primary">View</a>

@@ -5,9 +5,9 @@
         <p class="lead text-center">No content to manage currently, wait for users to submit their guides...</p>
     {% else %}
 
-        <h1 class="display-4">Manage Content</h1>
+        <h1 class="display-4 text-center">Manage Content</h1>
         <table class="table tableAcrylic">
-            <thead class="thead-dark">
+            <thead class="thead-light">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Guide name</th>
@@ -22,7 +22,9 @@
 
             <tr class="elementHoverLight">
                 <th scope="row">{{ i }}</th>
-                <td>{{ guide.name }}</td>
+                <td>
+                    <a href="/guide?guideId={{ guide.guide_id }}">{{ guide.name }}</a>
+                </td>
                 <td>{{ guide.username }}</td>
 
                 <td>

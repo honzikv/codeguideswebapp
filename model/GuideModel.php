@@ -16,9 +16,8 @@ class GuideModel extends BaseModel {
     var string $guideAbstract;
 
     const NAME_LIMIT = 60;
-    const MEDIUM_TEXT_LIMIT_CHARACTERS = 30000;
+    const MEDIUM_TEXT_LIMIT_CHARACTERS = 10000;
     const FILE_MAX_SIZE = 10 * 1024 * 1024 * 1024; # max 10 MB
-
 
     function validate() {
         if (empty($this->guideName)) {
@@ -42,7 +41,8 @@ class GuideModel extends BaseModel {
         }
 
         if (strlen($this->guideAbstract) > self::MEDIUM_TEXT_LIMIT_CHARACTERS) {
-            throw new Exception('Error, abstract is too long, max');
+            throw new Exception('Error, abstract is too long, max '
+                . self::MEDIUM_TEXT_LIMIT_CHARACTERS . ' characters');
         }
 
     }
@@ -60,7 +60,7 @@ class GuideModel extends BaseModel {
         }
 
         if (!preg_match(parent::CHARACTERS_FILE_REGEX, $file['name'])) {
-            throw new Exception('Invalid file name (only letters, numbers and _ are allowed');
+            throw new Exception('Invalid file name (be sure it does not contain spaces)');
         }
 
         if ($file['size'] > self::FILE_MAX_SIZE) {
@@ -94,6 +94,11 @@ class GuideModel extends BaseModel {
         $query->execute([$this->guideName, $this->guideAbstract, $fileName, $userId, $guideStateReviewed['id']]);
     }
 
+    /**
+     * Ziska guide state spolu s id
+     * @param $guideState
+     * @return mixed
+     */
     function getGuideState($guideState) {
         $statement = 'SELECT * FROM guide_state_lov WHERE state = (?)';
         $query = $this->prepare($statement);
@@ -108,6 +113,7 @@ class GuideModel extends BaseModel {
         $query = $this->prepare($statement);
         $query->execute([$reviewedId]);
         return $query->fetchAll();
+
     }
 
     function getGuideReviews($guideId) {
@@ -138,7 +144,7 @@ class GuideModel extends BaseModel {
         return $query->fetch();
     }
 
-    function getPublishedGuidesRandom(int $count) {
+    function getPublishedGuidesRandom(int $count): array {
         $statement = 'SELECT * FROM guide WHERE guide_state = :state ORDER BY RAND() LIMIT :count';
         $statePublished = $this->getGuideState('published');
         $query = $this->prepare($statement);
@@ -152,7 +158,7 @@ class GuideModel extends BaseModel {
      * Ziskani vsech publikovanych guides
      * @return array
      */
-    function getAllPublishedGuides() {
+    function getAllPublishedGuides(): array {
         $guideStatePublished = $this->getGuideState('published');
         $statement = 'SELECT * FROM guide WHERE guide_state = (?)';
         $query = $this->prepare($statement);
@@ -165,7 +171,7 @@ class GuideModel extends BaseModel {
      * @param array $userGuides
      * @return array
      */
-    function getReviewMeanScores(array $userGuides) {
+    function getReviewMeanScores(array $userGuides): array {
         $result = [];
         foreach ($userGuides as $userGuide) {
             $reviews = $this->getGuideReviews($userGuide['id']);
@@ -177,7 +183,6 @@ class GuideModel extends BaseModel {
             }
 
             $mean = count($reviews) > 0 ? $total / (count($reviews) * 5) : '???';
-
             array_push($result, $mean);
         }
 

@@ -62,7 +62,7 @@ class UserModel extends BaseModel {
      */
     function getAllUsersWithRoles() {
         $statement = 'SELECT user.id, username, role, email, banned FROM user INNER JOIN 
-                        role_lov role_lov ON user.role_id = role_lov.id';
+                        role_lov role_lov ON user.role_id = role_lov.id ORDER BY user.id';
         $query = $this->prepare($statement);
         $query->execute();
         return $query->fetchAll();

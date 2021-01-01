@@ -11,6 +11,7 @@ class Request {
 
     public function __construct() {
         $url = $_SERVER['REQUEST_URI'] ?? '/'; # path ziskame z REQUEST URI, pokud neexistuje pak je path root
+        $url = filter_var($url, FILTER_SANITIZE_URL);
         $parts = parse_url($url); # pro parsing URL muzeme pouzit funkci parse_url, ze ktere lze ziskat
         if ($parts === false) {
             $this->path = false;
@@ -51,13 +52,13 @@ class Request {
         if ($this->getMethod() === 'get') {
             $input = $_GET; # odstraneni nevalidnich znaku pro get metodu
             foreach ($input as $key => $value) {
-                $result[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+                $result[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             }
         }
         else if ($this->getMethod() === 'post') {
             $input = $_POST; # odstraneni nevalidnich znaku pro post metodu
             foreach ($input as $key => $value) {
-                $result[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+               $result[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             }
         }
 
@@ -82,7 +83,7 @@ class Request {
         $result = [];
         parse_str($this->variables, $result);
         foreach ($result as $key => $value) {
-            $result[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            $result[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         }
         return $result;
     }

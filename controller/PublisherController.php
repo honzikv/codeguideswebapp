@@ -18,6 +18,11 @@ use app\model\RoleChangeModel;
 use app\model\UserModel;
 use Exception;
 
+/**
+ * Controller pro operace publishera
+ * Class PublisherController
+ * @package app\controller
+ */
 class PublisherController extends BaseController {
 
     private const MANAGE_CONTENT_VIEW = 'manage_content.twig'; # view s guides
@@ -88,7 +93,6 @@ class PublisherController extends BaseController {
         $reviews = $this->guideModel->getGuideReviewsWithReviewers($manageReviewsModel->guideId);
         $usableReviewers = $this->getAllUsableReviewers($reviews, $this->session->getUserId());
         $guide = $this->guideModel->getGuide($manageReviewsModel->guideId);
-
 
         $publishedId = $this->guideModel->getGuideState('published')['id'];
         if ($guide == false || $guide['guide_state'] == $publishedId) {
