@@ -2,13 +2,13 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use app\controller\ReviewerController;
-use app\core\Application;
+use app\controller\AuthenticationController;
 use app\controller\ErrorController;
 use app\controller\GuideController;
 use app\controller\MainPageController;
 use app\controller\PublisherController;
-use app\controller\AuthenticationController;
+use app\controller\ReviewerController;
+use app\core\Application;
 
 $application = new Application(dirname(__DIR__));
 $router = $application->router;

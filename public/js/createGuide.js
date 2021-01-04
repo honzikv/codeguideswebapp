@@ -1,3 +1,4 @@
+// Pri vytvoreni guide
 $('#createGuideForm').on('submit', (e) => {
     e.preventDefault();
 

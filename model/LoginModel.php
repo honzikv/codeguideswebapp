@@ -7,6 +7,11 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro prihlaseni uzivatele
+ * Class LoginModel
+ * @package app\model
+ */
 class LoginModel extends BaseModel {
 
     var string $username;
@@ -35,6 +40,11 @@ class LoginModel extends BaseModel {
 
     }
 
+    /**
+     * Kontrola hesla, zda-li se shoduje
+     * @param UserModel $userModel
+     * @throws Exception
+     */
     function checkPassword(UserModel $userModel) {
         $user = $userModel->getUserFromUsername($this->username);
         if ($user == false || !password_verify($this->password, $user['password'])) {

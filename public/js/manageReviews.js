@@ -1,9 +1,18 @@
+/**
+ * Presmeruje se na '/' a ukaze chybu
+ */
 function redirectAndShowError() {
     alert('Error while communicating with the server');
     window.location.href = '/';
 }
 
-function createReview(userSelectionId, rowId, guideId, guideName) {
+/**
+ * Odeslani vytvoreni recenze
+ * @param userSelectionId select element id
+ * @param guideId id guide
+ * @param guideName nazev guide (pro confirm)
+ */
+function createReview(userSelectionId, guideId, guideName) {
     const optionValue = $('#' + userSelectionId + ' option:selected').val();
     const optionText = $('#' + userSelectionId + ' option:selected').html();
     if (confirm('Assign ' + optionText + ' to create review for guide \'' + guideName + '\' ?')) {

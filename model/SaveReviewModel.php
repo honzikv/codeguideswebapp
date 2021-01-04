@@ -7,6 +7,11 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro ulozeni recenze
+ * Class SaveReviewModel
+ * @package app\model
+ */
 class SaveReviewModel extends BaseModel {
     var string $reviewId;
     var string $infoScore;
@@ -80,6 +85,9 @@ class SaveReviewModel extends BaseModel {
         }
     }
 
+    /**
+     * Ulozi recenzi (kontrolu musi udelat controller)
+     */
     function saveReview() {
         $statement = 'UPDATE review SET info_score = (?), efficiency_score = (?), complexity_score = (?),
                       quality_score = (?), overall_score = (?), notes = (?), is_finished = true WHERE id = (?)';

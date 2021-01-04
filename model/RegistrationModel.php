@@ -4,7 +4,6 @@ namespace app\model;
 
 use app\core\BaseModel;
 use Exception;
-use PDOException;
 
 /**
  * Model pro registraci uzivatele

@@ -7,6 +7,11 @@ namespace app\model;
 use app\core\BaseModel;
 use Exception;
 
+/**
+ * Model pro zmenu role
+ * Class RoleChangeModel
+ * @package app\model
+ */
 class RoleChangeModel extends BaseModel {
 
     var string $userId;
@@ -34,6 +39,9 @@ class RoleChangeModel extends BaseModel {
         }
     }
 
+    /**
+     * Funkce pro zmenu role podle $this->$role
+     */
     function changeRole() {
         $userModel = new UserModel();
         $roleId = $userModel->getRoleId($this->role);
@@ -42,6 +50,10 @@ class RoleChangeModel extends BaseModel {
         $query->execute([$roleId, $this->userId]);
     }
 
+    /**
+     * Ziska vysledneho uzivatele po zmene
+     * @return mixed
+     */
     function getResult() {
         $statement = 'SELECT user.id, role from user INNER JOIN role_lov rl on user.role_id = rl.id WHERE user.id = (?)';
         $query = $this->prepare($statement);

@@ -10,13 +10,18 @@ use app\core\Request;
 use Exception;
 use PDO;
 
+/**
+ * Model pro praci s guide a jeji zalozeni
+ * Class GuideModel
+ * @package app\model
+ */
 class GuideModel extends BaseModel {
 
     var string $guideName;
     var string $guideAbstract;
 
-    const NAME_LIMIT = 60;
-    const MEDIUM_TEXT_LIMIT_CHARACTERS = 10000;
+    const NAME_LIMIT = 60; # limit pro nazev
+    const MEDIUM_TEXT_LIMIT_CHARACTERS = 10000; # max pocet znaku abstraktu
     const FILE_MAX_SIZE = 10 * 1024 * 1024 * 1024; # max 10 MB
 
     function validate() {
@@ -47,7 +52,12 @@ class GuideModel extends BaseModel {
 
     }
 
-
+    /**
+     * Funkce pro upload souboru
+     * @param Request $request pozadavek
+     * @return mixed vyhodi exception nebo vrati nazev souboru
+     * @throws Exception exception pri chybe uploadu
+     */
     function uploadFile(Request $request) {
         $file = $request->getMultipart('pdfFile');
 
@@ -116,6 +126,11 @@ class GuideModel extends BaseModel {
 
     }
 
+    /**
+     * Ziska recenze pro danou Guide
+     * @param $guideId: id guide
+     * @return array: seznam recenzi v db
+     */
     function getGuideReviews($guideId) {
         $statement = 'SELECT * FROM review WHERE guide_id = (?)';
         $query = $this->prepare($statement);
@@ -123,6 +138,11 @@ class GuideModel extends BaseModel {
         return $query->fetchAll();
     }
 
+    /**
+     * Vrati guide i s recenzenty
+     * @param $guideId: id guide
+     * @return array: seznam vsech radek v db
+     */
     function getGuideReviewsWithReviewers($guideId) {
         $statement = 'SELECT review.id,
                            info_score, efficiency_score, complexity_score, quality_score, overall_score,
@@ -137,6 +157,11 @@ class GuideModel extends BaseModel {
         return $query->fetchAll();
     }
 
+    /**
+     * Ziska guide z db
+     * @param string $guideId id guide
+     * @return mixed: guide jako asociativni array
+     */
     function getGuide(string $guideId) {
         $statement = 'SELECT * FROM guide WHERE id = (?)';
         $query = $this->prepare($statement);
@@ -144,6 +169,11 @@ class GuideModel extends BaseModel {
         return $query->fetch();
     }
 
+    /**
+     * Ziska nahodne publikovane guides pro hlavni stranku
+     * @param int $count pocet
+     * @return array
+     */
     function getPublishedGuidesRandom(int $count): array {
         $statement = 'SELECT * FROM guide WHERE guide_state = :state ORDER BY RAND() LIMIT :count';
         $statePublished = $this->getGuideState('published');
@@ -168,7 +198,7 @@ class GuideModel extends BaseModel {
 
     /**
      * Ziska prumerne hodnoceni napric vsemi kategoriemi pro uzivatelske guides
-     * @param array $userGuides
+     * @param array $userGuides: vsechny
      * @return array
      */
     function getReviewMeanScores(array $userGuides): array {

@@ -4,7 +4,6 @@
 namespace app\model;
 
 
-use app\core\Application;
 use app\core\BaseModel;
 use Exception;
 

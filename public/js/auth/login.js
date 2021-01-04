@@ -1,3 +1,4 @@
+// pri submitu formulare posle data asynchronne a pri callbacku provede vysledek
 $('#loginForm').on('submit', (e) => {
     e.preventDefault();
 

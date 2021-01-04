@@ -1,3 +1,4 @@
+// pri submitu formulare pro registraci prepise originalni event a provede ajax post
 $('#registerForm').on('submit', (e) => {
     e.preventDefault();
 
