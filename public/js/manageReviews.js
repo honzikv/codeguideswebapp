@@ -35,6 +35,11 @@ function createReview(userSelectionId, guideId, guideName) {
     }
 }
 
+/**
+ * Odeslani pozadavku pro odstraneni review
+ * @param reviewId id review
+ * @param guideId id guide
+ */
 function deleteReview(reviewId, guideId) {
     if (confirm('Are you sure you want to remove this review?')) {
         const xhr = new XMLHttpRequest();
@@ -60,6 +65,10 @@ function deleteReview(reviewId, guideId) {
     }
 }
 
+/**
+ * Odeslani pozadavku pro vydani guide
+ * @param guideId id guide
+ */
 function releaseGuide(guideId) {
     if (confirm('Are you sure you want to release this guide?')) {
         const xhr = new XMLHttpRequest();
@@ -85,6 +94,10 @@ function releaseGuide(guideId) {
     }
 }
 
+/**
+ * Odeslani pozadavku pro odmitnuti review
+ * @param guideId id guide
+ */
 function rejectGuide(guideId) {
     if (confirm('Are you sure you want to reject this guide?')) {
         const xhr = new XMLHttpRequest();

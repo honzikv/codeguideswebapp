@@ -1,3 +1,6 @@
+/**
+ * Presmeruje uzivatele na root a zobrazi chybu
+ */
 function redirectAndShowError() {
     alert('Error while communicating with the server');
     window.location.href = '/';
