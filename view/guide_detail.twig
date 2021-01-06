@@ -15,18 +15,15 @@
                 <div class="jumbotron backgroundAcrylicLight">
                     <h2>Abstract</h2>
                     <p>{{ guide.abstract|raw }}</p>
-                    <div class="d-flex">
-                        <div class="ml-auto">
-                            <div class="ml-auto">
-                                <form method="GET" action="/guide/download">
-                                    <input readonly hidden name="guideId" value="{{ guide.id }}">
-                                    <button type="submit" class="btn btn-primary mb-lg-2">
-                                        Download content
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <form method="GET" action="/guide/download">
+                        <input readonly hidden name="guideId" value="{{ guide.id }}">
+                        <button type="submit" class="btn btn-primary mb-lg-2  float-end">
+                            Download content
+                        </button>
+                    </form>
                 </div>
             </div>
         {% endif %}

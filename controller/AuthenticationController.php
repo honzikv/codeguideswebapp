@@ -39,6 +39,9 @@ class AuthenticationController extends BaseController {
         }
     }
 
+    /**
+     * Render stranky pro registraci
+     */
     function renderRegistrationPage() {
         if ($this->session->isUserLoggedIn()) {
             $this->redirectToIndex();

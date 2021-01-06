@@ -10,7 +10,7 @@
 
 /* globalni override */
 body {
-    background: linear-gradient(rgba(1, 1, 1, 0.8), rgba(1, 1, 1, 0.8)),
+    background: linear-gradient(rgba(1, 1, 1, 0.9), rgba(1, 1, 1, 0.9)),
     url("../asset/background.jpg") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -27,8 +27,13 @@ body {
     padding-bottom: 5px;
 }
 
+.jumbotron-fluid {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
 .contentDefault {
-    width: 80%;
+    width: 90%;
 }
 
 

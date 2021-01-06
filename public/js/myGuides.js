@@ -1,8 +1,12 @@
+/**
+ * Funkce pro odeslani POST requestu na odstraneni guide
+ * @param guideId id guide
+ */
 function deleteGuide(guideId) {
     if (confirm('Are you sure you want to remove this guide?')) {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
-        formData.append('guideId', guideId)
+        formData.append('guideId', guideId);
 
         xhr.open('POST', '/removeguide', true);
         xhr.onload = () => {
