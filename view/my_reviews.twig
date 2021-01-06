@@ -11,7 +11,7 @@
             {% for review in reviews %}
                 <div class="jumbotron mt-4  backgroundAcrylic">
                     <h1 class="display-5">{{ review.name }}</h1>
-                    <p class="smallParagraph">{{ review.abstract }}</p>
+                    <p class="smallParagraph">{{ review.abstract|raw }}</p>
                     <div class="d-flex">
                         <div class="ml-auto">
                             <a class="btn btn-primary"

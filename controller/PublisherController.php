@@ -94,8 +94,8 @@ class PublisherController extends BaseController {
         $usableReviewers = $this->getAllUsableReviewers($reviews, $this->session->getUserId());
         $guide = $this->guideModel->getGuide($manageReviewsModel->guideId);
 
-        $publishedId = $this->guideModel->getGuideState('published')['id'];
-        if ($guide == false || $guide['guide_state'] == $publishedId) {
+        $reviewedId = $this->guideModel->getGuideState('reviewed')['id'];
+        if ($guide == false || $guide['guide_state'] != $reviewedId) {
             $this->redirectTo404();
         }
 

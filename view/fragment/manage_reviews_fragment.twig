@@ -4,91 +4,95 @@
         <p class="text-danger fw-bold">Error, no free reviewers available for this guide at least three reviewers are
             neccessary</p>
     {% endif %}
-    <table id="table" class="table tableAcrylic">
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Reviewer</th>
-            <th scope="col">Action</th>
-            <th scope="col">Informative</th>
-            <th scope="col">Theme</th>
-            <th scope="col">Originality</th>
-            <th scope="col">Quality</th>
-            <th scope="col">Overall</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for i in 0..2 %}
+    <div class="table-responsive">
+        <table id="table" class="table tableAcrylic">
+            <thead class="thead-light">
             <tr>
+                <th scope="col">#</th>
+                <th scope="col">Reviewer</th>
+                <th scope="col">Action</th>
+                <th scope="col">Informative</th>
+                <th scope="col">Theme</th>
+                <th scope="col">Originality</th>
+                <th scope="col">Quality</th>
+                <th scope="col">Overall</th>
+            </tr>
+            </thead>
 
-            {% if reviews[i] is defined %}
-                {% set review = reviews[i] %}
+            <tbody>
+            {% for i in 0..2 %}
+                <tr>
 
-                {% if review.is_finished == "1" %}
-                    <th scope="row">{{ i + 1 }}</th>
-                    <td>{{ review.username }}</td>
-                    <td>
-                        <button class="btn btn-danger" onclick="deleteReview('{{ review.id }}', '{{ guide.id }}')">Remove</button>
-                    </td>
-                    <td>{{ review.info_score }}</td>
-                    <td>{{ review.complexity_score }}</td>
-                    <td>{{ review.efficiency_score }}</td>
-                    <td>{{ review.quality_score }}</td>
-                    <td>{{ review.overall_score }}</td>
+                {% if reviews[i] is defined %}
+                    {% set review = reviews[i] %}
+
+                    {% if review.is_finished == "1" %}
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ review.username }}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteReview('{{ review.id }}', '{{ guide.id }}')">
+                                Remove
+                            </button>
+                        </td>
+                        <td>{{ review.info_score }}</td>
+                        <td>{{ review.complexity_score }}</td>
+                        <td>{{ review.efficiency_score }}</td>
+                        <td>{{ review.quality_score }}</td>
+                        <td>{{ review.overall_score }}</td>
+                    {% else %}
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ review.username }}</td>
+                        <td>
+                            <button onclick="deleteReview('{{ review.id }}', '{{ guide.id }}')"
+                                    class="btn btn-danger">Remove
+                            </button>
+                        </td>
+                        <td>{{ 'In progress' }}</td>
+                        <td>{{ 'In progress' }}</td>
+                        <td>{{ 'In progress' }}</td>
+                        <td>{{ 'In progress' }}</td>
+                        <td>{{ 'In progress' }}</td>
+                    {% endif %}
                 {% else %}
-                    <th scope="row">{{ i + 1 }}</th>
-                    <td>{{ review.username }}</td>
-                    <td>
-                        <button onclick="deleteReview('{{ review.id }}', '{{ guide.id }}')"
-                                class="btn btn-danger">Remove
-                        </button>
-                    </td>
-                    <td>{{ 'In progress' }}</td>
-                    <td>{{ 'In progress' }}</td>
-                    <td>{{ 'In progress' }}</td>
-                    <td>{{ 'In progress' }}</td>
-                    <td>{{ 'In progress' }}</td>
+                    {% if reviewers|length > 0 %}
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>
+                            <select id="userSelection{{ i }}" class="form-control form-control-sm">
+                                {% for reviewer in reviewers %}
+                                    <option value="{{ reviewer.id }}">{{ reviewer.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <button onclick="createReview(
+                                    'userSelection{{ i }}', '{{ guide.id }}', '{{ guide.name }}'
+                                    )"
+                                    class="btn btn-primary">
+                                Add to Review
+                            </button>
+                        </td>
+                        <td>{{ '-' }}</td>
+                        <td>{{ '-' }}</td>
+                        <td>{{ '-' }}</td>
+                        <td>{{ '-' }}</td>
+                        <td>{{ '-' }}</td>
+                        </tr>
+
+                    {% endif %}
                 {% endif %}
-            {% else %}
-                {% if reviewers|length > 0 %}
-                    <th scope="row">{{ i + 1 }}</th>
-                    <td>
-                        <select id="userSelection{{ i }}" class="form-control form-control-sm">
-                            {% for reviewer in reviewers %}
-                                <option value="{{ reviewer.id }}">{{ reviewer.username }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td>
-                        <button onclick="createReview(
-                                'userSelection{{ i }}', '{{ guide.id }}', '{{ guide.name }}'
-                                )"
-                                class="btn btn-primary">
-                            Add to Review
-                        </button>
-                    </td>
-                    <td>{{ '-' }}</td>
-                    <td>{{ '-' }}</td>
-                    <td>{{ '-' }}</td>
-                    <td>{{ '-' }}</td>
-                    <td>{{ '-' }}</td>
-                    </tr>
+            {% endfor %}
+            </tbody>
 
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-        </tbody>
+        </table>
+    </div>
 
-    </table>
-
-    {% if reviews|length == 3 %}
-        <div class="d-flex">
-            <p class="text-danger" id="error"></p>
-            <div class="ml-auto">
-                <button onclick="rejectGuide('{{ guide.id }}')" class="btn btn-warning">Reject Guide</button>
+    <div class="d-flex">
+        <p class="text-danger" id="error"></p>
+        <div class="ml-auto">
+            <button onclick="rejectGuide('{{ guide.id }}')" class="btn btn-warning">Reject Guide</button>
+            {% if reviews|length == 3 %}
                 <button onclick="releaseGuide('{{ guide.id }}')" class="btn btn-primary">Accept Guide</button>
-            </div>
+            {% endif %}
         </div>
-    {% endif %}
+    </div>
 </div>
