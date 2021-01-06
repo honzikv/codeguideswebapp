@@ -11,86 +11,86 @@
           integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
           crossorigin="anonymous"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
     <title>Coding Guides WebApp</title>
 </head>
 <body>
 
 <header>
-    <nav class="navbar navbar-expand-md navbar-light bg-light  ">
-        <div class="navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav text-center mr-auto">
-                <li class="nav-item">
-                    <a href="/" class="nav-link d-flex flex-column" data-toggle="collapse">
+    <nav class="navbar navbar-icon-top navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a href="/" class="nav-link">
                         <i class="fas fa-home"></i>
-                        <span class="d-none d-sm-inline mt-1">Home</span>
+                        <span>Home</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="/guidelist" class="nav-link d-flex flex-column" data-toggle="collapse">
+                    <a href="/guidelist" class="nav-link">
                         <i class="fas fa-newspaper"></i>
-                        <span class="d-none d-sm-inline mt-1">Guides</span>
+                        <span>Guides</span>
                     </a>
                 </li>
 
 
                 {% if user.role == 'author' or user.role == 'reviewer' %}
                     <li class="nav-item">
-                        <a href="/myguides" class="nav-link d-flex flex-column">
+                        <a href="/myguides" class="nav-link">
                             <i class="far fa-newspaper"></i>
-                            <span class="d-none d-sm-inline mt-1">My Guides</span>
+                            <span>My Guides</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/createguide" class="nav-link d-flex flex-column">
+                        <a href="/createguide" class="nav-link">
                             <i class="far fa-file"></i>
-                            <span class="d-none d-sm-inline mt-1">Create a Guide</span>
+                            <span>Create a Guide</span>
                         </a>
                     </li>
                 {% endif %}
 
                 {% if user.role == 'reviewer' %}
                     <li class="nav-item">
-                        <a href="/myreviews" class="nav-link d-flex flex-column">
-                            <i class="far fa-file-pdf"></i>
-                            <span class="d-none d-sm-inline mt-1">My Reviews</span>
+                        <a href="/myreviews" class="nav-link">
+                            <i class="far fa-file-pdf"></i> My Reviews
                         </a>
                     </li>
                 {% endif %}
 
                 {% if user.role == 'publisher' %}
                     <li class="nav-item">
-                        <a href="/manageusers" class="nav-link d-flex flex-column">
-                            <i class="fas fa-users"></i>
-                            <span class="d-none d-sm-inline mt-1">Manage Users</span>
+                        <a href="/manageusers" class="nav-link">
+                            <i class="fas fa-users"></i> Manage Users
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/managecontent" class="nav-link d-flex flex-column">
-                            <i class="fas fa-tasks"></i>
-                            <span class="d-none d-sm-inline mt-1">Manage Content</span>
+                        <a href="/managecontent" class="nav-link">
+                            <i class="fas fa-tasks"></i> Manage Content
                         </a>
                     </li>
                 {% endif %}
-
             </ul>
 
-            <ul class="navbar-nav ml-auto text-center">
+            <ul class="navbar-nav ml-auto">
                 {% if not user %}
                     <li class="nav-item">
-                        <a href="/register" class="nav-link d-flex flex-column">
-                            <i class="fas fa-plus-circle"></i>
-                            <span class="d-none d-sm-inline mt-1">Register</span>
+                        <a href="/register" class="nav-link">
+                            <i class="fas fa-plus-circle"></i> Register
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/login" class="nav-link d-flex flex-column">
-                            <i class="fas fa-sign-in-alt"></i>
-                            <span class="d-none d-sm-inline mt-1">Login</span>
+                        <a href="/login" class="nav-link">
+                            <i class="fas fa-sign-in-alt"></i> Login
                         </a>
                     </li>
 
@@ -98,21 +98,17 @@
 
                 {% if user %}
                     <li class="nav-item">
-                        <div class="nav-link d-flex flex-column">
-                            <i class="fas fa-info"></i>
-                            <span class="d-none d-sm-inline mt-1">User: {{ user.username }} ({{ user.role }})</span>
-                        </div>
-
+                        <a class="nav-link">
+                            <i class="fas fa-info"></i> User: {{ user.username }} ({{ user.role }})
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/logout" class="nav-link d-flex flex-column">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span class="d-none d-sm-inline mt-1">Logout</span>
+                        <a href="/logout" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
                     </li>
                 {% endif %}
             </ul>
-
         </div>
     </nav>
 </header>

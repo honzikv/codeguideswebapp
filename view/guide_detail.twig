@@ -6,7 +6,7 @@
             <p class="text-center">{{ error }}</p>
         {% else %}
 
-            <div class="container justify-content-center">
+            <div class="container">
                 <h4 class="display-4">{{ guide.name }}</h4>
                 <h4 class="lead">By: {{ guide.username }}</h4>
 
@@ -17,13 +17,15 @@
                     <p>{{ guide.abstract|raw }}</p>
                 </div>
 
-                <div class="mt-4">
-                    <form method="GET" action="/guide/download">
-                        <input readonly hidden name="guideId" value="{{ guide.id }}">
-                        <button type="submit" class="btn btn-primary mb-lg-2  float-end">
-                            Download content
-                        </button>
-                    </form>
+                <div class="d-flex mt-4">
+                    <div class="ml-auto">
+                        <form method="GET" action="/guide/download">
+                            <input readonly hidden name="guideId" value="{{ guide.id }}">
+                            <button type="submit" class="btn btn-primary mb-lg-2  float-end">
+                                Download content
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         {% endif %}
