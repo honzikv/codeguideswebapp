@@ -28,14 +28,14 @@
 
                 <li class="nav-item">
                     <a href="/" class="nav-link">
-                        <i class="fas fa-home"></i>
+                        <i class="fa fa-home"></i>
                         <span>Home</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="/guidelist" class="nav-link">
-                        <i class="fas fa-newspaper"></i>
+                        <i class="fa fa-newspaper"></i>
                         <span>Guides</span>
                     </a>
                 </li>
@@ -44,14 +44,14 @@
                 {% if user.role == 'author' or user.role == 'reviewer' %}
                     <li class="nav-item">
                         <a href="/myguides" class="nav-link">
-                            <i class="far fa-newspaper"></i>
+                            <i class="fa fa-newspaper"></i>
                             <span>My Guides</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="/createguide" class="nav-link">
-                            <i class="far fa-file"></i>
+                            <i class="fa fa-file"></i>
                             <span>Create a Guide</span>
                         </a>
                     </li>
@@ -60,7 +60,7 @@
                 {% if user.role == 'reviewer' %}
                     <li class="nav-item">
                         <a href="/myreviews" class="nav-link">
-                            <i class="far fa-file-pdf"></i> My Reviews
+                            <i class="fa fa-file-pdf"></i> My Reviews
                         </a>
                     </li>
                 {% endif %}
@@ -68,13 +68,13 @@
                 {% if user.role == 'publisher' %}
                     <li class="nav-item">
                         <a href="/manageusers" class="nav-link">
-                            <i class="fas fa-users"></i> Manage Users
+                            <i class="fa fa-users"></i> Manage Users
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="/managecontent" class="nav-link">
-                            <i class="fas fa-tasks"></i> Manage Content
+                            <i class="fa fa-tasks"></i> Manage Content
                         </a>
                     </li>
                 {% endif %}
@@ -84,13 +84,13 @@
                 {% if not user %}
                     <li class="nav-item">
                         <a href="/register" class="nav-link">
-                            <i class="fas fa-plus-circle"></i> Register
+                            <i class="fa fa-plus-circle"></i> Register
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="/login" class="nav-link">
-                            <i class="fas fa-sign-in-alt"></i> Login
+                            <i class="fa fa-sign-in-alt"></i> Login
                         </a>
                     </li>
 
@@ -99,12 +99,12 @@
                 {% if user %}
                     <li class="nav-item">
                         <a class="nav-link">
-                            <i class="fas fa-info"></i> User: {{ user.username }} ({{ user.role }})
+                            <i class="fa fa-info"></i> User: {{ user.username }} ({{ user.role }})
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="/logout" class="nav-link">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+                            <i class="fa fa-sign-out-alt"></i> Logout
                         </a>
                     </li>
                 {% endif %}
